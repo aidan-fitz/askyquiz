@@ -30,7 +30,7 @@ bisect: clean bisect-test
 	bisect-report -I _build -html report bisect0001.out
 
 zip:
-	zip search_src.zip *.ml* _tags Makefile analysis.pdf
+	zip search_src.zip *.ml* _tags Makefile
 
 docs: docs-public docs-private
 	
