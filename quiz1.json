@@ -1,0 +1,97 @@
+{
+  "title": "Quiz 1",
+  "desc": "This is an example quiz!",
+  "subjective": false,
+  "questions": [
+    {
+      "id": "q1",
+      "text": "What is the powerhouse of the cell?\n a) golgi apparatus\n b) mitochondia\n c) lysosome\n d) nucleus\n",
+      "answers": [
+        {
+          "a": 0
+        },
+        {
+          "b": 1
+        },
+        {
+          "c": 0
+        },
+        {
+          "d": 0
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "What is OCaml?\n a) golgi apparatus\n b) mitochondia\n c) a functional programming language\n d) nucleus\n",
+      "answers": [
+        {
+          "a": 0
+        },
+        {
+          "b": 0
+        },
+        {
+          "c": 1
+        },
+        {
+          "d": 0
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Who has 58+ years of programming experience?\n a) golgi apparatus\n b) mitochondia\n c) a functional programming language\n d) David Gries\n",
+      "answers": [
+        {
+          "a": 0
+        },
+        {
+          "b": 0
+        },
+        {
+          "c": 0
+        },
+        {
+          "d": 1
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "When was the War of 1812?\n a) 1812\n b) 1912\n c) 2012\n d) When David Gries was born\n",
+      "answers": [
+        {
+          "a": 1
+        },
+        {
+          "b": 0
+        },
+        {
+          "c": 0
+        },
+        {
+          "d": 0
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "What is the next line of this song: \"Too hot (hot damn) _____________\"?\n a) Despacito\n b) Call the police and the fireman\n c) 24 karat magic in the air\n d) Stop, drop, and roll\n",
+      "answers": [
+        {
+          "a": 0
+        },
+        {
+          "b": 1
+        },
+        {
+          "c": 0
+        },
+        {
+          "d": 0
+        }
+      ]
+    }
+  ]
+}
