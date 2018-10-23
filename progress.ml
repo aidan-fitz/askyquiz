@@ -27,10 +27,10 @@ open Quiz
 
 type progress  = {answered: string list; 
                   unanswered: string list;
-                  score: (string * int) list}
+                  score: (string * int ref) list}
 
 let init quiz = {
   answered = [];
   unanswered = Quiz.question_ids quiz;
-  score = List.map (fun x -> (x, 0)) (Quiz.categories quiz) 
+  score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz) 
 }
