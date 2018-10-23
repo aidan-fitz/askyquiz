@@ -3,6 +3,8 @@ type t
 type question
 type answer
 
+type question
+
 val check_answer : string -> t -> bool
 
 module type Quiz = sig
