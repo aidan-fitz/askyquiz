@@ -13,8 +13,8 @@ type t
 (** [parse_json j] is the [Quiz.t] represented by the JSON [j]. *)
 val parse_json : Yojson.Basic.json -> t
 
-(** [questions_ids t] is the list of question ids from [Quiz.t]*)
+(** [questions_ids quiz] is the list of question ids from [quiz]*)
 val question_ids: t -> string list
 
-(** [categories t] is the list of scoring categories from [Quiz.t]*)
+(** [categories quiz] is the list of scoring categories from [quiz]*)
 val categories: t -> string list
