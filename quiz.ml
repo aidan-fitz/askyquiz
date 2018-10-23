@@ -44,7 +44,7 @@ let build_answers aj =
         values = 
           List.map 
             (fun (c, i) -> (c, i |> to_int))
-            (a |> member "values" |> to_assoc)
+            (a |> member "value" |> to_assoc)
       }) (aj |> to_list)
 
 (** [build_questions j] is a list of all questions parsed from the JSON [j]. *)
@@ -60,11 +60,17 @@ let parse_json j =
   {
     title = j |> member "title" |> to_string;
     desc = j |> member "desc" |> to_string;
-    categories = List.map (fun c -> c |> to_string) (j |> member "categories" |> to_list);
+    categories = List.map (fun c -> c |> to_string) 
+        (j |> member "categories" |> to_list);
     questions = build_questions j
   }
 
-let question_ids t = 
-  List.map (fun x -> x.id) t.questions
+let title t = t.title
+
+let desc t = t.desc
 
 let categories t = t.categories
+
+let question_ids t = List.map (fun x -> x.id) t.questions
+
+let question_texts t = List.map (fun x -> x.text) t.questions

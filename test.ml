@@ -1,4 +1,5 @@
 open OUnit2
+open Quiz
 
 (********************************************************************
    Here are some helper functions for your testing of set-like lists. 
@@ -34,8 +35,30 @@ let pp_list pp_elt lst =
     in loop 0 "" lst
   in "[" ^ pp_elts lst ^ "]"
 
+let quiz1 = parse_json (Yojson.Basic.from_file "quiz1.json")
+let hp = parse_json (Yojson.Basic.from_file "hp.json")
+
 let quiz_tests = [
   (*TODO: writes tests for quiz*)
+
+  (* Testing parse_json *)
+  "title" >:: (fun _ -> assert_equal (title hp) 
+                  "Which Hogwarts house are you in?");
+  "description" >:: (fun _ -> assert_equal (desc hp) 
+                        "This is an example personality quiz! Source: \
+                         https://www.proprofs.com/quiz-school/story.php?\
+                         title=harry-potter-house-test_2");
+  "categories" >:: (fun _ -> assert_equal (categories hp) 
+                       ["Gryffindor"; "Hufflepuff"; "Ravenclaw"; "Slytherin"]);
+  "question ids" >:: (fun _ -> assert_equal (question_ids hp) 
+                         ["q1"; "q2"; "q3"; "q4"; "q5"]);
+  "1st question text" >:: (fun _ -> assert_equal (List.hd (question_texts hp)) 
+                              "What would you do if you're trapped in a \
+                               burning building and only have 10 seconds to get \
+                               out?");
+  "3rd question text" >:: (fun _ -> assert_equal 
+                              (List.nth (question_texts hp) 2) 
+                              "What's your favorite color?")
 ]
 
 let progress_tests = [
