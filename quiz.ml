@@ -78,4 +78,4 @@ let categories t = t.categories
 
 let question_ids t = List.map (fun x -> x.id) t.questions
 
-let question_texts t = List.map (fun x -> x.text) t.questions
+let question_texts t = List.map (fun x -> x.qs) t.questions
