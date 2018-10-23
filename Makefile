@@ -1,4 +1,4 @@
-MODULES=quiz main test
+MODULES=quiz progress test main
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
