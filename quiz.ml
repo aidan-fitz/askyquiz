@@ -14,7 +14,7 @@ type answer = {
     a list of possible [answers]. *)
 type question = {
   id: string;
-  text: string;
+  qs: string;
   answers: answer list
 }
 
@@ -52,9 +52,14 @@ let build_questions j =
   let qs = j |> member "questions" |> to_list in
   List.map (fun q -> {
         id = str_field "id" q;
-        text = str_field "text" q;
+        qs = str_field "text" q;
         answers = build_answers (q |> member "answers")
       }) qs
+
+let get_values qid aid quiz =
+    let question = List.find (fun {id; qs; _} -> id = qid) quiz.questions in
+    let answer   = List.find (fun {id; text; _} -> id = aid) question.answers in
+    answer.values
 
 let parse_json j =
   {
