@@ -1,7 +1,9 @@
 {
   "title": "Quiz 1",
   "desc": "This is an example quiz!",
-  "subjective": false,
+  "categories": [
+    "correct"
+  ],
   "questions": [
     {
       "id": "q1",
@@ -10,22 +12,30 @@
         {
           "id": "q1a1",
           "text": "golgi apparatus",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q1a2",
           "text": "mitochondria",
-          "value": 1
+          "value": {
+            "correct": 1
+          }
         },
         {
           "id": "q1a3",
           "text": "lysosome",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q1a4",
           "text": "nucleus",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         }
       ]
     },
@@ -36,22 +46,30 @@
         {
           "id": "q2a1",
           "text": "golgi apparatus",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q2a2",
           "text": "mitochondria",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q2a3",
           "text": "a functional programming language",
-          "value": 1
+          "value": {
+            "correct": 1
+          }
         },
         {
           "id": "q2a4",
           "text": "nucleus",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         }
       ]
     },
@@ -62,22 +80,30 @@
         {
           "id": "q3a1",
           "text": "golgi apparatus",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q3a2",
           "text": "mitochondria",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q3a3",
           "text": "a functional programming language",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q3a4",
           "text": "David Gries",
-          "value": 1
+          "value": {
+            "correct": 1
+          }
         }
       ]
     },
@@ -88,22 +114,30 @@
         {
           "id": "q4a1",
           "text": "1812",
-          "value": 1
+          "value": {
+            "correct": 1
+          }
         },
         {
           "id": "q4a2",
           "text": "1912",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q4a3",
           "text": "2012",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q4a4",
           "text": "When David Gries was born",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         }
       ]
     },
@@ -114,22 +148,30 @@
         {
           "id": "q5a1",
           "text": "Despacito",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q5a2",
           "text": "Make a dragon wanna retire, man",
-          "value": 1
+          "value": {
+            "correct": 1
+          }
         },
         {
           "id": "q5a3",
           "text": "24 karat magic in the air",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         },
         {
           "id": "q5a4",
           "text": "Stop, drop, and roll",
-          "value": 0
+          "value": {
+            "correct": 0
+          }
         }
       ]
     }
