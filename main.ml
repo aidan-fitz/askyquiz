@@ -15,6 +15,11 @@ let load_quiz f =
   | Json_error _ -> print_endline "File does not contain valid JSON"; None
   | Type_error _ -> print_endline "JSON does not represent adventure"; None
 
+(** [display qxn ans] is the string to display when prompting the user
+    for an answer*)
+let display qxn ans = 
+  failwith "Unimplemented"
+
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () = ()
 
