@@ -1,5 +1,5 @@
 (** The type that represents progress while taking a quiz *)
-type progress 
+type t
 
 (** [init quiz] is the initial [progress] type for [quiz]*)
-val init: Quiz.t -> progress
+val init: Quiz.t -> t
