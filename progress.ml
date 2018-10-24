@@ -26,9 +26,9 @@ open Quiz
    end *)
 
 type t = {
-    answered: string list; 
-    unanswered: string list;
-    score: (string * int ref) list
+  answered: string list; 
+  unanswered: string list;
+  score: (string * int ref) list
 }
 
 let init quiz = {
@@ -41,16 +41,14 @@ let init quiz = {
     answering with ID [aid] for question with ID [qid]. Running scores in 
     [prog] are updated according to the scores in [quiz]. *)
 let update_progress qid aid quiz prog =
-    let values = get_values qid aid quiz in
-    List.iter
+  let values = get_values qid aid quiz in
+  List.iter
     (fun (c, i) ->
-        let (cat, score) = List.find (fun (x, y) -> x=c) values in
-        i := score + !i)
+       let (cat, score) = List.find (fun (x, y) -> x=c) values in
+       i := score + !i)
     prog.score;
-    {
-        answered = qid :: prog.answered;
-        unanswered = List.filter ((<>) qid) prog.unanswered;
-        score = prog.score;
-    }
-    
-    
+  {
+    answered = qid :: prog.answered;
+    unanswered = List.filter ((<>) qid) prog.unanswered;
+    score = prog.score;
+  }
