@@ -35,6 +35,6 @@ val categories: t -> string list
     answer of id [aid] to question of id [qid] in [quiz]. *)
 val get_values: string -> string -> t -> (category * int) list
 
-val get_answers: string -> string -> t -> (string * string) list
+val get_answers: string -> t -> (string * string) list
 
-val get_questions: string -> t -> (string * string) list
+val get_questions: t -> (string * string) list
