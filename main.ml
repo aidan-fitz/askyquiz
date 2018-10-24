@@ -5,23 +5,41 @@ open Yojson.Basic
 open Yojson.Basic.Util
 
 (** [load_quiz f] is the [Quiz] object created from the quiz
-    JSON with filename [f]*)
+    JSON with filename [f]. *)
 let load_quiz f = 
-  try 
-    let j = from_file f in
-    Some (parse_json j)
-  with 
-  | Sys_error _ -> print_endline "File not found"; None
-  | Json_error _ -> print_endline "File does not contain valid JSON"; None
-  | Type_error _ -> print_endline "JSON does not represent adventure"; None
+    try 
+        let j = from_file f in
+        Some (parse_json j)
+    with 
+    | Sys_error _ -> print_endline "File not found"; None
+    | Json_error _ -> print_endline "File does not contain valid JSON"; None
+    | Type_error _ -> print_endline "JSON does not represent adventure"; None
 
-(** [display qxn ans] is the string to display when prompting the user
-    for an answer*)
-let display qxn ans = 
-  failwith "Unimplemented"
+(** [ask qn quiz] displays [qn] to the screen and prompts for an answer
+    among its choices in [quiz]. *)
+let ask (qid, qs) quiz = 
+    print_endline qs;
+    List.iter
+    (fun (aid, ans) -> print_endline (aid ^ ". " ^ ans))
+    (get_answers qid quiz);
+
+    print_string "Answer: ";
+    let input = read_line () in
+    print_endline ("You answered " ^ input ^ "\n")
+
+(** [run_quiz q] plays through quiz [q] with the user. *)
+let rec run_quiz quiz =
+    match get_questions quiz with
+    | [] -> ()
+    | q::qs -> 
 
 (** [main ()] prompts for the game to play, then starts it. *)
-let main () = ()
+let rec main () =
+    print_string "Enter .quiz to load? > ";
+    let fn = read_line () in
+    match load_quiz fn with
+    | None -> print_endline "Sorry, try again"; main ()
+    | Some q -> run_quiz q
 
 (* Execute the game engine. *)
 let () = main ()
