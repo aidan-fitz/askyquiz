@@ -15,13 +15,19 @@ let load_quiz f =
     | Json_error _ -> print_endline "File does not contain valid JSON"; None
     | Type_error _ -> print_endline "JSON does not represent adventure"; None
 
+let answer_letters_odd  = ["A"; "B"; "C"; "D"; "E"]
+let answer_letters_even = ["F"; "G"; "H"; "J"; "K"]
+
 (** [ask qn quiz] displays [qn] to the screen and prompts for an answer
     among its choices in [quiz]. *)
 let ask (qid, qs) quiz = 
     print_endline qs;
-    List.iter
-    (fun (aid, ans) -> print_endline (aid ^ ". " ^ ans))
-    (get_answers qid quiz);
+    (* print up to 5 answer choices; if there are fewer than 5, catch the exception *)
+    try List.iter2
+        (fun (_, ans) letter -> print_endline (letter ^ ". " ^ ans))
+        (get_answers qid quiz)
+        answer_letters_odd
+    with Invalid_argument _ -> ();
 
     print_string "Answer: ";
     let input = read_line () in
