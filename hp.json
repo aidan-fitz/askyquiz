@@ -24,7 +24,7 @@
         },
         {
           "id": "q1a2",
-          "text": "Run and grab my friend that is still in the building",
+          "text": "Run and grab my friend who's still in the building",
           "value": {
             "Gryffindor": 1,
             "Hufflepuff": 0,
@@ -34,7 +34,7 @@
         },
         {
           "id": "q1a3",
-          "text": "It depends, if I have a way to save my friend, than yes, but if there's no way then I am above everybody else.",
+          "text": "It depends -- if I have a way to save my friend, then yes, but if there's no way then I am above everybody else.",
           "value": {
             "Gryffindor": 0,
             "Hufflepuff": 0,
