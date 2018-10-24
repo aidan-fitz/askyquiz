@@ -12,8 +12,11 @@ files each testing specific functionality.
 Files that match the glob `test*.ml` are test files. Every program file (module)
 should have a corresponding test file.
 
-To create a new test file:
+## Build System
 
-1. Save the file
-2. Add the filename without the `.ml` extension to the `TEST_MODULES` variable
-   in `Makefile`.
+Like previous course assignments, our project use OCamlbuild and a Makefile.
+
+We have modified the default course Makefile to keep program and test files
+logically separate. `PROGRAM_MODULES` contains the names of program files
+(without extensions); `TEST_MODULES` contains the names of test files. These
+lists are concatenated together as the `MODULES` variable.
