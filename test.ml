@@ -52,13 +52,22 @@ let quiz_tests = [
                        ["Gryffindor"; "Hufflepuff"; "Ravenclaw"; "Slytherin"]);
   "question ids" >:: (fun _ -> assert_equal (question_ids hp) 
                          ["q1"; "q2"; "q3"; "q4"; "q5"]);
-  "1st question text" >:: (fun _ -> assert_equal (List.hd (question_texts hp)) 
-                              "What would you do if you're trapped in a \
-                               burning building and only have 10 seconds to get \
-                               out?");
+  "2nd question text" >:: (fun _ -> assert_equal (List.nth (question_qs hp) 1) 
+                              "How would you react if someone picks on you and \
+                               your friend?");
   "3rd question text" >:: (fun _ -> assert_equal 
-                              (List.nth (question_texts hp) 2) 
-                              "What's your favorite color?")
+                              (List.nth (question_qs hp) 2) 
+                              "What's your favorite color?");
+  "1st q answer id/text" >:: (fun _ -> assert_equal 
+                                 (get_answers (List.hd (question_ids hp)) hp) 
+                                 [("q1a1", "Save myself, of course!"); 
+                                  ("q1a2", "Run and grab my friend that is \
+                                            still in the building"); 
+                                  ("q1a3", "It depends, if I have a way to \
+                                            save my friend, than yes, but if \
+                                            there's no way then I am above \
+                                            everybody else."); 
+                                  ("q1a4", "I'll try, but I am not sure!")]);
 ]
 
 let progress_tests = [
