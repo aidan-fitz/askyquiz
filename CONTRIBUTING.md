@@ -15,6 +15,5 @@ should have a corresponding test file.
 To create a new test file:
 
 1. Save the file
-2. Add the filename without the `.ml` extension to the `MODULES` variable in
-   `Makefile` (FIXME we might factor this out to a different variable called,
-   say, `TEST_MODULES`)
+2. Add the filename without the `.ml` extension to the `TEST_MODULES` variable
+   in `Makefile`.

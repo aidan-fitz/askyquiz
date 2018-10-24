@@ -1,4 +1,6 @@
-MODULES=quiz progress testUtils testQuiz testProgress test main
+PROGRAM_MODULES=quiz progress main
+TEST_MODULES=testUtils testQuiz testProgress test
+MODULES=$(PROGRAM_MODULES) $(TEST_MODULES)
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)
