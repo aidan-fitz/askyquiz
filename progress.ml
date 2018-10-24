@@ -52,3 +52,9 @@ let update_progress qid aid quiz prog =
     unanswered = List.filter ((<>) qid) prog.unanswered;
     score = prog.score;
   }
+
+let answered t = t.answered
+
+let unanswered t = t.unanswered
+
+let score t = t.score
