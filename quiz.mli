@@ -26,15 +26,15 @@ val categories: t -> string list
 val question_ids: t -> string list
 
 (** [question_texts t] is the list of question texts from [Quiz.t] *)
-val question_texts: t -> string list
+val question_qs: t -> string list
 
 (** [categories t] is the list of scoring categories from [Quiz.t]*)
 val categories: t -> string list
 
-(** [get_values qid aid quiz] is the list of scores associated with 
-    answer of id [aid] to question of id [qid] in [quiz]. *)
-val get_values: string -> string -> t -> (category * int) list
+val get_questions: t -> (string * string) list
 
 val get_answers: string -> t -> (string * string) list
 
-val get_questions: t -> (string * string) list
+(** [get_values q_id a_id t] is the list of scores associated with 
+    answer of id [aid] to question of id [qid] in [quiz]. *)
+val get_values: string -> string -> t -> (category * int) list

@@ -56,11 +56,6 @@ let build_questions j =
         answers = build_answers (q |> member "answers")
       }) qs
 
-let get_values qid aid quiz =
-    let question = List.find (fun {id; qs; _} -> id = qid) quiz.questions in
-    let answer   = List.find (fun {id; text; _} -> id = aid) question.answers in
-    answer.values
-
 let parse_json j =
   {
     title = j |> member "title" |> to_string;
@@ -78,4 +73,22 @@ let categories t = t.categories
 
 let question_ids t = List.map (fun x -> x.id) t.questions
 
-let question_texts t = List.map (fun x -> x.qs) t.questions
+let question_qs t = List.map (fun x -> x.qs) t.questions
+
+(** [get_questions t] is a (id, text) list for all questions in [t] *)
+let get_questions t = 
+  let rec pair lst1 lst2 acc = 
+    match (lst1, lst2) with 
+    | (h1 :: t1, h2 :: t2) -> pair t1 t2 ((h1, h2) :: acc)
+    | _ -> acc in
+  pair (question_ids t) (question_qs t) []
+
+let get_answers qid t =
+  let q = List.find (fun {id; qs; _} -> id = qid) t.questions in
+  let a = q.answers in
+  List.map (fun (x : answer) -> (x.id, x.text)) a
+
+let get_values qid aid t =
+  let question = List.find (fun {id; qs; _} -> id = qid) t.questions in
+  let answer   = List.find (fun {id; text; _} -> id = aid) question.answers in
+  answer.values
