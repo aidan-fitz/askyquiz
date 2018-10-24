@@ -30,7 +30,7 @@ let quiz_tests = [
   "1st q answer id/text" >:: (fun _ -> assert_equal 
                                  (get_answers (List.hd (question_ids hp)) hp) 
                                  [("q1a1", "Save myself, of course!"); 
-                                  ("q1a2", "Run and grab my friend that is \
+                                  ("q1a2", "Run and grab my friend who's \
                                             still in the building"); 
                                   ("q1a3", "It depends, if I have a way to \
                                             save my friend, than yes, but if \
