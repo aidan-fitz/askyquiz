@@ -28,10 +28,11 @@ let ask (qid, qs) quiz =
     print_endline ("You answered " ^ input ^ "\n")
 
 (** [run_quiz q] plays through quiz [q] with the user. *)
-let rec run_quiz quiz =
-    match get_questions quiz with
+let run_quiz quiz =
+    let rec run = function
     | [] -> ()
-    | q::qs -> 
+    | q::qs -> ask q quiz; run qs
+    in run (get_questions quiz)
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let rec main () =

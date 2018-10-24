@@ -26,7 +26,7 @@ val categories: t -> string list
 val question_ids: t -> string list
 
 (** [question_texts t] is the list of question texts from [Quiz.t] *)
-val question_qs: t -> string list
+val question_texts: t -> string list
 
 (** [categories t] is the list of scoring categories from [Quiz.t]*)
 val categories: t -> string list

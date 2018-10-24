@@ -73,7 +73,7 @@ let categories t = t.categories
 
 let question_ids t = List.map (fun x -> x.id) t.questions
 
-let question_qs t = List.map (fun x -> x.qs) t.questions
+let question_texts t = List.map (fun x -> x.qs) t.questions
 
 (** [get_questions t] is a (id, text) list for all questions in [t] *)
 let get_questions t = 
@@ -81,7 +81,7 @@ let get_questions t =
     match (lst1, lst2) with 
     | (h1 :: t1, h2 :: t2) -> pair t1 t2 ((h1, h2) :: acc)
     | _ -> acc in
-  pair (question_ids t) (question_qs t) []
+  pair (question_ids t) (question_texts t) []
 
 let get_answers qid t =
   let q = List.find (fun {id; qs; _} -> id = qid) t.questions in
