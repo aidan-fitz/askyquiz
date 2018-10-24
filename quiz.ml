@@ -23,6 +23,7 @@ type question = {
 type t = {
   title: string;
   desc: string;
+  subjective: bool;
   categories: string list;
   questions: question list
 }
@@ -60,6 +61,7 @@ let parse_json j =
   {
     title = j |> member "title" |> to_string;
     desc = j |> member "desc" |> to_string;
+    subjective = j |> member "subjective" |> to_bool;
     categories = List.map (fun c -> c |> to_string) 
         (j |> member "categories" |> to_list);
     questions = build_questions j
@@ -68,6 +70,8 @@ let parse_json j =
 let title t = t.title
 
 let desc t = t.desc
+
+let subjective t = t.subjective
 
 let categories t = t.categories
 

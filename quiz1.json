@@ -1,6 +1,7 @@
 {
   "title": "Quiz 1",
   "desc": "This is an example quiz!",
+  "subjective": false,
   "categories": [
     "correct"
   ],

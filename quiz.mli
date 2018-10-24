@@ -19,6 +19,9 @@ val title: t -> string
 (** [desc t] is the description of [Quiz.t] *)
 val desc: t -> string
 
+(** [subjective t] is whether the corresponding quiz is subjective *)
+val subjective: t -> bool
+
 (** [categories t] is the list of scoring categories from [Quiz.t]*)
 val categories: t -> string list
 

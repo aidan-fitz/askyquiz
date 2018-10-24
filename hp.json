@@ -1,6 +1,7 @@
 {
   "title": "Which Hogwarts house are you in?",
   "desc": "This is an example personality quiz! Source: https://www.proprofs.com/quiz-school/story.php?title=harry-potter-house-test_2",
+  "subjective": true,
   "categories": [
     "Gryffindor",
     "Hufflepuff",
