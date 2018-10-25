@@ -53,4 +53,4 @@ docs-private: build
 
 clean:
 	ocamlbuild -clean
-	rm -rf doc.public doc.private report search_src.zip bisect*.out
+	rm -rf doc.public doc.private report askyquiz_src.zip bisect*.out
