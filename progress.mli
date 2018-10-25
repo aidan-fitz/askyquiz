@@ -2,15 +2,13 @@
 type t
 
 (** [init quiz] is the initial [progress] type for [quiz]*)
-val init: Quiz.t -> t
+val init_progress: Quiz.t -> t
 
-(** [answered t] is the list of ids of answered questions in the corresponding 
-    quiz *)
+(** [answered q] is the list of ids of answered questions in quiz [q]. *)
 val answered: t -> string list
 
-(** [answered t] is the list of ids of unanswered questions in the corresponding
-    quiz *)
+(** [answered q] is the list of ids of unanswered questions in quiz [q]. *)
 val unanswered: t -> string list
 
-(** [score t] is the list of categories and corresponding scores *)
+(** [score q] is the list of categories and corresponding scores in quiz [q]. *)
 val score: t -> (string * int ref) list

@@ -4,8 +4,8 @@ open Yojson
 open Yojson.Basic
 open Yojson.Basic.Util
 
-(** [load_quiz f] is the [Quiz] object created from the quiz
-    JSON with filename [f]. *)
+(** [load_quiz f] is the [Quiz.t] created from the quiz JSON 
+    with filename [f]. *)
 let load_quiz f = 
   try 
     let j = from_file f in
@@ -22,16 +22,15 @@ let answer_letters_even = ["F"; "G"; "H"; "J"; "K"]
     among its choices in [quiz]. *)
 let ask (qid, qs) quiz = 
   print_endline qs;
-  (* print up to 5 answer choices; if there are fewer than 5, catch the exception *)
+  (* print up to 5 answers; if there are fewer than 5, catch the exception *)
   try List.iter2
-        (fun (_, ans) letter -> print_endline (letter ^ ". " ^ ans))
-        (get_answers qid quiz)
-        answer_letters_odd
+      (fun (_, ans) letter -> print_endline (letter ^ ". " ^ ans))
+      (get_answers qid quiz)
+      answer_letters_odd
   with Invalid_argument _ -> ();
-
-    print_string "Answer: ";
-    let input = read_line () in
-    print_endline ("You answered " ^ input ^ "\n")
+  print_string "Answer: ";
+  let input = read_line () in
+  print_endline ("You answered " ^ input ^ "\n")
 
 (** [run_quiz q] plays through quiz [q] with the user. *)
 let run_quiz quiz =

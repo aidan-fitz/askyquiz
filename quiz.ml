@@ -1,19 +1,21 @@
 open Yojson.Basic.Util
 
 type category = string
+type id = string
 
 (** [answer] represents a single answer option for any question, with a 
-    corresponding string [id], displayed [text] and  *)
+    corresponding [id], displayed [text] and a list of scores it
+    contributes to various scoring axes. *)
 type answer = {
-  id: string;
+  id: id;
   text: string;
   values: (string * int) list
 }
 
-(** [question] represents a question with a string [id], displayed [text], and
+(** [question] represents a question with ID [id], displayed [text], and
     a list of possible [answers]. *)
 type question = {
-  id: string;
+  id: id;
   qs: string;
   answers: answer list
 }
@@ -28,42 +30,45 @@ type t = {
   questions: question list
 }
 
-(** Possible helper method *)
-let shuffle lst = ()
-
-(** [get_field_str key json] is the string value associated with [key] in 
-    [json].
+(** [str_mem key json] is the string value associated with [key] in [json].
     Requires: [key] is associated with a string value. *)
-let str_field key json = json |> member key |> to_string
+let str_mem key json = json |> member key |> to_string
 
-(** [build_answers aj] is a list of answers parsed from the JSON [aj] for
+(** [lst_mem key json] is the list associated with [key] in [json].
+    Requires: [key] is associated with a string value. *)
+let lst_mem key json = json |> member key |> to_list
+
+(** [build_answers j] is a list of answers parsed from the JSON [j] for
     a specific question. *)
-let build_answers aj =
-  List.map (fun a -> {
-        id = str_field "id" a;
-        text = str_field "text" a;
-        values = 
-          List.map 
-            (fun (c, i) -> (c, i |> to_int))
-            (a |> member "value" |> to_assoc)
-      }) (aj |> to_list)
+let build_answers j =
+  List.map (fun a -> 
+    {
+      id = str_mem "id" a;
+      text = str_mem "text" a;
+      values = 
+        List.map 
+          (fun (c, i) -> (c, i |> to_int))
+          (a |> member "value" |> to_assoc)
+    }) 
+    (j |> to_list)
 
 (** [build_questions j] is a list of all questions parsed from the JSON [j]. *)
 let build_questions j =
   let qs = j |> member "questions" |> to_list in
-  List.map (fun q -> {
-        id = str_field "id" q;
-        qs = str_field "text" q;
-        answers = build_answers (q |> member "answers")
-      }) qs
+  List.map (fun q -> 
+    {
+      id = str_mem "id" q;
+      qs = str_mem "text" q;
+      answers = build_answers (q |> member "answers")
+    })
+    qs
 
 let parse_json j =
   {
-    title = j |> member "title" |> to_string;
-    desc = j |> member "desc" |> to_string;
+    title = str_mem "title" j;
+    desc = str_mem "desc" j;
     subjective = j |> member "subjective" |> to_bool;
-    categories = List.map (fun c -> c |> to_string) 
-        (j |> member "categories" |> to_list);
+    categories = List.map to_string (lst_mem "categories" j);
     questions = build_questions j
   }
 
@@ -83,8 +88,8 @@ let get_questions t =
   let rec pair lst1 lst2 acc = 
     match (lst1, lst2) with 
     | (h1 :: t1, h2 :: t2) -> pair t1 t2 ((h1, h2) :: acc)
-    | _ -> acc in
-  pair (question_ids t) (question_qs t) []
+    | _ -> acc
+  in pair (question_ids t) (question_qs t) []
 
 let get_answers qid t =
   let q = List.find (fun {id; qs; _} -> id = qid) t.questions in
