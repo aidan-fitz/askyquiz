@@ -1,11 +1,15 @@
 # ASKYQuiz
-### Team ASKY - CS 3110 Midterm Project
 
-ASKYQuiz is a customizable quizzing engine designed to let users create quizzes for many purposes.
+A quiz-playing engine that loads in quizzes of different formats, shuffles
+question order, tracks mastery level, and saves progress.
 
-To run the engine, download the source code and run
-```
-> make build
-> make play
-```
-in your terminal. When prompted for a file to load, choose your own or one of the provided quizzes, `quiz1.quiz` and `hp.quiz`.
+To compile, run tests, and play:
+
+    make build
+    make test
+    make play
+
+Quiz files:
+
+- `quiz1.quiz` - regular quiz
+- `hp.quiz` - _Harry Potter_-themed personality quiz
