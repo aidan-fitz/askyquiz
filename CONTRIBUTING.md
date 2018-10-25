@@ -20,3 +20,11 @@ We have modified the default course Makefile to keep program and test files
 logically separate. `PROGRAM_MODULES` contains the names of program files
 (without extensions); `TEST_MODULES` contains the names of test files. These
 lists are concatenated together as the `MODULES` variable.
+
+## VS Code Settings
+
+`.vscode/settings.json` is configured to apply JSON syntax highlighting to files
+ending in `.quiz`. Normally, we'd put the `.vscode` in our global gitignore
+settings, but we make an exception for this project because it makes editing
+`.quiz` files easier. Bear in mind that changes to this file will affect the
+VS Code settings for the entire team.
