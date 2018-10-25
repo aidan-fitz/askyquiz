@@ -1,0 +1,180 @@
+{
+  "title": "Quiz 1",
+  "desc": "This is an example quiz!",
+  "subjective": false,
+  "categories": [
+    "correct"
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "text": "What is the powerhouse of the cell?",
+      "answers": [
+        {
+          "id": "q1a1",
+          "text": "golgi apparatus",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q1a2",
+          "text": "mitochondria",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "q1a3",
+          "text": "lysosome",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q1a4",
+          "text": "nucleus",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "What is OCaml?",
+      "answers": [
+        {
+          "id": "q2a1",
+          "text": "golgi apparatus",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q2a2",
+          "text": "mitochondria",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q2a3",
+          "text": "a functional programming language",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "q2a4",
+          "text": "nucleus",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Who has 58+ years of programming experience?",
+      "answers": [
+        {
+          "id": "q3a1",
+          "text": "golgi apparatus",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q3a2",
+          "text": "mitochondria",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q3a3",
+          "text": "a functional programming language",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q3a4",
+          "text": "David Gries",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "When was the War of 1812?",
+      "answers": [
+        {
+          "id": "q4a1",
+          "text": "1812",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "q4a2",
+          "text": "1912",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q4a3",
+          "text": "2012",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q4a4",
+          "text": "When David Gries was born",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "What is the next line of this song: \"Too hot (hot damn) _____________\"?",
+      "answers": [
+        {
+          "id": "q5a1",
+          "text": "Despacito",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q5a2",
+          "text": "Make a dragon wanna retire, man",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "q5a3",
+          "text": "24 karat magic in the air",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "q5a4",
+          "text": "Stop, drop, and roll",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    }
+  ]
+}
