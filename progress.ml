@@ -35,3 +35,14 @@ let answered t = t.answered
 let unanswered t = t.unanswered
 
 let score t = t.score
+
+let best_category_data p =
+  List.fold_left 
+    (fun (max_cat, max_s) (cat, s) ->
+      if !s > max_s then (cat, !s) else (max_cat, max_s))
+    ("", 0)
+    p.score
+
+let best_category p = p |> best_category_data |> fst
+
+let best_score p = p |> best_category_data |> snd

@@ -12,3 +12,9 @@ val unanswered: t -> string list
 
 (** [score q] is the list of categories and corresponding scores in quiz [q]. *)
 val score: t -> (string * int ref) list
+
+(** [best_category prog] is the category in [prog] with the highest score. *)
+val best_category: t -> Quiz.category
+
+(** [best_score prog] is the highest score of any category in [prog]. *)
+val best_score: t -> int
