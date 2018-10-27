@@ -2,14 +2,14 @@
 open Quiz
 
 type t = {
-  answered: string list; 
-  unanswered: string list;
+  queue: string list;
+  requeue: string list;
   score: (string * int ref) list
 }
 
 let init_progress quiz = {
-  answered = [];
-  unanswered = Quiz.question_ids quiz;
+  queue = Quiz.question_ids quiz;
+  requeue = [];
   score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz) 
 }
 
@@ -25,13 +25,11 @@ let update_progress qid aid quiz prog =
       i := score + !i)
     prog.score;
   {
-    answered = qid :: prog.answered;
-    unanswered = List.filter ((<>) qid) prog.unanswered;
+    queue = List.filter ((<>) qid) prog.queue;
+    requeue = qid :: prog.requeue; (* TODO add logic for requeuing if incorrect *)
     score = prog.score;
   }
 
-let answered t = t.answered
-
-let unanswered t = t.unanswered
+let queue t = t.queue
 
 let score t = t.score
