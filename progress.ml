@@ -17,12 +17,12 @@ let init_progress quiz = {
     answering with ID [aid] for question with ID [qid]. Running scores in 
     [prog] are updated according to the answer's scores in [quiz]. *)
 let update_progress qid aid quiz prog =
-  let values = get_values qid aid quiz in
+  let scores = get_values qid aid quiz in
   (* update scores before copying to new record *)
   List.iter 
-    (fun (c, i) ->
-      let (cat, score) = List.find (fun (x, _) -> x=c) values in
-      i := score + !i)
+    (fun (category, score) ->
+      let delta = List.assoc category scores in
+      score := !score + delta)
     prog.score;
   {
     queue = List.filter ((<>) qid) prog.queue;
