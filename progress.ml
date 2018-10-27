@@ -18,9 +18,6 @@ let init_progress quiz = {
 let do_requeue scores =
   List.assoc "correct" scores = 0
 
-(** [update_progress qid aid quiz prog] updates [prog] to reflect the user
-    answering with ID [aid] for question with ID [qid]. Running scores in 
-    [prog] are updated according to the answer's scores in [quiz]. *)
 let update_progress qid aid quiz prog =
   let scores = get_values qid aid quiz in
   (* update scores before copying to new record *)
