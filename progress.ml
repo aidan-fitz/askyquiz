@@ -2,21 +2,27 @@
 open Quiz
 
 type t = {
-  queue: string list;
-  requeue: string list;
+  stock: string list;
+  discard: string list;
   score: (string * int ref) list
 }
 
 let init_progress quiz = {
-  queue = Quiz.question_ids quiz;
-  requeue = [];
+  stock = Quiz.question_ids quiz;
+  discard = [];
   score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz) 
 }
 
-(** [do_requeue s] tells whether to requeue the most recently answered question
+(** [do_requeue s] tells whether to discard the most recently answered question
     based on [s]. *)
 let do_requeue scores =
   List.assoc "correct" scores = 0
+
+let restock prog =
+  if prog.stock = [] then
+    {prog with stock = prog.discard; discard = []}
+  else
+    prog
 
 let update_progress qid aid quiz prog =
   let scores = get_values qid aid quiz in
@@ -27,13 +33,13 @@ let update_progress qid aid quiz prog =
       score := !score + delta)
     prog.score;
   {
-    queue = List.filter ((<>) qid) prog.queue;
-    requeue = if do_requeue scores then qid :: prog.requeue else prog.requeue;
+    stock = List.filter ((<>) qid) prog.stock;
+    discard = if do_requeue scores then qid :: prog.discard else prog.discard;
     score = prog.score;
-  }
+  } |> restock
 
-let queue t = t.queue
+let stock t = t.stock
 
-let requeue t = t.requeue
+let discard t = t.discard
 
 let score t = t.score
