@@ -42,25 +42,25 @@ let lst_mem key json = json |> member key |> to_list
     a specific question. *)
 let build_answers j =
   List.map (fun a -> 
-    {
-      id = str_mem "id" a;
-      text = str_mem "text" a;
-      values = 
-        List.map 
-          (fun (c, i) -> (c, i |> to_int))
-          (a |> member "value" |> to_assoc)
-    }) 
+      {
+        id = str_mem "id" a;
+        text = str_mem "text" a;
+        values = 
+          List.map 
+            (fun (c, i) -> (c, i |> to_int))
+            (a |> member "value" |> to_assoc)
+      }) 
     (j |> to_list)
 
 (** [build_questions j] is a list of all questions parsed from the JSON [j]. *)
 let build_questions j =
   let qs = j |> member "questions" |> to_list in
   List.map (fun q -> 
-    {
-      id = str_mem "id" q;
-      qs = str_mem "text" q;
-      answers = build_answers (q |> member "answers")
-    })
+      {
+        id = str_mem "id" q;
+        qs = str_mem "text" q;
+        answers = build_answers (q |> member "answers")
+      })
     qs
 
 let parse_json j =
@@ -96,7 +96,17 @@ let get_answers qid t =
   let a = q.answers in
   List.map (fun (x : answer) -> (x.id, x.text)) a
 
+let get_q_from_id qid t = List.find (fun {id; qs; _} -> id = qid) t.questions
+
+let rec correct_ans = function
+  | h :: t -> if begin 
+    (match h.values with
+     | (c, v) :: [] -> v = 1
+     | _ -> failwith "answer has no values"
+    ) end then h.id else correct_ans t
+  | _ -> failwith "no correct answer"
+
 let get_values qid aid t =
-  let question = List.find (fun {id; qs; _} -> id = qid) t.questions in
+  let question = get_q_from_id qid t in
   let answer   = List.find (fun {id; text; _} -> id = aid) question.answers in
   answer.values
