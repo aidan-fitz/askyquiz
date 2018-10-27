@@ -16,7 +16,8 @@ let init_progress quiz = {
 (** [do_requeue s] tells whether to discard the most recently answered question
     based on [s]. *)
 let do_requeue scores =
-  List.assoc "correct" scores = 0
+  (* this is None if scores is for a personality quiz *)
+  List.assoc_opt "correct" scores = Some 0
 
 let restock prog =
   if prog.stock = [] then
