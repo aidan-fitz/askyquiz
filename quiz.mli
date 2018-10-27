@@ -44,6 +44,10 @@ val get_questions: t -> (id * string) list
     associated with [qid] in [t] *)
 val get_answers: string -> t -> (id * string) list
 
+(** [correct_ans answers] is the id of the correct answer in the list of answers
+    Requires: the corresponding quiz is non-subjective *)
+val correct_ans: answer list -> id
+
 (** [get_values qid aid t] is the list of scores associated with 
     answer of id [aid] to question of id [qid] in [quiz]. *)
 val get_values: id -> id -> t -> (category * int) list
