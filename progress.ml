@@ -19,9 +19,23 @@ let do_requeue scores =
   (* this is None if scores is for a personality quiz *)
   List.assoc_opt "correct" scores = Some 0
 
+(** [restock prog] is the resulting [Progress.t] from moving questions in the
+    discard pile to the current queue. *)
 let restock prog =
   if prog.stock = [] then {prog with stock = prog.discard; discard = []}
   else prog
+
+(** [pop_current_question prog] is [current_question, prog'] where [prog'] is
+  * [prog] with [current_question] removed. *)
+let pop_current_question prog =
+  match prog.stock with
+  | [] -> invalid_arg "empty stock"
+  | h :: t -> h, {prog with stock = t}
+
+(** [requeue qid prog] is the resulting [Progress.t] after adding [qid] to the
+    discard pile. *)
+let requeue qid prog =
+  {prog with discard = qid :: prog.discard}
 
 let update_scores qid aid quiz prog =
   let scores = get_values qid aid quiz in
@@ -36,18 +50,6 @@ let next_question prog =
   match prog.stock with
   | [] -> None
   | h :: _ -> Some h
-
-(** [pop_current_question prog] is [current_question, prog'] where [prog'] is
-  * [prog] with [current_question] removed. *)
-let pop_current_question prog =
-  match prog.stock with
-  | [] -> invalid_arg "empty stock"
-  | h :: t -> h, {prog with stock = t}
-
-(** [requeue qid prog] is the resulting [Progress.t] after adding [qid] to the
-    discard pile. *)
-let requeue qid prog =
-  {prog with discard = qid :: prog.discard}
 
 let pop_and_requeue rq prog =
   let last_q, prog' = pop_current_question prog in 
