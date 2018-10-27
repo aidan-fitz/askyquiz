@@ -20,10 +20,8 @@ let do_requeue scores =
   List.assoc_opt "correct" scores = Some 0
 
 let restock prog =
-  if prog.stock = [] then
-    {prog with stock = prog.discard; discard = []}
-  else
-    prog
+  if prog.stock = [] then {prog with stock = prog.discard; discard = []}
+  else prog
 
 let update_scores qid aid quiz prog =
   let scores = get_values qid aid quiz in
@@ -43,13 +41,19 @@ let next_question prog =
   * [prog] with [current_question] removed. *)
 let pop_current_question prog =
   match prog.stock with
-  | [] -> None, prog
-  | h :: t -> Some h, {prog with stock = t}
+  | [] -> invalid_arg "empty stock"
+  | h :: t -> h, {prog with stock = t}
 
+(** [requeue qid prog] is the resulting [Progress.t] after adding [qid] to the
+    discard pile. *)
 let requeue qid prog =
   {prog with discard = qid :: prog.discard}
 
-let update_progress qid aid quiz prog =
+let pop_and_requeue rq prog =
+  let last_q, prog' = pop_current_question prog in 
+  (if rq then requeue last_q prog' else prog') |> restock
+
+(* let update_progress qid aid quiz prog =
   let scores = get_values qid aid quiz in
   (* update scores before copying to new record *)
   List.iter 
@@ -61,7 +65,7 @@ let update_progress qid aid quiz prog =
     stock = List.tl prog.stock;
     discard = if do_requeue scores then qid :: prog.discard else prog.discard;
     score = prog.score;
-  } |> restock
+  } |> restock *)
 
 let stock t = t.stock
 
