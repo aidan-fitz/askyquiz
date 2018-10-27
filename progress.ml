@@ -25,6 +25,30 @@ let restock prog =
   else
     prog
 
+let update_scores qid aid quiz prog =
+  let scores = get_values qid aid quiz in
+  (* update scores before copying to new record *)
+  List.iter 
+    (fun (category, score) ->
+      let delta = List.assoc category scores in
+      score := !score + delta)
+    prog.score
+
+let next_question prog =
+  match prog.stock with
+  | [] -> None
+  | h :: _ -> Some h
+
+(** [pop_current_question prog] is [current_question, prog'] where [prog'] is
+  * [prog] with [current_question] removed. *)
+let pop_current_question prog =
+  match prog.stock with
+  | [] -> None, prog
+  | h :: t -> Some h, {prog with stock = t}
+
+let requeue qid prog =
+  {prog with discard = qid :: prog.discard}
+
 let update_progress qid aid quiz prog =
   let scores = get_values qid aid quiz in
   (* update scores before copying to new record *)
