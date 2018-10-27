@@ -34,7 +34,7 @@ let update_progress qid aid quiz prog =
       score := !score + delta)
     prog.score;
   {
-    stock = List.filter ((<>) qid) prog.stock;
+    stock = List.tl prog.stock;
     discard = if do_requeue scores then qid :: prog.discard else prog.discard;
     score = prog.score;
   } |> restock
