@@ -32,4 +32,6 @@ let update_progress qid aid quiz prog =
 
 let queue t = t.queue
 
+let requeue t = t.requeue
+
 let score t = t.score
