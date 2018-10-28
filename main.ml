@@ -101,6 +101,7 @@ let rec ask q is_odd mode quiz prog =
   | Some q -> 
     let qid = q in
     let qtxt = (get_txt_from_id q quiz) in
+    print_endline "";
     print_endline qtxt;
 
     let ltrs = make_ltrs qid is_odd quiz in 
