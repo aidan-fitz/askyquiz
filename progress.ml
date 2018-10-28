@@ -4,7 +4,8 @@ open Quiz
 type t = {
   stock: string list;
   discard: string list;
-  score: (string * int ref) list
+  score: (string * int ref) list;
+  mastery: (string * int ref) list
 }
 
 (** [shuffle lst] is a random permutation of [lst]. *)
@@ -13,7 +14,8 @@ let shuffle lst = QCheck.Gen.(generate1 (shuffle_l lst))
 let init_progress quiz = {
   stock = quiz |> Quiz.question_ids |> shuffle;
   discard = [];
-  score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz) 
+  score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz);
+  mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz)
 }
 
 (** [do_requeue s] tells whether to discard the most recently answered question
@@ -78,6 +80,8 @@ let discard t = t.discard
 
 let score t = t.score
 
+let mastery p = p.mastery
+
 let best_category_data p =
   List.fold_left 
     (fun (max_cat, max_s) (cat, s) ->
@@ -88,3 +92,5 @@ let best_category_data p =
 let best_category p = p |> best_category_data |> fst
 
 let best_score p = p |> best_category_data |> snd
+
+let save_progress qn p = ()

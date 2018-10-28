@@ -18,6 +18,10 @@ val discard: t -> string list
 (** [score q] is the list of categories and corresponding scores in quiz [q]. *)
 val score: t -> (string * int ref) list
 
+(** [mastery p] are the mastery scores for the questions in the progress 
+    state [p]. *)
+val mastery: t -> (string * int ref) list
+
 (** [next_question prog] is the next question to be asked. *)
 val next_question: t -> Quiz.id option
 
@@ -30,3 +34,7 @@ val best_category: t -> Quiz.category
 
 (** [best_score prog] is the highest score of any category in [prog]. *)
 val best_score: t -> int
+
+(** [save_progress qn p] writes the contents of [p] to a file with the name
+    "[{qn}].prog". *)
+val save_progress: string -> t -> unit

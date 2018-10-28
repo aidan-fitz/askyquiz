@@ -7,10 +7,11 @@ let i = init_progress quiz1
 
 let progress_tests = [
   (*TODO: writes tests for quiz*)
-  "initial stock" >:: (fun  _ -> assert_equal (stock i) 
-                               ["q1"; "q2"; "q3"; "q4"; "q5"]);
+  "initial stock" >:: (fun  _ ->
+    assert_equal (stock i) ["q1"; "q2"; "q3"; "q4"; "q5"]);
   "initial discard pile" >:: (fun _ -> assert_equal (discard i) []);
-  "initial score" >:: (fun _ -> assert_equal ~cmp:cmp_set_like_lists (score i) 
-                          [("correct", ref 0)])
+  "initial score" >:: (fun _ ->
+    assert_equal (score i) [("correct", ref 0)]
+    ~cmp:cmp_set_like_lists)
 ]
 
