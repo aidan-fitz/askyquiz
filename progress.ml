@@ -42,6 +42,13 @@ let pop_current_question prog =
 let requeue qid prog =
   {prog with discard = qid :: prog.discard}
 
+(************** BUILD JSON HELPERS **************)
+(** [strings_to_json ls] is a JSON representation of [ls]. *)
+let strings_to_json (ls: string list) = `List (List.map (fun s -> `String s) ls)
+
+let scores_to_json (ls: (string * int ref) list) =
+  `Assoc (List.map (fun (c, s) -> (c, `Int !s)) ls)
+
 let update_scores qid aid quiz prog =
   let scores = get_values qid aid quiz in
   (* update scores before copying to new record *)
@@ -93,4 +100,13 @@ let best_category p = p |> best_category_data |> fst
 
 let best_score p = p |> best_category_data |> snd
 
-let save_progress qn p = ()
+let save_progress qn p =
+  let j = `Assoc ([
+    ("stock", strings_to_json p.stock);
+    ("discard", strings_to_json p.discard);
+    ("score", scores_to_json p.score);
+    ("mastery", scores_to_json p.mastery)
+  ]) in
+  let out = open_out (qn ^ ".prog") in
+  Yojson.Basic.to_channel out j;
+  close_out out;
