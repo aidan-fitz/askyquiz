@@ -32,7 +32,11 @@ let even_letters = ["F"; "G"; "H"; "J"; "K"]
     letter option and the values are an answer id in the shuffled list 
     of answer id and text pairs *)
 let shuffle ltrs lst = 
-  List.combine ltrs (QCheck.Gen.(generate1 (shuffle_l lst)))
+  let rec bob lst acc n =
+    if n = 0 then acc 
+    else bob (List.tl lst) ((List.hd lst) :: acc) (n - 1) in
+  let ltrs' = List.rev (bob ltrs [] (List.length lst)) in
+  List.combine ltrs' (QCheck.Gen.(generate1 (shuffle_l lst)))
 
 (** [get_aid ltr mapping] is the answer id associated with the 
     letter option [ltr]
@@ -88,10 +92,9 @@ let rec ask q is_odd mode mastery quiz prog =
     let ans_pairs = (get_answers qid quiz) in
     let options = shuffle ltrs ans_pairs in
     (* print up to 5 answers; if there are fewer than 5, catch the exception *)
-    let () = try 
-        List.iter
-          (fun (ltr, (id, ans)) -> print_endline (ltr ^ ". " ^ ans)) options
-      with Invalid_argument _ -> () in
+    let () = List.iter
+        (fun (ltr, (id, ans)) -> print_endline (ltr ^ ". " ^ ans)) options
+    in
 
     let () = print_string "Answer: " in
     let input = read_line () in (*check answer*)
