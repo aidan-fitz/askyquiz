@@ -18,12 +18,17 @@ let rec load_quiz () =
       let j = from_file f in
       Some (parse_json j)
     with 
-    | Sys_error _ -> print_endline "File not found"; None
-    | Json_error _ -> print_endline "File does not contain valid JSON"; None
-    | Type_error _ -> print_endline "JSON does not represent adventure"; None
+    | Sys_error _ -> print_string [yellow] "File not found. "; None
+    | Json_error _ -> print_string [yellow] 
+                        "File does not contain valid JSON. "; None
+    | Type_error _ -> print_string [yellow] 
+                        "JSON does not represent quiz. "; None
   in match quiz with 
   | Some q -> q
-  | None -> print_endline "Sorry, try again"; load_quiz ()
+  | None -> print_string [yellow] "Try again:";
+    print_newline ();
+    print_string [] "> ";
+    load_quiz ()
 
 let odd_letters  = ["A"; "B"; "C"; "D"; "E"]
 let even_letters = ["F"; "G"; "H"; "J"; "K"]
