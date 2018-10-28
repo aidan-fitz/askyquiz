@@ -24,11 +24,13 @@ let rec load_quiz () =
   | Some q -> q
   | None -> print_endline "Sorry, try again"; load_quiz ()
 
-
 let odd_letters  = ["A"; "B"; "C"; "D"; "E"]
 let even_letters = ["F"; "G"; "H"; "J"; "K"]
 
+(** [make_ltrs qid is_odd quiz] is the list of letter choices appropriate to 
+    the corresponding question *)
 let make_ltrs qid is_odd quiz =
+  (** [ltrs lst acc n] truncates [lst] to a length of n *)
   let rec ltrs lst acc n =
     if n = 0 then acc 
     else ltrs (List.tl lst) ((List.hd lst) :: acc) (n - 1) in
@@ -81,6 +83,15 @@ let check_answer qid aid mode mastery options prog quiz =
   update_scores qid aid quiz prog;
   pop_and_requeue rq prog
 
+(** [prompt_answer ltrs] retrieves the user answer from the terminal and 
+    ensures that it is a valid answer option, prompting again if not*)
+let rec prompt_answer ltrs = 
+  print_string "Answer: ";
+  let input = String.uppercase_ascii (read_line ()) in
+  if List.mem input ltrs then input
+  else let () = print_endline "Invalid answer option, try again. "
+    in prompt_answer ltrs
+
 (** [ask qn is_odd mode mastery quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. Answers are enumerated 
     with A, B, C, D, E if [is_odd is true], and with F, G, H, J, K otherwise. *)
@@ -99,8 +110,7 @@ let rec ask q is_odd mode mastery quiz prog =
     List.iter (fun (ltr, (id, ans)) -> 
         print_endline (ltr ^ ". " ^ ans)) options;
 
-    let () = print_string "Answer: " in
-    let input = String.uppercase_ascii (read_line ()) in (*check answer*)
+    let input = prompt_answer ltrs in
     let aid = get_aid input options in
     let prog' = check_answer qid aid mode mastery options prog quiz in
     let q' = next_question prog' in
