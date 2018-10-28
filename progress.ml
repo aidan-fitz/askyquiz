@@ -7,8 +7,11 @@ type t = {
   score: (string * int ref) list
 }
 
+(** [shuffle lst] is a random permutation of [lst]. *)
+let shuffle lst = QCheck.Gen.(generate1 (shuffle_l lst))
+
 let init_progress quiz = {
-  stock = Quiz.question_ids quiz;
+  stock = quiz |> Quiz.question_ids |> shuffle;
   discard = [];
   score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz) 
 }
@@ -22,7 +25,7 @@ let do_requeue scores =
 (** [restock prog] is the resulting [Progress.t] from moving questions in the
     discard pile to the current queue. *)
 let restock prog =
-  if prog.stock = [] then {prog with stock = prog.discard; discard = []}
+  if prog.stock = [] then {prog with stock = shuffle prog.discard; discard = []}
   else prog
 
 (** [pop_current_question prog] is [current_question, prog'] where [prog'] is
