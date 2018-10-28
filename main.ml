@@ -28,15 +28,19 @@ let rec load_quiz () =
 let odd_letters  = ["A"; "B"; "C"; "D"; "E"]
 let even_letters = ["F"; "G"; "H"; "J"; "K"]
 
+let make_ltrs qid is_odd quiz =
+  let rec ltrs lst acc n =
+    if n = 0 then acc 
+    else ltrs (List.tl lst) ((List.hd lst) :: acc) (n - 1) in
+  let ltr_list = (if is_odd then odd_letters else even_letters) in
+  let l = List.length (answers quiz qid) in
+  List.rev (ltrs ltr_list [] l)
+
 (** [shuffle letters lst] returns association lists where the key is a 
     letter option and the values are an answer id in the shuffled list 
     of answer id and text pairs *)
 let shuffle ltrs lst = 
-  let rec bob lst acc n =
-    if n = 0 then acc 
-    else bob (List.tl lst) ((List.hd lst) :: acc) (n - 1) in
-  let ltrs' = List.rev (bob ltrs [] (List.length lst)) in
-  List.combine ltrs' (QCheck.Gen.(generate1 (shuffle_l lst)))
+  List.combine ltrs (QCheck.Gen.(generate1 (shuffle_l lst)))
 
 (** [get_aid ltr mapping] is the answer id associated with the 
     letter option [ltr]
@@ -88,13 +92,12 @@ let rec ask q is_odd mode mastery quiz prog =
     let qtxt = (get_txt_from_id q quiz) in
     print_endline qtxt;
 
-    let ltrs = (if is_odd then odd_letters else even_letters) in 
+    let ltrs = make_ltrs qid is_odd quiz in 
     let ans_pairs = (get_answers qid quiz) in
     let options = shuffle ltrs ans_pairs in
     (* print up to 5 answers; if there are fewer than 5, catch the exception *)
-    let () = List.iter
-        (fun (ltr, (id, ans)) -> print_endline (ltr ^ ". " ^ ans)) options
-    in
+    List.iter (fun (ltr, (id, ans)) -> 
+        print_endline (ltr ^ ". " ^ ans)) options;
 
     let () = print_string "Answer: " in
     let input = read_line () in (*check answer*)
