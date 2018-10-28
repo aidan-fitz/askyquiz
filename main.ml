@@ -56,7 +56,7 @@ let imm_feedback correct_aid correct options =
   if correct then print_endline "You are correct!"
   else let option = 
          List.find (fun (ltr, (id, text)) -> id = correct_aid) options in
-    print_endline ("Incorrect. The correct answer is " ^ (fst option) ^ ". " 
+    print_endline ("Incorrect. The correct answer is " ^ (fst option) ^ "." 
                    ^ (snd (snd option)))
 
 (** [requeue qid mastery correct] is whether the question needs to be 
@@ -100,7 +100,7 @@ let rec ask q is_odd mode mastery quiz prog =
         print_endline (ltr ^ ". " ^ ans)) options;
 
     let () = print_string "Answer: " in
-    let input = read_line () in (*check answer*)
+    let input = String.uppercase_ascii (read_line ()) in (*check answer*)
     let aid = get_aid input options in
     let prog' = check_answer qid aid mode mastery options prog quiz in
     let q' = next_question prog' in
