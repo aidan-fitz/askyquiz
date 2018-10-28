@@ -72,6 +72,10 @@ let parse_json j =
     questions = build_questions j
   }
 
+let get_q_from_id qid t = List.find (fun {id; qs; _} -> id = qid) t.questions
+
+let get_txt_from_id qid t = (get_q_from_id qid t).qs
+
 let title t = t.title
 
 let desc t = t.desc
@@ -84,6 +88,8 @@ let question_ids t = List.map (fun x -> x.id) t.questions
 
 let question_qs t = List.map (fun x -> x.qs) t.questions
 
+let answers t qid = (get_q_from_id qid t).answers
+
 let get_questions t = 
   let rec pair lst1 lst2 acc = 
     match (lst1, lst2) with 
@@ -95,8 +101,6 @@ let get_answers qid t =
   let q = List.find (fun {id; qs; _} -> id = qid) t.questions in
   let a = q.answers in
   List.map (fun (x : answer) -> (x.id, x.text)) a
-
-let get_q_from_id qid t = List.find (fun {id; qs; _} -> id = qid) t.questions
 
 let rec correct_ans = function
   | h :: t -> if begin 

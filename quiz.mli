@@ -34,6 +34,9 @@ val question_ids: t -> id list
 (** [question_texts t] is the list of question texts from [Quiz.t] *)
 val question_qs: t -> string list
 
+(** [answers qid t] is the list of answers of the corresponding question *)
+val answers: t -> id -> answer list
+
 (** [categories t] is the list of scoring categories from [Quiz.t]*)
 val categories: t -> string list
 
@@ -43,6 +46,9 @@ val get_questions: t -> (id * string) list
 (** [get_answers qid t] is a (id, text) list for all answers of the question 
     associated with [qid] in [t] *)
 val get_answers: string -> t -> (id * string) list
+
+(** [get_txt_from_id qid t] is the [qs] of the question in t with id [qid] *)
+val get_txt_from_id: id -> t -> string
 
 (** [correct_ans answers] is the id of the correct answer in the list of answers
     Requires: the corresponding quiz is non-subjective *)

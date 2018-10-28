@@ -42,26 +42,46 @@ let rec get_aid ltr = function
   | (l, (id, _))::t when l = ltr -> id
   | _::t ->  get_aid ltr t 
 
+(** [imm_feedback correct_aid correct options] provides immediate feedback for 
+    an answer to a question under practice mode *)
+let imm_feedback correct_aid correct options =
+  if correct then print_endline "You are correct!"
+  else let option = 
+         List.find (fun (ltr, (id, text)) -> id = correct_aid) options in
+    print_endline ("Incorrect. The correct answer is " ^ (fst option) ^ ". " 
+                   ^ (snd (snd option)))
+
+(** [requeue qid mastery correct] is whether the question needs to be 
+    requeued. It also updates the mastery level of a question based on the answer 
+    given. *)
+let requeue qid mastery correct =
+  let m = List.assoc qid mastery in
+  if correct then let () = m := !m + 1 in (not (m = ref 3))
+  else let () = (if (not (m = ref 0)) then (m := !m - 1) else ()) in true
+
 (** [check_answer qid aid mode] updates progress and gives feedback according 
     to [mode]*)
-let check_answer qid aid mode mapping prog quiz = 
-  if mode = Practice then 
-    let correct_aid = qid |> get_answers |> correct_ans in
-    if aid = correct_aid then print_endline "You are correct!"
-    else let option = 
-           List.find (fun (ltr, (id, text)) -> id = correct_aid) mapping in
-      print_endline ("Incorrect. The correct answer is " ^ (fst option) ^ ". " 
-                     ^ (snd (snd option)))
-  else ();
-  update_progress qid aid prog quiz
+let check_answer qid aid mode mastery options prog quiz = 
+  let rq =
+    if mode = Practice then 
+      let correct_aid = qid |> answers quiz |> correct_ans in
+      let correct = aid = correct_aid in
+      imm_feedback correct_aid correct options;
+      requeue qid mastery correct
+    else false
+  in
+  update_scores qid aid quiz prog;
+  pop_and_requeue rq prog
 
-(** [ask qn is_odd quiz] displays [qn] to the screen and prompts for an answer
-    among its choices in [quiz]. Answers are enumerated with A, B, C, D, E if 
-    [is_odd is true], and with F, G, H, J, K otherwise. *)
-let rec ask q is_odd mode quiz prog = 
+(** [ask qn is_odd mode mastery quiz prog] displays [qn] to the screen and 
+    prompts for an answer among its choices in [quiz]. Answers are enumerated 
+    with A, B, C, D, E if [is_odd is true], and with F, G, H, J, K otherwise. *)
+let rec ask q is_odd mode mastery quiz prog = 
   match q with 
   | None -> prog
-  | Some q -> let (qid, qtxt) = q in
+  | Some q -> 
+    let qid = q in
+    let qtxt = (get_txt_from_id q quiz) in
     print_endline qtxt;
 
     let ltrs = (if is_odd then odd_letters else even_letters) in 
@@ -76,9 +96,9 @@ let rec ask q is_odd mode quiz prog =
     let () = print_string "Answer: " in
     let input = read_line () in (*check answer*)
     let aid = get_aid input options in
-    let prog' = check_answer qid aid mode options prog quiz in
+    let prog' = check_answer qid aid mode mastery options prog quiz in
     let q' = next_question prog' in
-    ask q' (not is_odd) mode quiz prog'
+    ask q' (not is_odd) mode mastery quiz prog'
 
 (** [ prompt_mode ()] returms the mode that the user wishes to play *)
 let rec prompt_mode () = 
@@ -93,16 +113,18 @@ let main () =
   print_string "Enter .quiz to load? > ";
   let quiz = load_quiz () in
   let quiz_length = List.length (get_questions quiz) in
-  let m = if (subjective quiz) then Subjective else prompt_mode () in
+  let mode = if (subjective quiz) then Subjective else prompt_mode () in
   let prog = init_progress quiz in
+  let mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz) in
   let q = next_question prog in
-  let end_prog = ask q true m quiz prog in
-  match m with
+  let end_prog = ask q true mode mastery quiz prog in
+  match mode with
   | Subjective -> print_endline ("You have completed the quiz. You got: " ^ 
                                  (best_category end_prog))
   | Test -> print_string "You have completed the quiz. Your score is ";
-    Printf.printf "%.2f" (best_score end_prog /. quiz_length);
-    print_endline "."
+    Printf.printf "%.2f" 
+      ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
+    print_endline "%%."
   | Practice -> print_endline "Congratulations, you have mastered all \
                                questions in this quiz!"
 
