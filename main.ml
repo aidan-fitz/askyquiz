@@ -61,23 +61,23 @@ let imm_feedback correct_aid correct options =
     print_endline ("Incorrect. The correct answer is " ^ (fst option) ^ "." 
                    ^ (snd (snd option)))
 
-(** [requeue qid mastery correct] is whether the question needs to be 
-    requeued. It also updates the mastery level of a question based on the answer 
-    given. *)
-let requeue qid mastery correct =
-  let m = List.assoc qid mastery in
+(** [requeue qid mstry correct] is whether the question needs to be 
+    requeued. It also updates the mastery level of a question based on the 
+    answer given. *)
+let requeue qid mstry correct =
+  let m = List.assoc qid mstry in
   if correct then let () = m := !m + 1 in (not (m = ref 3))
   else let () = (if (not (m = ref 0)) then (m := !m - 1) else ()) in true
 
 (** [check_answer qid aid mode] updates progress and gives feedback according 
     to [mode]*)
-let check_answer qid aid mode mastery options prog quiz = 
+let check_answer qid aid mode options prog quiz = 
   let rq =
     if mode = Practice then 
       let correct_aid = qid |> answers quiz |> correct_ans in
       let correct = aid = correct_aid in
       imm_feedback correct_aid correct options;
-      requeue qid mastery correct
+      requeue qid (mastery prog) correct
     else false
   in
   update_scores qid aid quiz prog;
@@ -92,10 +92,10 @@ let rec prompt_answer ltrs =
   else let () = print_endline "Invalid answer option, try again. "
     in prompt_answer ltrs
 
-(** [ask qn is_odd mode mastery quiz prog] displays [qn] to the screen and 
+(** [ask qn is_odd mode quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. Answers are enumerated 
     with A, B, C, D, E if [is_odd is true], and with F, G, H, J, K otherwise. *)
-let rec ask q is_odd mode mastery quiz prog = 
+let rec ask q is_odd mode quiz prog = 
   match q with 
   | None -> prog
   | Some q -> 
@@ -112,9 +112,9 @@ let rec ask q is_odd mode mastery quiz prog =
 
     let input = prompt_answer ltrs in
     let aid = get_aid input options in
-    let prog' = check_answer qid aid mode mastery options prog quiz in
+    let prog' = check_answer qid aid mode options prog quiz in
     let q' = next_question prog' in
-    ask q' (not is_odd) mode mastery quiz prog'
+    ask q' (not is_odd) mode quiz prog'
 
 (** [ prompt_mode ()] returms the mode that the user wishes to play *)
 let rec prompt_mode () = 
@@ -131,9 +131,8 @@ let main () =
   let quiz_length = List.length (get_questions quiz) in
   let mode = if (subjective quiz) then Subjective else prompt_mode () in
   let prog = init_progress quiz in
-  let mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz) in
   let q = next_question prog in
-  let end_prog = ask q true mode mastery quiz prog in
+  let end_prog = ask q true mode quiz prog in
   match mode with
   | Subjective -> print_endline ("You have completed the quiz. You got: " ^ 
                                  (best_category end_prog))
