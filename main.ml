@@ -4,6 +4,7 @@ open Yojson
 open Yojson.Basic
 open Yojson.Basic.Util
 open QCheck
+open ANSITerminal
 
 (** [mode] *)
 type mode = Subjective | Test | Practice
@@ -55,11 +56,12 @@ let rec get_aid ltr = function
 (** [imm_feedback correct_aid correct options] provides immediate feedback for 
     an answer to a question under practice mode *)
 let imm_feedback correct_aid correct options =
-  if correct then print_endline "You are correct!"
+  if correct then print_string [green] "You are correct!\n"
   else let option = 
          List.find (fun (ltr, (id, text)) -> id = correct_aid) options in
-    print_endline ("Incorrect. The correct answer is " ^ (fst option) ^ "." 
-                   ^ (snd (snd option)))
+    let () = print_string [red] ("Incorrect. The correct answer is " ^ 
+                                 (fst option) ^ ". " ^ (snd (snd option))) in 
+    print_newline ()
 
 (** [requeue qid mstry correct] is whether the question needs to be 
     requeued. It also updates the mastery level of a question based on the 
@@ -86,11 +88,11 @@ let check_answer qid aid mode options prog quiz =
 (** [prompt_answer ltrs] retrieves the user answer from the terminal and 
     ensures that it is a valid answer option, prompting again if not*)
 let rec prompt_answer ltrs = 
-  print_string "Answer: ";
+  print_string [] "Answer: ";
   let input = String.uppercase_ascii (read_line ()) in
   if List.mem input ltrs then input
-  else let () = print_endline "Invalid answer option, try again. "
-    in prompt_answer ltrs
+  else let () = print_string [yellow] "Invalid answer option, try again.\n" in
+    prompt_answer ltrs
 
 (** [ask qn is_odd mode quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. Answers are enumerated 
@@ -101,7 +103,7 @@ let rec ask q is_odd mode quiz prog =
   | Some q -> 
     let qid = q in
     let qtxt = (get_txt_from_id q quiz) in
-    print_endline "";
+    print_newline ();
     print_endline qtxt;
 
     let ltrs = make_ltrs qid is_odd quiz in 
@@ -119,15 +121,16 @@ let rec ask q is_odd mode quiz prog =
 
 (** [ prompt_mode ()] returms the mode that the user wishes to play *)
 let rec prompt_mode () = 
-  print_string "Select (1) test or (2) practice mode > ";
+  print_string [] "Select (1) test or (2) practice mode > ";
   let choice = read_line () in 
   if choice = "1" then Test 
   else if choice = "2" then Practice 
-  else let () = print_endline "Sorry, try again" in prompt_mode ()
+  else let () = print_string [yellow] "Sorry, try again\n" in 
+    prompt_mode ()
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
-  print_string "Enter .quiz to load? > ";
+  print_string [] "Enter .quiz to load? > ";
   let quiz = load_quiz () in
   let quiz_length = List.length (get_questions quiz) in
   let mode = if (subjective quiz) then Subjective else prompt_mode () in
@@ -135,14 +138,17 @@ let main () =
   let q = next_question prog in
   let end_prog = ask q true mode quiz prog in
   match mode with
-  | Subjective -> print_endline ("You have completed the quiz. You got: " ^ 
-                                 (best_category end_prog))
-  | Test -> print_string "You have completed the quiz. Your score is ";
-    Printf.printf "%.2f" 
+  | Subjective -> let () = print_string [Bold; cyan] 
+                      ("\nYou have completed the quiz. You got: " ^ 
+                       (best_category end_prog)) in print_newline ()
+  | Test -> print_string [Bold; cyan] 
+              "\nYou have completed the quiz. Your score is ";
+    ANSITerminal.printf [Bold; cyan] "%.2f" 
       ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-    print_endline "%%."
-  | Practice -> print_endline "Congratulations, you have mastered all \
-                               questions in this quiz!"
+    print_string [Bold; cyan] "%.\n";
+  | Practice -> print_string [Bold; cyan] "\nCongratulations, you have \
+                                           mastered all questions in this \
+                                           quiz!\n"
 
 (* Execute the game engine. *)
 let () = main ()
