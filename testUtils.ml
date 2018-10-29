@@ -1,7 +1,7 @@
 (* Common variables for testing *)
 
-let quiz1 = Quiz.parse_json (Yojson.Basic.from_file "quiz1.quiz")
-let hp = Quiz.parse_json (Yojson.Basic.from_file "hp.quiz")
+let quiz1 = Quiz.parse_json "quiz1.quiz"
+let hp = Quiz.parse_json "hp.quiz"
 
 (********************************************************************
    Here are some helper functions for your testing of set-like lists. 

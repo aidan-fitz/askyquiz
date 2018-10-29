@@ -27,7 +27,8 @@ type t = {
   desc: string;
   subjective: bool;
   categories: string list;
-  questions: question list
+  questions: question list;
+  filename: string
 }
 
 (** [str_mem key json] is the string value associated with [key] in [json].
@@ -63,13 +64,15 @@ let build_questions j =
       })
     qs
 
-let parse_json j =
+let parse_json fn =
+  let j = Yojson.Basic.from_file fn in
   {
     title = str_mem "title" j;
     desc = str_mem "desc" j;
     subjective = j |> member "subjective" |> to_bool;
     categories = List.map to_string (lst_mem "categories" j);
-    questions = build_questions j
+    questions = build_questions j;
+    filename = fn
   }
 
 let get_q_from_id qid t = List.find (fun {id; qs; _} -> id = qid) t.questions
@@ -89,6 +92,8 @@ let question_ids t = List.map (fun x -> x.id) t.questions
 let question_qs t = List.map (fun x -> x.qs) t.questions
 
 let answers t qid = (get_q_from_id qid t).answers
+
+let filename q = q.filename
 
 let get_questions t = 
   let rec pair lst1 lst2 acc = 

@@ -9,12 +9,14 @@ open ANSITerminal
 (** The current testing mode. *)
 type mode = Subjective | Test | Practice
 
+exception Interrupt
+
 (** [load_quiz f] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let rec load_quiz () = 
   let f = read_line () in
   let quiz = 
-    try let j = from_file f in Some (parse_json j)
+    try Some (parse_json f)
     with 
     | Sys_error _  -> print_string [yellow] "File not found. "; None
     | Json_error _ -> print_string [yellow]
@@ -42,7 +44,7 @@ let make_letters n is_odd =
     if (next l) = 'I' 
     then go (n-1) (l |> next |> next) ((String.make 1 l)::acc)
     else go (n-1) (l |> next) ((String.make 1 l)::acc)
-  in if is_odd then go n 'A' [] else go n 'F' []
+  in List.rev (if is_odd then go n 'A' [] else go n 'F' [])
 
 (** [shuffle letters lst] returns association lists where the key is a 
     letter option and the values are an answer id in the shuffled list 
@@ -97,7 +99,7 @@ let rec prompt_answer ltrs =
   let input = String.uppercase_ascii (read_line ()) in
   if List.mem input ltrs then input
   else let () = print_string [yellow] "Invalid answer option, try again.\n" in
-    prompt_answer ltrs
+  prompt_answer ltrs
 
 (** [ask qn is_odd mode quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. Answers are enumerated 
@@ -118,12 +120,14 @@ let rec ask q is_odd mode quiz prog =
     List.iter (fun (ltr, (id, ans)) -> 
         print_endline (ltr ^ ". " ^ ans)) options;
 
-    let input = prompt_answer ltrs in
-    let aid = get_aid input options in
-    let prog' = check_answer qid aid mode options prog quiz in
-    let q' = next_question prog' in
-    ask q' (not is_odd) mode quiz prog'
-
+    try 
+      let input = prompt_answer ltrs in
+      let aid = get_aid input options in
+      let prog' = check_answer qid aid mode options prog quiz in
+      let q' = next_question prog' in
+      ask q' (not is_odd) mode quiz prog'
+    with Interrupt -> Progress.save_progress (filename quiz) prog; prog
+    
 (** [ prompt_mode ()] returms the mode that the user wishes to play *)
 let rec prompt_mode () = 
   print_string [] "Select (1) test or (2) practice mode > ";
@@ -131,10 +135,14 @@ let rec prompt_mode () =
   if choice = "1" then Test 
   else if choice = "2" then Practice 
   else let () = print_string [yellow] "Sorry, try again\n" in 
-    prompt_mode ()
+  prompt_mode ()
+
+let handle_sigint () =
+  Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
+  handle_sigint ();
   print_string [] "Enter .quiz to load? > ";
   let quiz = load_quiz () in
   let quiz_length = List.length (get_questions quiz) in

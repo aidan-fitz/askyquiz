@@ -13,8 +13,8 @@ type answer
 (** Abstract type representing a quiz *)
 type t
 
-(** [parse_json j] is the [Quiz.t] represented by the JSON [j]. *)
-val parse_json : Yojson.Basic.json -> t
+(** [parse_json fn] is the [Quiz.t] represented by the JSON in file [fn]. *)
+val parse_json : string -> t
 
 (** [title t] is the title of [Quiz.t] *)
 val title: t -> string
@@ -39,6 +39,9 @@ val answers: t -> id -> answer list
 
 (** [categories t] is the list of scoring categories from [Quiz.t]*)
 val categories: t -> string list
+
+(** [filename q] is the filename of the file containing data for [q]. *)
+val filename: t -> string
 
 (** [get_questions t] is a (id, qs) list for all questions in [t] *)
 val get_questions: t -> (id * string) list
