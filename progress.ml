@@ -5,17 +5,23 @@ type t = {
   stock: string list;
   discard: string list;
   score: (string * int ref) list;
-  mastery: (string * int ref) list
+  mastery: (string * int ref) list;
+  filename: string
 }
 
 (** [shuffle lst] is a random permutation of [lst]. *)
 let shuffle lst = QCheck.Gen.(generate1 (shuffle_l lst))
 
+let save_filename fn =
+  let match_ext = Str.regexp "\\.quiz$" in 
+  Str.replace_first match_ext ".prog" fn
+
 let init_progress quiz = {
   stock = quiz |> Quiz.question_ids |> shuffle;
   discard = [];
   score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz);
-  mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz)
+  mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz);
+  filename = save_filename (filename quiz)
 }
 
 (** [do_requeue s] tells whether to discard the most recently answered question
@@ -107,6 +113,6 @@ let save_progress qn p =
     ("score", scores_to_json p.score);
     ("mastery", scores_to_json p.mastery)
   ]) in
-  let out = open_out (qn ^ ".prog") in
+  let out = open_out p.filename in
   Yojson.Basic.to_channel out j;
   close_out out;
