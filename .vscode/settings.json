@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "*.quiz": "json"
+    "*.quiz": "json",
+    "*.prog": "json"
   }
 }
