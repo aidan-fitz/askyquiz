@@ -20,9 +20,9 @@ let rec load_quiz () =
     with 
     | Sys_error _  -> print_string [yellow] "File not found. "; None
     | Json_error _ -> print_string [yellow]
-                      "File does not contain valid JSON. "; None
+                        "File does not contain valid JSON. "; None
     | Type_error _ -> print_string [yellow] 
-                      "JSON does not represent quiz. "; None
+                        "JSON does not represent quiz. "; None
   in match quiz with 
   | Some q -> q
   | None -> 
@@ -31,7 +31,7 @@ let rec load_quiz () =
     load_quiz ()
 
 (* let odd_letters  = ["A"; "B"; "C"; "D"; "E"]
-let even_letters = ["F"; "G"; "H"; "J"; "K"] *)
+   let even_letters = ["F"; "G"; "H"; "J"; "K"] *)
 
 (** [next l] is the letter after [l] in the alphabet. *)
 let next l = Char.(chr ((code l - code 'A' + 1) mod 26 + code 'A'))
@@ -99,7 +99,7 @@ let rec prompt_answer ltrs =
   let input = String.uppercase_ascii (read_line ()) in
   if List.mem input ltrs then input
   else let () = print_string [yellow] "Invalid answer option, try again.\n" in
-  prompt_answer ltrs
+    prompt_answer ltrs
 
 (** [ask qn is_odd mode quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. Answers are enumerated 
@@ -127,7 +127,7 @@ let rec ask q is_odd mode quiz prog =
       let q' = next_question prog' in
       ask q' (not is_odd) mode quiz prog'
     with Interrupt -> Progress.save_progress (filename quiz) prog; prog
-    
+
 (** [ prompt_mode ()] returms the mode that the user wishes to play *)
 let rec prompt_mode () = 
   print_string [] "Select (1) test or (2) practice mode > ";
@@ -135,7 +135,7 @@ let rec prompt_mode () =
   if choice = "1" then Test 
   else if choice = "2" then Practice 
   else let () = print_string [yellow] "Sorry, try again\n" in 
-  prompt_mode ()
+    prompt_mode ()
 
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
@@ -150,18 +150,19 @@ let main () =
   let prog = init_progress quiz in
   let q = next_question prog in
   let end_prog = ask q true mode quiz prog in
-  match mode with
-  | Subjective -> let () = print_string [Bold; cyan] 
-                      ("\nYou have completed the quiz. You got: " ^ 
-                       (best_category end_prog)) in print_newline ()
-  | Test -> print_string [Bold; cyan] 
-              "\nYou have completed the quiz. Your score is ";
-    ANSITerminal.printf [Bold; cyan] "%.2f" 
-      ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-    print_string [Bold; cyan] "%.\n";
-  | Practice -> print_string [Bold; cyan] "\nCongratulations, you have \
-                                           mastered all questions in this \
-                                           quiz!\n"
-
+  if next_question prog = None then
+    match mode with
+    | Subjective -> let () = print_string [Bold; cyan] 
+                        ("\nYou have completed the quiz. You got: " ^ 
+                         (best_category end_prog)) in print_newline ()
+    | Test -> print_string [Bold; cyan] 
+                "\nYou have completed the quiz. Your score is ";
+      ANSITerminal.printf [Bold; cyan] "%.2f" 
+        ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
+      print_string [Bold; cyan] "%.\n";
+    | Practice -> print_string [Bold; cyan] "\nCongratulations, you have \
+                                             mastered all questions in this \
+                                             quiz!\n"
+  else print_newline (); print_string [cyan] "Your progress is saved!"
 (* Execute the game engine. *)
 let () = main ()
