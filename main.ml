@@ -150,7 +150,7 @@ let main () =
   let prog = init_progress quiz in
   let q = next_question prog in
   let end_prog = ask q true mode quiz prog in
-  if next_question prog = None then
+  if next_question end_prog = None then
     match mode with
     | Subjective -> let () = print_string [Bold; cyan] 
                         ("\nYou have completed the quiz. You got: " ^ 
@@ -163,6 +163,6 @@ let main () =
     | Practice -> print_string [Bold; cyan] "\nCongratulations, you have \
                                              mastered all questions in this \
                                              quiz!\n"
-  else print_newline (); print_string [cyan] "Your progress is saved!"
+  else (print_newline (); print_string [cyan] "Your progress is saved!")
 (* Execute the game engine. *)
 let () = main ()
