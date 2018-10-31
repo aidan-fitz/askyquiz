@@ -3,3 +3,7 @@
 #require "bisect";;
 #require "qcheck";;
 #require "yojson";;
+#require "ansiterminal";;
+#load "quiz.cmo";;
+#load "progress.cmo";;
+#load "main.cmo";;

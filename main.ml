@@ -126,7 +126,9 @@ let rec ask q is_odd mode quiz prog =
       let prog' = check_answer qid aid mode options prog quiz in
       let q' = next_question prog' in
       ask q' (not is_odd) mode quiz prog'
-    with Interrupt -> Progress.save_progress (filename quiz) prog; prog
+    with
+    | Interrupt | End_of_file -> Progress.save_progress (filename quiz) prog;
+    prog
 
 (** [ prompt_mode ()] returms the mode that the user wishes to play *)
 let rec prompt_mode () = 
@@ -137,6 +139,7 @@ let rec prompt_mode () =
   else let () = print_string [yellow] "Sorry, try again\n" in 
     prompt_mode ()
 
+(** [handle_sigint ()] sets up a handler for SIGINT *)
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
@@ -163,6 +166,6 @@ let main () =
     | Practice -> print_string [Bold; cyan] "\nCongratulations, you have \
                                              mastered all questions in this \
                                              quiz!\n"
-  else (print_newline (); print_string [cyan] "Your progress is saved!")
+  else (print_newline (); print_string [cyan] "Your progress is saved!\n")
 (* Execute the game engine. *)
 let () = main ()
