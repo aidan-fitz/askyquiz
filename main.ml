@@ -73,14 +73,14 @@ let requeue qid mstry correct =
   if correct then let () = m := !m + 1 in (not (m = ref 3))
   else ((if (not (m = ref 0)) then (m := !m - 1)); true)
 
-(** [check_answer qid aid mode answers prog quiz] updates [prog] and gives 
+(** [check_answer qid aid mode ans_choices prog quiz] updates [prog] and gives 
     feedback according to [mode]. *)
-let check_answer qid aid mode answers prog quiz = 
+let check_answer qid aid mode ans_choices prog quiz = 
   let rq =
     if mode = Practice then 
       let correct_aid = qid |> answers quiz |> correct_ans in
       let is_correct = aid = correct_aid in
-      imm_feedback correct_aid is_correct answers;
+      imm_feedback correct_aid is_correct ans_choices;
       requeue qid (mastery prog) is_correct
     else false
   in
