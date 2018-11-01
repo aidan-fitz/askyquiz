@@ -9,6 +9,7 @@ open ANSITerminal
 (** The current testing mode. *)
 type mode = Subjective | Test | Practice
 
+(** Custom exception to help catch interrupt signals. *)
 exception Interrupt
 
 (** [load_quiz f] is the [Quiz.t] created from the quiz JSON in file [f]. 
@@ -29,9 +30,6 @@ let rec load_quiz () =
     print_string [yellow] "Try again:\n";
     print_string [] "> ";
     load_quiz ()
-
-(* let odd_letters  = ["A"; "B"; "C"; "D"; "E"]
-   let even_letters = ["F"; "G"; "H"; "J"; "K"] *)
 
 (** [next l] is the letter after [l] in the alphabet. *)
 let next l = Char.(chr ((code l - code 'A' + 1) mod 26 + code 'A'))
