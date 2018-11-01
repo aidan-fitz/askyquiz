@@ -75,13 +75,13 @@ let requeue qid mstry correct =
 
 (** [check_answer qid aid mode answers prog quiz] updates [prog] and gives 
     feedback according to [mode]. *)
-let check_answer qid aid mode options prog quiz = 
+let check_answer qid aid mode answers prog quiz = 
   let rq =
     if mode = Practice then 
       let correct_aid = qid |> answers quiz |> correct_ans in
-      let correct = aid = correct_aid in
-      imm_feedback correct_aid correct options;
-      requeue qid (mastery prog) correct
+      let is_correct = aid = correct_aid in
+      imm_feedback correct_aid is_correct answers;
+      requeue qid (mastery prog) is_correct
     else false
   in
   update_scores qid aid quiz prog;
