@@ -37,9 +37,6 @@ val question_qs: t -> string list
 (** [answers qid t] is the list of answers of the corresponding question *)
 val answers: t -> id -> answer list
 
-(** [categories t] is the list of scoring categories from [Quiz.t]*)
-val categories: t -> string list
-
 (** [filename q] is the filename of the file containing data for [q]. *)
 val filename: t -> string
 
