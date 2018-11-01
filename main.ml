@@ -67,7 +67,7 @@ let imm_feedback correct_aid correct options =
     print_newline ()
 
 (** [requeue qid mstry correct] determines whether the question [qid] should be 
-    requeued. It also updates the question's mastery level based on [correct]. *)
+    requeued. It also updates the question's mastery level based on [correct].*)
 let requeue qid mstry correct =
   let m = List.assoc qid mstry in
   if correct then let () = m := !m + 1 in (not (m = ref 3))
