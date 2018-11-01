@@ -2,8 +2,8 @@ PROGRAM_MODULES=quiz progress main
 TEST_MODULES=testUtils testQuiz testProgress test
 MODULES=$(PROGRAM_MODULES) $(TEST_MODULES)
 OBJECTS=$(MODULES:=.cmo)
-MLS=$(MODULES:=.ml)
-MLIS=$(MODULES:=.mli)
+MLS=$(PROGRAM_MODULES:=.ml)
+MLIS=$(PROGRAM_MODULES:=.mli)
 TEST=test.byte
 MAIN=main.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
