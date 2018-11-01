@@ -133,8 +133,7 @@ let rec prompt_mode () =
   let choice = read_line () in 
   if choice = "1" then Test 
   else if choice = "2" then Practice 
-  else let () = print_string [yellow] "Sorry, try again\n" in 
-    prompt_mode ()
+  else (print_string [yellow] "Sorry, try again\n"; prompt_mode ())
 
 (** [handle_sigint ()] sets up a handler for SIGINT *)
 let handle_sigint () =
@@ -153,9 +152,9 @@ let main () =
   if next_question end_prog = None then
     match mode with
     | Subjective ->
-        let () = print_string [Bold; cyan] 
-                  ("\nYou have completed the quiz. You got: " ^ 
-                  (best_category end_prog)) in print_newline ()
+        print_string [Bold; cyan] 
+          ("\nYou have completed the quiz. You got: " ^ 
+          (best_category end_prog)); print_newline ()
     | Test ->
         print_string [Bold; cyan] 
           "\nYou have completed the quiz. Your score is ";
