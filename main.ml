@@ -12,18 +12,16 @@ type mode = Subjective | Test | Practice
 (** Custom exception to help catch interrupt signals. *)
 exception Interrupt
 
-(** [load_quiz f] is the [Quiz.t] created from the quiz JSON in file [f]. 
+(** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let rec load_quiz () = 
   let f = read_line () in
   let quiz = 
     try Some (parse_json f)
     with 
-    | Sys_error _  -> print_string [yellow] "File not found. "; None
-    | Json_error _ -> print_string [yellow]
-                        "File does not contain valid JSON. "; None
-    | Type_error _ -> print_string [yellow] 
-                        "JSON does not represent quiz. "; None
+    | Sys_error _  -> print_string [yellow] "File not found."; None
+    | Json_error _ -> print_string [yellow] "File has invalid JSON."; None
+    | Type_error _ -> print_string [yellow] "JSON doesn't represent quiz."; None
   in match quiz with 
   | Some q -> q
   | None -> 
@@ -44,40 +42,39 @@ let make_letters n is_odd =
     else go (n-1) (l |> next) ((String.make 1 l)::acc)
   in List.rev (if is_odd then go n 'A' [] else go n 'F' [])
 
-(** [shuffle letters lst] returns association lists where the key is a 
-    letter option and the values are an answer id in the shuffled list 
-    of answer id and text pairs *)
-let shuffle ltrs lst = 
-  List.combine ltrs (QCheck.Gen.(generate1 (shuffle_l lst)))
+(** [shuffle letters answers] is an association list resulting from pairing
+    [letters] to a shuffled permutation of [answers]. *)
+let shuffle ltrs answers = 
+  List.combine ltrs (QCheck.Gen.(generate1 (shuffle_l answers)))
 
 (** [get_aid ltr mapping] is the answer id associated with the 
-    letter option [ltr]
-    Raises: Failure if letter is invalid*)
+    letter option [ltr] in [mapping].
+    Raises: Failure if letter is invalid. *)
 let rec get_aid ltr = function
   | [] -> failwith "Invalid answer option"  
   | (l, (id, _))::t when l = ltr -> id
   | _::t ->  get_aid ltr t 
 
-(** [imm_feedback correct_aid correct options] provides immediate feedback for 
-    an answer to a question under practice mode *)
+(** [imm_feedback correct_aid correct options] outputs immediate feedback for 
+    an answer to a question under practice mode. *)
 let imm_feedback correct_aid correct options =
   if correct then print_string [green] "You are correct!\n"
-  else let option = 
-         List.find (fun (ltr, (id, text)) -> id = correct_aid) options in
-    let () = print_string [red] ("Incorrect. The correct answer is " ^ 
-                                 (fst option) ^ ". " ^ (snd (snd option))) in 
+  else
+    let option = List.find (fun (ltr, (id, text)) -> id = correct_aid) options
+    in print_string [red]
+        ("Incorrect. The correct answer is " ^
+        (fst option) ^ ". " ^ (snd (snd option)));
     print_newline ()
 
-(** [requeue qid mstry correct] is whether the question needs to be 
-    requeued. It also updates the mastery level of a question based on the 
-    answer given. *)
+(** [requeue qid mstry correct] determines whether the question [qid] should be 
+    requeued. It also updates the question's mastery level based on [correct]. *)
 let requeue qid mstry correct =
   let m = List.assoc qid mstry in
   if correct then let () = m := !m + 1 in (not (m = ref 3))
-  else let () = (if (not (m = ref 0)) then (m := !m - 1)) in true
+  else ((if (not (m = ref 0)) then (m := !m - 1)); true)
 
-(** [check_answer qid aid mode] updates progress and gives feedback according 
-    to [mode]*)
+(** [check_answer qid aid mode answers prog quiz] updates [prog] and gives 
+    feedback according to [mode]. *)
 let check_answer qid aid mode options prog quiz = 
   let rq =
     if mode = Practice then 
@@ -90,18 +87,20 @@ let check_answer qid aid mode options prog quiz =
   update_scores qid aid quiz prog;
   pop_and_requeue rq prog
 
-(** [prompt_answer ltrs] retrieves the user answer from the terminal and 
-    ensures that it is a valid answer option, prompting again if not*)
+(** [prompt_answer ltrs] retrieves the user's answer as input and checks that 
+    it exists in [ltrs], prompting again if not.
+    Requires: [ltrs] only contains uppercase letters. *)
 let rec prompt_answer ltrs = 
   print_string [] "Answer: ";
   let input = String.uppercase_ascii (read_line ()) in
   if List.mem input ltrs then input
-  else let () = print_string [yellow] "Invalid answer option, try again.\n" in
-    prompt_answer ltrs
+  else 
+    (print_string [yellow] "Invalid answer option, try again.\n";
+    prompt_answer ltrs)
 
 (** [ask qn is_odd mode quiz prog] displays [qn] to the screen and 
-    prompts for an answer among its choices in [quiz]. Answers are enumerated 
-    with A, B, C, D, E if [is_odd is true], and with F, G, H, J, K otherwise. *)
+    prompts for an answer among its choices in [quiz]. It lists answers with 
+    A, B, C, D, E if [is_odd] is [true], and with F, G, H, J, K otherwise. *)
 let rec ask q is_odd mode quiz prog = 
   match q with 
   | None -> prog
@@ -128,7 +127,7 @@ let rec ask q is_odd mode quiz prog =
     | Interrupt | End_of_file -> Progress.save_progress (filename quiz) prog;
     prog
 
-(** [ prompt_mode ()] returms the mode that the user wishes to play *)
+(** [prompt_mode ()] is the quiz mode the user selects to play in. *)
 let rec prompt_mode () = 
   print_string [] "Select (1) test or (2) practice mode > ";
   let choice = read_line () in 
@@ -153,17 +152,20 @@ let main () =
   let end_prog = ask q true mode quiz prog in
   if next_question end_prog = None then
     match mode with
-    | Subjective -> let () = print_string [Bold; cyan] 
-                        ("\nYou have completed the quiz. You got: " ^ 
-                         (best_category end_prog)) in print_newline ()
-    | Test -> print_string [Bold; cyan] 
-                "\nYou have completed the quiz. Your score is ";
-      ANSITerminal.printf [Bold; cyan] "%.2f" 
+    | Subjective ->
+        let () = print_string [Bold; cyan] 
+                  ("\nYou have completed the quiz. You got: " ^ 
+                  (best_category end_prog)) in print_newline ()
+    | Test ->
+        print_string [Bold; cyan] 
+          "\nYou have completed the quiz. Your score is ";
+        ANSITerminal.printf [Bold; cyan] "%.2f" 
         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-      print_string [Bold; cyan] "%.\n";
-    | Practice -> print_string [Bold; cyan] "\nCongratulations, you have \
-                                             mastered all questions in this \
-                                             quiz!\n"
+        print_string [Bold; cyan] "%.\n";
+    | Practice ->
+        print_string [Bold; cyan]
+          "\nCongratulations, you have mastered all questions in this quiz!\n"
   else (print_newline (); print_string [cyan] "Your progress is saved!\n")
+
 (* Execute the game engine. *)
 let () = main ()
