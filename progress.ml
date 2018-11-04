@@ -140,4 +140,4 @@ let save_progress p =
     ("score", scores_to_json p.score);
     ("mastery", scores_to_json p.mastery)
   ]) in
-  Yojson.Basic.to_file p.filename j
+  Yojson.Basic.to_file p.filename j; p

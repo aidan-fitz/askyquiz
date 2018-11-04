@@ -129,8 +129,7 @@ let rec ask q is_odd mode quiz prog =
       let q' = next_question prog' in
       ask q' (not is_odd) mode quiz prog'
     with
-    | Interrupt | End_of_file -> Progress.save_progress prog;
-      prog
+    | Interrupt | End_of_file -> Progress.save_progress prog
 
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
 let rec prompt_mode () = 
