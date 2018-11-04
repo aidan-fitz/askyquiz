@@ -30,7 +30,7 @@ let ans_list id cats =
 let q id cats = 
   `Assoc ([("id", `String id); 
            ("text", `String "Replace this text with your question.");
-           ("answers", build_list ans_list [] cats "ans" 5)])
+           ("answers", build_list ans_list [] cats "ans" 4)])
 
 (** [qa_list cats num_qs] is a JSON representation of [num_qs] question and
     answer lists with [cats] scoring categories *)
