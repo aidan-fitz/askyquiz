@@ -2,13 +2,81 @@
 
 open Yojson.Basic.Util
 open Quiz
+open ANSITerminal
 
-(** [builder ()] executes the quiz builder *)
+
+(** [strings_to_json ls] is a JSON representation of [ls]. *)
+let strings_to_json (ls: string list) = 
+  `List (List.map (fun s -> `String s) ls)
+
+(** [build_list f acc cats n] builds a [n]-length list [acc] that uses function
+    [f] and prefix [pref] to help create the ids for the elements of [acc]  *)
+let rec build_list f acc cats pref n =
+  if n = 0 then `List acc else
+    let acc' = (f (pref^"id"^ (string_of_int n)) cats)::acc in
+    build_list f acc' cats pref (n-1)
+
+(** [ans_list id cats] is a JSON representation of answers with [cats] 
+    scoring categories*)
+let ans_list id cats = 
+  `List (["id": `String id; 
+          "text": "Replace this text with your answer option.",
+          "value": `Assoc (List.map (fun c -> (c, `Int 0)) cats)])
+
+(** [q id cats] is a JSON representation of a question with answers
+    of [cats] scoring categories*)
+let q id cats = 
+  `Assoc (["id": `String id, 
+           "text": "Replace this text with your answer option.",
+           "answers" = build_list ans_list [] cats "ans" 5])
+
+(** [qa_list cats num_qs] is a JSON representation of [num_qs] question and
+    answer lists with [cats] scoring categories *)
+let qa_list cats num_qs =
+  build_list q [] cats "q" num_qs
+
+(** [build_quiz fname title desc sub cats num_qs] creates a JSON-formatted
+    .quiz file *)
+let build_quiz fname title desc sub cats num_qs =
+  let j = `Assoc ([("title", `String title); ("desc", `String desc); 
+                   ("subjective", `Bool sub); 
+                   ("categories", (strings_to_json cats)); 
+                   ("questions", (qa_list cats num_qs))]) in
+  let file = open_out (fname^".quiz") in
+  Yojson.Basic.to_channel file j;
+  close_out file
+
+(** [builder ()] prompts the user for details and executes the quiz builder *)
 let builder () =
-  ()
+  print_string [Bold] "Create an ASKYQuiz!\n";
+  print_string [] "Enter new .quiz file name > ";
+  let fname = read_line () in
+  print_newline ();
+  print_string [] "Enter quiz title > ";
+  let title = read_line () in
+  print_newline ();
+  print_string [] "Enter quiz description > ";
+  let desc = read_line () in
+  print_newline ();
+  print_string [] ("Will this quiz be (1) subjective e.g. personality quizzes "^
+                   "or (2) non-subjective e.g. academic quizzes > ");
+  let sub = if read_line () = "1" then true else false in
+  print_newline ();
+  let cats_list = if sub = true then
+      let cats = (print_string [] ("What are the answer categories "^
+                                   "(space-separated)? > ");
+                  read_line ();) in String.split_on_char ' ' cats
+    else ["correct"]; in
+  print_newline ();
+  print_string [] ("How many questions will this quiz have? > ");
+  let num_qs = read_line () in
+  print_newline (); 
+  build_quiz fname title desc sub cats_list num_qs;
 
-(* create: prompt new file name, title, desc, sub/not, num questions,
-   answer categories then open vim
-   edit: open existing in vim *)
 
-(* open vim at some point *)
+
+  (* create: prompt new file name, title, desc, sub/not, num questions,
+     answer categories then open vim
+     edit: open existing in vim (in main) *)
+
+  (* open vim at some point *)
