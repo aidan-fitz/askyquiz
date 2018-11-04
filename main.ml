@@ -158,7 +158,15 @@ let edit () =
        open_file ())
   in open_file ()
 
-let print_quizzes () = ()
+let print_quizzes () =
+  print_endline "Available quizzes:";
+  let dir = Unix.opendir (Unix.getcwd ()) in
+  let rec quizzes () = 
+    try let f = Unix.readdir dir in 
+      if (Str.string_match (regexp ".*.quiz") f 0) then print_endline f else ();
+      quizzes ()
+    with End_of_file -> Unix.closedir dir
+  in quizzes ()
 
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
