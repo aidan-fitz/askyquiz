@@ -112,7 +112,8 @@ let rec correct_ans = function
       (* find ans s.t. it has one value with score 1 *)
       match ans.values with
         | [] -> failwith "answer has no values"
-        | [(c, v)] -> if v = 1 then ans.id else correct_ans tail
+        | [("correct", v)] -> if v = 1 then ans.id else correct_ans tail
+        | [(_, _)] -> failwith "incorrect format"
         | _ -> failwith "subjective quiz"
       end
   (* end of list *)
