@@ -46,7 +46,7 @@ let build_quiz fname title desc sub cats num_qs =
                    ("categories", (strings_to_json cats)); 
                    ("questions", (qa_list cats num_qs))]) in
   let file = open_out (fname^".quiz") in
-  Yojson.Basic.to_channel file j;
+  Yojson.Basic.pretty_to_channel file j;
   close_out file
 
 (* [builder ()] prompts the user for details and executes the quiz builder *)
