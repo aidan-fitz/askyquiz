@@ -1,5 +1,6 @@
 (** Progress of Quiz *)
 open Quiz
+open Yojson.Basic.Util
 
 type t = {
   stock: string list;
@@ -12,17 +13,11 @@ type t = {
 (** [shuffle lst] is a random permutation of [lst]. *)
 let shuffle lst = QCheck.Gen.(generate1 (shuffle_l lst))
 
+(** [save_filename fn] is [<file>.prog] where [fn] is [<file>.quiz]
+    Requires: [fn] has the [.quiz] extension. *)
 let save_filename fn =
   let match_ext = Str.regexp "\\.quiz$" in 
   Str.replace_first match_ext ".prog" fn
-
-let init_progress quiz = {
-  stock = quiz |> Quiz.question_ids |> shuffle;
-  discard = [];
-  score = List.map (fun x -> (x, ref 0)) (Quiz.categories quiz);
-  mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz);
-  filename = save_filename (filename quiz)
-}
 
 (** [do_requeue s] tells whether to discard the most recently answered question
     based on [s]. *)
@@ -52,8 +47,52 @@ let requeue qid prog =
 (** [strings_to_json ls] is a JSON representation of [ls]. *)
 let strings_to_json (ls: string list) = `List (List.map (fun s -> `String s) ls)
 
+(** [scores_to_json ls] is a JSON representation of [ls], an association list
+    between strings and mutable ints. *)
 let scores_to_json (ls: (string * int ref) list) =
   `Assoc (List.map (fun (c, s) -> (c, `Int !s)) ls)
+
+(************** PARSE JSON HELPERS **************)
+(** [build_strings field j] is the list of strings corresponding to [field] in
+    JSON [j].
+    Requires: [field] corresponds to a list of strings in [j]. *)
+let build_strings field j =
+  j |> member field |> to_list |> List.map to_string
+
+(** [build_string_refs field j] is an association list of strings to mutable
+    ints corresponding to [field] in JSON [j].
+    Requires: [field] contains string to int mappings in [j]. *)
+let build_string_refs field j =
+  let lst = j |> member field |> to_assoc in
+  List.map (fun (c, j) -> (c, j |> to_int |> ref)) lst
+
+(** [load_progress filename] is a [Progress.t] constructed from the JSON in
+    [filename]. *)
+let load_progress filename =
+  let j = Yojson.Basic.from_file filename in
+  {
+    stock = build_strings "stock" j;
+    discard = build_strings "discard" j;
+    score = build_string_refs "score" j;
+    mastery = build_string_refs "mastery" j;
+    filename = filename;
+  }
+
+(************** INTERFACE FUNCTIONS *************)
+let init_progress quiz = {
+  stock = quiz |> Quiz.question_ids |> shuffle;
+  discard = [];
+  score = List.map (fun cat -> (cat, ref 0)) (Quiz.categories quiz);
+  mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz);
+  filename = save_filename (filename quiz)
+}
+
+let get_progress quiz =
+  let prog_file = save_filename (filename quiz) in 
+  if Sys.file_exists prog_file then
+    load_progress prog_file
+  else
+    init_progress quiz
 
 let update_scores qid aid quiz prog =
   let scores = get_values qid aid quiz in
@@ -81,6 +120,8 @@ let score t = t.score
 
 let mastery p = p.mastery
 
+let filename p = p.filename
+
 let best_category_data p =
   List.fold_left 
     (fun (max_cat, max_s) (cat, s) ->
@@ -92,7 +133,7 @@ let best_category p = p |> best_category_data |> fst
 
 let best_score p = p |> best_category_data |> snd
 
-let save_progress qn p =
+let save_progress p =
   let j = `Assoc ([
     ("stock", strings_to_json p.stock);
     ("discard", strings_to_json p.discard);
@@ -101,4 +142,4 @@ let save_progress qn p =
   ]) in
   let out = open_out p.filename in
   Yojson.Basic.to_channel out j;
-  close_out out;
+  close_out out

@@ -21,31 +21,30 @@ let load_quiz () =
   let rec load () =
     let f = read_line () ^ ".quiz" in
     let quiz = 
-      try Some (parse_json f)
+      try Ok (parse_json f)
       with 
-      | Sys_error _  -> print_string [yellow] "File not found. "; None
-      | Json_error _ -> print_string [yellow] "File has invalid JSON. "; None
-      | Type_error _ -> print_string [yellow] "JSON doesn't represent quiz. "; 
-        None
+      | Sys_error _  -> Error "File not found."
+      | Json_error _ -> Error "File has invalid JSON."
+      | Type_error _ -> Error "JSON doesn't represent quiz."
     in match quiz with 
-    | Some q -> q
-    | None -> 
-      print_string [yellow] "Try again:\n";
+    | Ok q -> q
+    | Error msg -> 
+      print_string [yellow] (msg ^ " Try again:\n");
       print_string [] "> ";
       load ()
   in load ()
 
 (** [next l] is the letter after [l] in the alphabet. *)
-let next l = Char.(chr ((code l - code 'A' + 1) mod 26 + code 'A'))
+let next l = 
+  let incr = if l = 'I' then 2 else 1 in
+  Char.(chr ((code l - code 'A' + incr) mod 26 + code 'A'))
 
 (** [make_letters n is_odd] is a list of [n] letters starting from 'A' if 
     [is_odd] and starting from 'F' otherwise. The sequence always skips 'I'. *)
 let make_letters n is_odd =
   let rec go n l acc =
     if n = 0 then acc else
-    if (next l) = 'I' 
-    then go (n-1) (l |> next |> next) ((String.make 1 l)::acc)
-    else go (n-1) (l |> next) ((String.make 1 l)::acc)
+    go (n-1) (l |> next) ((String.make 1 l)::acc)
   in List.rev (if is_odd then go n 'A' [] else go n 'F' [])
 
 (** [shuffle letters answers] is an association list resulting from pairing
@@ -130,7 +129,7 @@ let rec ask q is_odd mode quiz prog =
       let q' = next_question prog' in
       ask q' (not is_odd) mode quiz prog'
     with
-    | Interrupt | End_of_file -> Progress.save_progress (filename quiz) prog;
+    | Interrupt | End_of_file -> Progress.save_progress prog;
       prog
 
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
@@ -145,7 +144,7 @@ let rec prompt_mode () =
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
-(** [edit ()] opens the . quiz file the user inputs in vim. If the user does not
+(** [edit ()] opens the .quiz file the user inputs in vim. If the user does not
     input a valid quiz, it reprompts for another file. *)
 let edit () =
   print_string [] "Enter .quiz to edit > ";
@@ -170,10 +169,11 @@ let take_quiz () =
   print_newline ();
   let quiz_length = List.length (get_questions quiz) in
   let mode = if (subjective quiz) then Subjective else prompt_mode () in
-  let prog = init_progress quiz in
+  let prog = get_progress quiz in
   let q = next_question prog in
   let end_prog = ask q true mode quiz prog in
   if next_question end_prog = None then
+    (Sys.remove (Progress.filename prog);
     match mode with
     | Subjective ->
       print_string [Bold; cyan] 
@@ -187,14 +187,17 @@ let take_quiz () =
       print_string [Bold; cyan] "%.\n";
     | Practice ->
       print_string [Bold; cyan]
-        "\nCongratulations, you have mastered all questions in this quiz!\n"
+        "\nCongratulations, you have mastered all questions in this quiz!\n")
   else (print_newline (); print_string [cyan] "Your progress is saved!\n")
 
 let rec menu () = 
-  print_string [Bold] "\nMenu: \n1. Create a new quiz \n2. Edit \
-                       an existing quiz \n3. Take a quiz";
+  print_string [Bold]
+    "\nMenu: \n\
+    1. Create a new quiz \n\
+    2. Edit an existing quiz \n\
+    3. Take a quiz";
   print_newline ();
-  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > \n";
+  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > ";
   match read_line () with
   | "1" -> builder ()
   | "2" -> edit ()
