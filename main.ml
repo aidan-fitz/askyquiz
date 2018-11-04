@@ -157,11 +157,15 @@ let edit () =
   in open_file ()
 
 let print_quizzes () =
-  print_endline "Available quizzes:";
+  print_string [Bold] "Available quizzes:";
+  print_newline ();
   let dir = Unix.opendir ("." ^ Filename.dir_sep ^ "quizzes") in
   let rec quizzes () = 
     try let f = Unix.readdir dir in 
-      if (Str.string_match (regexp ".*.quiz") f 0) then print_endline f else ();
+      if (Str.string_match (regexp ".*.quiz") f 0) 
+      then (print_string [yellow] f; 
+            print_newline ();) 
+      else ();
       quizzes ()
     with End_of_file -> Unix.closedir dir
   in quizzes ()
