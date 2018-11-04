@@ -130,10 +130,10 @@ let rec ask q is_odd mode quiz prog =
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
 let rec prompt_mode () = 
   print_string [] "Select (1) test or (2) practice mode > ";
-  let choice = read_line () in 
-  if choice = "1" then Test 
-  else if choice = "2" then Practice 
-  else (print_string [yellow] "Sorry, try again\n"; prompt_mode ())
+  match read_line () with
+    | "1" -> Test
+    | "2" -> Practice
+    | _ -> print_string [yellow] "Sorry, try again\n"; prompt_mode ()
 
 (** [handle_sigint ()] sets up a handler for SIGINT *)
 let handle_sigint () =
