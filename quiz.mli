@@ -51,7 +51,9 @@ val get_answers: string -> t -> (id * string) list
 val get_txt_from_id: id -> t -> string
 
 (** [correct_ans answers] is the id of the correct answer in the list of answers
-    Requires: the corresponding quiz is non-subjective *)
+    Requires:
+    - the corresponding quiz is non-subjective
+    - there is only one correct answer *)
 val correct_ans: answer list -> id
 
 (** [get_values qid aid t] is the list of scores associated with 
