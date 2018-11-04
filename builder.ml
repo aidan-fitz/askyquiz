@@ -48,7 +48,7 @@ let build_quiz fname title desc sub cats num_qs =
   Yojson.Basic.to_channel file j;
   close_out file
 
-(** [builder ()] prompts the user for details and executes the quiz builder *)
+(* [builder ()] prompts the user for details and executes the quiz builder *)
 let builder () =
   print_string [Bold] "Create an ASKYQuiz!\n";
   print_string [] "Enter new .quiz file name > ";
