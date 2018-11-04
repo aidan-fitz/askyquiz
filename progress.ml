@@ -2,12 +2,15 @@
 open Quiz
 open Yojson.Basic.Util
 
+type mode = Subjective | Test | Practice
+
 type t = {
   stock: string list;
   discard: string list;
   score: (string * int ref) list;
   mastery: (string * int ref) list;
-  filename: string
+  filename: string;
+  mode: mode
 }
 
 (** [shuffle lst] is a random permutation of [lst]. *)
@@ -52,6 +55,12 @@ let strings_to_json (ls: string list) = `List (List.map (fun s -> `String s) ls)
 let scores_to_json (ls: (string * int ref) list) =
   `Assoc (List.map (fun (c, s) -> (c, `Int !s)) ls)
 
+(** [mode_to_json mode] is a JSON representation of [mode]. *)
+let mode_to_json = function
+  | Subjective -> `String "subjective"
+  | Practice -> `String "practice"
+  | Test -> `String "test"
+
 (************** PARSE JSON HELPERS **************)
 (** [build_strings field j] is the list of strings corresponding to [field] in
     JSON [j].
@@ -66,6 +75,13 @@ let build_string_refs field j =
   let lst = j |> member field |> to_assoc in
   List.map (fun (c, j) -> (c, j |> to_int |> ref)) lst
 
+let build_mode j =
+  match j |> member "mode" |> to_string with
+  | "subjective" -> Subjective
+  | "practice" -> Practice
+  | "test" -> Test
+  | _ -> failwith "invalid mode"
+
 (** [load_progress filename] is a [Progress.t] constructed from the JSON in
     [filename]. *)
 let load_progress filename =
@@ -76,23 +92,25 @@ let load_progress filename =
     score = build_string_refs "score" j;
     mastery = build_string_refs "mastery" j;
     filename = filename;
+    mode = build_mode j
   }
 
 (************** INTERFACE FUNCTIONS *************)
-let init_progress quiz = {
+let init_progress quiz compute_mode = {
   stock = quiz |> Quiz.question_ids |> shuffle;
   discard = [];
   score = List.map (fun cat -> (cat, ref 0)) (Quiz.categories quiz);
   mastery = List.map (fun id -> (id, ref 0)) (question_ids quiz);
-  filename = save_filename (filename quiz)
+  filename = save_filename (filename quiz);
+  mode = compute_mode ()
 }
 
-let get_progress quiz =
+let get_progress quiz compute_mode =
   let prog_file = save_filename (filename quiz) in 
   if Sys.file_exists prog_file then
     load_progress prog_file
   else
-    init_progress quiz
+    init_progress quiz compute_mode
 
 let update_scores qid aid quiz prog =
   let scores = get_values qid aid quiz in
@@ -122,6 +140,8 @@ let mastery p = p.mastery
 
 let filename p = p.filename
 
+let quiz_mode p = p.mode
+
 let best_category_data p =
   List.fold_left 
     (fun (max_cat, max_s) (cat, s) ->
@@ -135,6 +155,7 @@ let best_score p = p |> best_category_data |> snd
 
 let save_progress p =
   let j = `Assoc ([
+    ("mode", mode_to_json p.mode);
     ("stock", strings_to_json p.stock);
     ("discard", strings_to_json p.discard);
     ("score", scores_to_json p.score);

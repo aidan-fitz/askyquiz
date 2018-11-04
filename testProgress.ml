@@ -3,7 +3,7 @@ open Progress
 open OUnit2
 open TestUtils
 
-let i = init_progress quiz1
+let i = init_progress quiz1 (fun () -> Test)
 
 let progress_tests = [
   (*TODO: writes tests for quiz*)
