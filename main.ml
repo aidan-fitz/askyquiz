@@ -64,10 +64,8 @@ let imm_feedback correct_aid correct options =
   if correct then print_string [green] "You are correct!\n"
   else
     let option = List.find (fun (ltr, (id, text)) -> id = correct_aid) options
-    in print_string [red]
-      ("Incorrect. The correct answer is " ^
-       (fst option) ^ ". " ^ (snd (snd option)));
-    print_newline ()
+    in printf [red]
+      "Incorrect. The correct answer is %s. %s\n" (fst option) (snd (snd option))
 
 (** [requeue qid mstry correct] determines whether the question [qid] should be 
     requeued. It also updates the question's mastery level based on [correct].*)
@@ -110,8 +108,7 @@ let rec ask q is_odd quiz prog =
   | Some q -> 
     let qid = q in
     let qtxt = (get_txt_from_id q quiz) in
-    print_newline ();
-    print_endline qtxt;
+    print_endline ("\n" ^ qtxt);
 
     let ans_pairs = (get_answers qid quiz) in
     let ltrs = make_letters (List.length ans_pairs) is_odd in 
@@ -157,15 +154,12 @@ let edit () =
   in open_file ()
 
 let print_quizzes () =
-  print_string [Bold] "Available quizzes:";
-  print_newline ();
+  print_string [Bold] "Available quizzes:\n";
   let dir = Unix.opendir ("." ^ Filename.dir_sep ^ "quizzes") in
   let rec quizzes () = 
     try let f = Unix.readdir dir in 
       if (Str.string_match (regexp ".*.quiz") f 0) 
-      then (print_string [yellow] f; 
-            print_newline ();) 
-      else ();
+      then print_string [yellow] (f ^ "\n");
       quizzes ()
     with End_of_file -> Unix.closedir dir
   in quizzes ()
@@ -174,10 +168,8 @@ let print_quizzes () =
 let take_quiz () =
   print_quizzes ();
   let quiz = load_quiz () in
-  print_string [magenta] (title quiz);
-  print_newline ();
-  print_string [magenta] (desc quiz);
-  print_newline ();
+  printf [magenta] "%s\n" (title quiz);
+  printf [magenta] "%s\n" (desc quiz);
   let quiz_length = List.length (get_questions quiz) in
   let prog = get_progress quiz begin
       fun () -> if (subjective quiz) then Subjective else prompt_mode ()
@@ -189,9 +181,9 @@ let take_quiz () =
       with Sys_error _ -> ());
      match quiz_mode prog with
      | Subjective ->
-       print_string [Bold; cyan] 
-         ("\nYou have completed the quiz. You got: " ^ 
-          (best_category end_prog)); print_newline ()
+        printf [Bold; cyan] 
+          "\nYou have completed the quiz. You got: %s\n"
+          (best_category end_prog)
      | Test ->
        print_string [Bold; cyan] 
          "\nYou have completed the quiz. Your score is ";
@@ -201,15 +193,14 @@ let take_quiz () =
      | Practice ->
        print_string [Bold; cyan]
          "\nCongratulations, you have mastered all questions in this quiz!\n")
-  else (print_newline (); print_string [cyan] "Your progress is saved!\n")
+  else (print_string [cyan] "\nYour progress is saved!\n")
 
 let rec menu () = 
   print_string [Bold]
     "\nMenu: \n\
      1. Create a new quiz \n\
      2. Edit an existing quiz \n\
-     3. Take a quiz";
-  print_newline ();
+     3. Take a quiz\n";
   print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > ";
   match read_line () with
   | "1" -> builder ()
@@ -223,7 +214,7 @@ let welcome_message () =
   print_string [red; on_black] "
                        _   __           __      __  
     _ /_   _  _  _/   /_| (  /__/(__/  /  )/  //_/| 
-((/(-(( ()//)(-  /() (  |__)/  )  /   (__\(__/(/__. 
+((/(-(( ()//)(-  /() (  |__)/  )  /   (__\\(__/(/__. 
   "
 
 (** [main ()] prompts for the game to play, then starts it. *)
