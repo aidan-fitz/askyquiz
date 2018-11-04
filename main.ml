@@ -217,7 +217,9 @@ let rec menu () =
 let welcome_message () = 
   resize 100 30;
   print_string [red; on_black] "
-
+                       _   __           __      __  
+    _ /_   _  _  _/   /_| (  /__/(__/  /  )/  //_/| 
+((/(-(( ()//)(-  /() (  |__)/  )  /   (__\(__/(/__. 
   "
 
 (** [main ()] prompts for the game to play, then starts it. *)
