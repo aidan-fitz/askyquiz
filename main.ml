@@ -170,30 +170,32 @@ let print_quizzes () =
 let take_quiz () =
   print_quizzes ();
   let quiz = load_quiz () in
+  print_string [magenta] (title quiz);
+  print_newline ();
   print_string [magenta] (desc quiz);
   print_newline ();
   let quiz_length = List.length (get_questions quiz) in
   let prog = get_progress quiz begin
-    fun () -> if (subjective quiz) then Subjective else prompt_mode ()
-  end in
+      fun () -> if (subjective quiz) then Subjective else prompt_mode ()
+    end in
   let q = next_question prog in
   let end_prog = ask q true quiz prog in
   if next_question end_prog = None then
     (Sys.remove (Progress.filename prog);
-    match quiz_mode prog with
-    | Subjective ->
-      print_string [Bold; cyan] 
-        ("\nYou have completed the quiz. You got: " ^ 
-         (best_category end_prog)); print_newline ()
-    | Test ->
-      print_string [Bold; cyan] 
-        "\nYou have completed the quiz. Your score is ";
-      ANSITerminal.printf [Bold; cyan] "%.2f" 
-        ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-      print_string [Bold; cyan] "%.\n";
-    | Practice ->
-      print_string [Bold; cyan]
-        "\nCongratulations, you have mastered all questions in this quiz!\n")
+     match quiz_mode prog with
+     | Subjective ->
+       print_string [Bold; cyan] 
+         ("\nYou have completed the quiz. You got: " ^ 
+          (best_category end_prog)); print_newline ()
+     | Test ->
+       print_string [Bold; cyan] 
+         "\nYou have completed the quiz. Your score is ";
+       ANSITerminal.printf [Bold; cyan] "%.2f" 
+         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
+       print_string [Bold; cyan] "%.\n";
+     | Practice ->
+       print_string [Bold; cyan]
+         "\nCongratulations, you have mastered all questions in this quiz!\n")
   else (print_newline (); print_string [cyan] "Your progress is saved!\n")
 
 let rec menu () = 
