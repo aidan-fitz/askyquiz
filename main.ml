@@ -125,7 +125,7 @@ let rec ask q is_odd mode quiz prog =
       ask q' (not is_odd) mode quiz prog'
     with
     | Interrupt | End_of_file -> Progress.save_progress (filename quiz) prog;
-    prog
+      prog
 
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
 let rec prompt_mode () = 
@@ -144,6 +144,8 @@ let main () =
   handle_sigint ();
   print_string [] "Enter .quiz to load? > ";
   let quiz = load_quiz () in
+  print_string [magenta] (desc quiz);
+  print_newline ();
   let quiz_length = List.length (get_questions quiz) in
   let mode = if (subjective quiz) then Subjective else prompt_mode () in
   let prog = init_progress quiz in
