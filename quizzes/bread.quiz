@@ -98,16 +98,6 @@
             "Baguette": 0,
             "Sourdough": 1
           }
-        },
-        {
-          "id": "ansid5",
-          "text": "Replace this text with your answer option. Replace values of categories below with 1 if this answer corresponds with said category",
-          "value": {
-            "White Bread": 0,
-            "Whole Wheat": 0,
-            "Baguette": 0,
-            "Sourdough": 0
-          }
         }
       ]
     },
