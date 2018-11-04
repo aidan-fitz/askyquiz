@@ -6,6 +6,7 @@ open Yojson.Basic.Util
 open QCheck
 open ANSITerminal
 open Str
+open Builder
 
 (** The current testing mode. *)
 type mode = Subjective | Test | Practice
@@ -144,8 +145,6 @@ let rec prompt_mode () =
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
-let create () = ()
-
 (** [edit ()] opens the . quiz file the user inputs in vim. If the user does not
     input a valid quiz, it reprompts for another file. *)
 let edit () =
@@ -197,7 +196,7 @@ let rec menu () =
   print_newline ();
   print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > \n";
   match read_line () with
-  | "1" -> ()
+  | "1" -> builder ()
   | "2" -> edit ()
   | "3" -> take_quiz ()
   | _ -> print_string [yellow] "Invalid mode; try again > "; menu ()
@@ -206,10 +205,9 @@ let rec menu () =
 let welcome_message () = 
   resize 100 30;
   print_string [red; on_black] "
-                 ┬ ┬┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ╔═╗╔═╗╦╔═╦ ╦  ╔═╗ ╦ ╦╦╔═╗┬
-                 │││├┤ │  │  │ ││││├┤    │ │ │  ╠═╣╚═╗╠╩╗╚╦╝  ║═╬╗║ ║║��═╝│
-                 └┴┘└─┘┴─┘└─┘└─┘┴ ┴└─���   ┴ ����┘  ╩ ��╚═╝╩ ╩ ��   ╚═╝╚╚═╝╩╚═╝o
-
+┬ ┬┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ╔═╗╔═╗╦╔═╦ ╦  ╔═╗ ╦ ╦╦╔═╗┬
+│││├┤ │  │  │ ││││├┤    │ │ │  ╠═╣╚═╗╠╩╗╚╦╝  ║═╬╗║ ║║╔═╝│
+└┴┘└─┘┴─┘└─┘└─┘┴ ┴└─┘   ┴ └─┘  ╩ ╩╚═╝╩ ╩ ╩   ╚═╝╚╚═╝╩╚═╝o
   "
 
 (** [main ()] prompts for the game to play, then starts it. *)
