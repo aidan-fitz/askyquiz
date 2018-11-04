@@ -140,6 +140,4 @@ let save_progress p =
     ("score", scores_to_json p.score);
     ("mastery", scores_to_json p.mastery)
   ]) in
-  let out = open_out p.filename in
-  Yojson.Basic.to_channel out j;
-  close_out out
+  Yojson.Basic.to_file p.filename j
