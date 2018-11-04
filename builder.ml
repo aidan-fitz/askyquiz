@@ -35,7 +35,8 @@ let q id cats =
 (** [qa_list cats num_qs] is a JSON representation of [num_qs] question and
     answer lists with [cats] scoring categories *)
 let qa_list cats num_qs =
-  build_list q [] cats "q" num_qs
+  let n = int_of_string num_qs in 
+  build_list q [] cats "q" n
 
 (** [build_quiz fname title desc sub cats num_qs] creates a JSON-formatted
     .quiz file *)
