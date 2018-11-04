@@ -11,13 +11,15 @@ open Builder
 (** Custom exception to help catch interrupt signals. *)
 exception Interrupt
 
+(* Alias for directory separator. *)
+let slash = Filename.dir_sep
+
 (** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let load_quiz () = 
   print_string [] "Enter .quiz to load: ";
   let rec load () =
-    let f = "." ^ Filename.dir_sep ^ "quizzes" ^ Filename.dir_sep ^ 
-            read_line () ^ ".quiz" in
+    let f = "." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz" in
     let quiz = 
       try Ok (parse_json f)
       with 
@@ -27,12 +29,12 @@ let load_quiz () =
     in match quiz with 
     | Ok q -> q
     | Error msg -> 
-      print_string [yellow] (msg ^ " Try again:\n");
-      print_string [] "> ";
-      load ()
+        print_string [yellow] (msg ^ " Try again:\n");
+        print_string [] "> ";
+        load ()
   in load ()
 
-(** [next l] is the letter after [l] in the alphabet. *)
+(** [next l] is the letter after [l] in the alphabet, but skips 'I'. *)
 let next l = 
   let incr = if l = 'I' then 2 else 1 in
   Char.(chr ((code l - code 'A' + incr) mod 26 + code 'A'))
@@ -41,9 +43,9 @@ let next l =
     [is_odd] and starting from 'F' otherwise. The sequence always skips 'I'. *)
 let make_letters n is_odd =
   let rec go n l acc =
-    if n = 0 then acc else
-      go (n-1) (l |> next) ((String.make 1 l)::acc)
-  in List.rev (if is_odd then go n 'A' [] else go n 'F' [])
+    if n = 0 then acc
+    else go (n-1) (l |> next) ((String.make 1 l)::acc)
+  in go n (if is_odd then 'A' else 'F') [] |> List.rev
 
 (** [shuffle letters answers] is an association list resulting from pairing
     [letters] to a shuffled permutation of [answers]. *)
@@ -55,24 +57,23 @@ let shuffle ltrs answers =
     Raises: Failure if letter is invalid. *)
 let rec get_aid ltr = function
   | [] -> failwith "Invalid answer option"  
-  | (l, (id, _))::t when l = ltr -> id
-  | _::t ->  get_aid ltr t 
+  | (l, (id, _))::t -> if l = ltr then id else get_aid ltr t
 
 (** [imm_feedback correct_aid correct options] outputs immediate feedback for 
     an answer to a question under practice mode. *)
 let imm_feedback correct_aid correct options =
   if correct then print_string [green] "You are correct!\n"
   else
-    let option = List.find (fun (ltr, (id, text)) -> id = correct_aid) options
+    let option = List.find (fun (_, (id, _)) -> id = correct_aid) options
     in printf [red]
-      "Incorrect. The correct answer is %s. %s\n" (fst option) (snd (snd option))
+     "Incorrect. The correct answer is %s. %s\n" (fst option) (snd (snd option))
 
 (** [requeue qid mstry correct] determines whether the question [qid] should be 
     requeued. It also updates the question's mastery level based on [correct].*)
 let requeue qid mstry correct =
   let m = List.assoc qid mstry in
-  if correct then let () = m := !m + 1 in (not (m = ref 3))
-  else ((if (not (m = ref 0)) then (m := !m - 1)); true)
+  if correct then (m := !m + 1; not (m = ref 3))
+  else (if not (m = ref 0) then m := !m - 1; true)
 
 (** [check_answer qid aid ans_choices prog quiz] updates [prog] and gives 
     feedback according to [quiz_mode prog]. *)
@@ -114,8 +115,7 @@ let rec ask q is_odd quiz prog =
     let ltrs = make_letters (List.length ans_pairs) is_odd in 
     let options = shuffle ltrs ans_pairs in
     (* print up to 5 answers; if there are fewer than 5, catch the exception *)
-    List.iter (fun (ltr, (id, ans)) -> 
-        print_endline (ltr ^ ". " ^ ans)) options;
+    List.iter (fun (l, (id, ans)) -> print_endline (l ^ ". " ^ ans)) options;
 
     try 
       let input = prompt_answer ltrs in
@@ -144,18 +144,19 @@ let edit () =
   print_string [] "Enter .quiz to edit > ";
   let rec open_file () = 
     let file = 
-      ("." ^ Filename.dir_sep ^ "quizzes" ^ Filename.dir_sep ^ read_line ()) in
+      ("." ^ slash ^ "quizzes" ^ slash ^ read_line ()) in
     if (Sys.file_exists file) && (Str.string_match (regexp ".*.quiz") file 0) 
     then ignore (Unix.system ("vim " ^ file))
-    else
-      (print_string [yellow] "File is not an existing quiz file. Try again:\n";
-       print_string [] "> ";
-       open_file ())
+    else begin
+      print_string [yellow] "File is not an existing quiz file. Try again:\n";
+      print_string [] "> ";
+      open_file ()
+    end
   in open_file ()
 
 let print_quizzes () =
   print_string [Bold] "Available quizzes:\n";
-  let dir = Unix.opendir ("." ^ Filename.dir_sep ^ "quizzes") in
+  let dir = Unix.opendir ("." ^ slash ^ "quizzes") in
   let rec quizzes () = 
     try let f = Unix.readdir dir in 
       if (Str.string_match (regexp ".*.quiz") f 0) 
@@ -163,13 +164,13 @@ let print_quizzes () =
       quizzes ()
     with End_of_file -> Unix.closedir dir
   in quizzes ()
+
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
 let take_quiz () =
   print_quizzes ();
   let quiz = load_quiz () in
-  printf [magenta] "%s\n" (title quiz);
-  printf [magenta] "%s\n" (desc quiz);
+  printf [magenta] "%s\n%s\n" (title quiz) (desc quiz);
   let quiz_length = List.length (get_questions quiz) in
   let prog = get_progress quiz begin
       fun () -> if (subjective quiz) then Subjective else prompt_mode ()
@@ -177,22 +178,15 @@ let take_quiz () =
   let q = next_question prog in
   let end_prog = ask q true quiz prog in
   if next_question end_prog = None then
-    ((try (Sys.remove (Progress.filename prog))
-      with Sys_error _ -> ());
-     match quiz_mode prog with
-     | Subjective ->
-        printf [Bold; cyan] 
-          "\nYou have completed the quiz. You got: %s\n"
-          (best_category end_prog)
-     | Test ->
-       print_string [Bold; cyan] 
-         "\nYou have completed the quiz. Your score is ";
-       ANSITerminal.printf [Bold; cyan] "%.2f" 
-         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-       print_string [Bold; cyan] "%.\n";
-     | Practice ->
-       print_string [Bold; cyan]
-         "\nCongratulations, you have mastered all questions in this quiz!\n")
+    (try  prog |> Progress.filename |> Sys.remove with Sys_error _ -> ();
+    match quiz_mode prog with
+    | Subjective -> printf [Bold; cyan]
+        "\nYou completed the quiz. You got: %s\n" (best_category end_prog)
+    | Test -> printf [Bold; cyan]
+        "\nYou completed the quiz. Your score is %.2f%%.\n"
+        ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0)
+    | Practice -> printf [Bold; cyan]
+        "\nCongratulations, you have mastered all questions in this quiz!\n")
   else (print_string [cyan] "\nYour progress is saved!\n")
 
 let rec menu () = 
@@ -207,7 +201,6 @@ let rec menu () =
   | "2" -> edit ()
   | "3" -> take_quiz ()
   | _ -> print_string [yellow] "Invalid mode; try again > "; menu ()
-
 
 let welcome_message () = 
   resize 100 30;
