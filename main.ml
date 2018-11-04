@@ -5,6 +5,7 @@ open Yojson.Basic
 open Yojson.Basic.Util
 open QCheck
 open ANSITerminal
+open Str
 
 (** The current testing mode. *)
 type mode = Subjective | Test | Practice
@@ -14,21 +15,24 @@ exception Interrupt
 
 (** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
-let rec load_quiz () = 
+let load_quiz () = 
   print_string [] "Enter .quiz to load: ";
-  let f = read_line () ^ ".quiz" in
-  let quiz = 
-    try Some (parse_json f)
-    with 
-    | Sys_error _  -> print_string [yellow] "File not found."; None
-    | Json_error _ -> print_string [yellow] "File has invalid JSON."; None
-    | Type_error _ -> print_string [yellow] "JSON doesn't represent quiz."; None
-  in match quiz with 
-  | Some q -> q
-  | None -> 
-    print_string [yellow] "Try again:\n";
-    print_string [] "> ";
-    load_quiz ()
+  let rec load () =
+    let f = read_line () ^ ".quiz" in
+    let quiz = 
+      try Some (parse_json f)
+      with 
+      | Sys_error _  -> print_string [yellow] "File not found. "; None
+      | Json_error _ -> print_string [yellow] "File has invalid JSON. "; None
+      | Type_error _ -> print_string [yellow] "JSON doesn't represent quiz. "; 
+        None
+    in match quiz with 
+    | Some q -> q
+    | None -> 
+      print_string [yellow] "Try again:\n";
+      print_string [] "> ";
+      load ()
+  in load ()
 
 (** [next l] is the letter after [l] in the alphabet. *)
 let next l = Char.(chr ((code l - code 'A' + 1) mod 26 + code 'A'))
@@ -132,15 +136,36 @@ let rec ask q is_odd mode quiz prog =
 let rec prompt_mode () = 
   print_string [] "Select (1) test or (2) practice mode > ";
   match read_line () with
-    | "1" -> Test
-    | "2" -> Practice
-    | _ -> print_string [yellow] "Sorry, try again\n"; prompt_mode ()
+  | "1" -> Test
+  | "2" -> Practice
+  | _ -> print_string [yellow] "Sorry, try again\n"; prompt_mode ()
 
 (** [handle_sigint ()] sets up a handler for SIGINT *)
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
+let create () = ()
+
+(** [edit ()] opens the . quiz file the user inputs in vim. If the user does not
+    input a valid quiz, it reprompts for another file. *)
+let edit () =
+  print_string [] "Enter .quiz to edit > ";
+  let rec open_file () = 
+    let file = read_line () in
+    if (Sys.file_exists file) && (Str.string_match (regexp ".*.quiz") file 0) 
+    then ignore (Unix.system ("vim " ^ file))
+    else
+      (print_string [yellow] "File is not an existing quiz file. Try again:\n";
+       print_string [] "> ";
+       open_file ())
+  in open_file ()
+
+let print_quizzes () = ()
+
+(** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
+    valid quiz, it reprompts for another file. *)
 let take_quiz () =
+  print_quizzes ();
   let quiz = load_quiz () in
   print_string [magenta] (desc quiz);
   print_newline ();
@@ -171,13 +196,21 @@ let rec menu () =
                        an existing quiz \n3. Take a quiz";
   print_newline ();
   print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > \n";
-  let mode = read_line () in
-  if mode = "1" then ()
-  else if mode = "2" then ()
-  else if mode = "3" then take_quiz ()
-  else (print_string [yellow] "Invalid mode; try again > "; menu ())
+  match read_line () with
+  | "1" -> ()
+  | "2" -> edit ()
+  | "3" -> take_quiz ()
+  | _ -> print_string [yellow] "Invalid mode; try again > "; menu ()
 
-let welcome_message () = ()
+
+let welcome_message () = 
+  resize 100 30;
+  print_string [red; on_black] "
+                 ┬ ┬┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ╔═╗╔═╗╦╔═╦ ╦  ╔═╗ ╦ ╦╦╔═╗┬
+                 │││├┤ │  │  │ ││││├┤    │ │ │  ╠═╣╚═╗╠╩╗╚╦╝  ║═╬╗║ ║║��═╝│
+                 └┴┘└─┘┴─┘└─┘└─┘┴ ┴└─���   ┴ ����┘  ╩ ��╚═╝╩ ╩ ��   ╚═╝╚╚═╝╩╚═╝o
+
+  "
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
