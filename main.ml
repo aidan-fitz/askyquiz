@@ -15,7 +15,8 @@ exception Interrupt
 (** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let rec load_quiz () = 
-  let f = read_line () in
+  print_string [] "Enter .quiz to load: ";
+  let f = read_line () ^ ".quiz" in
   let quiz = 
     try Some (parse_json f)
     with 
@@ -62,8 +63,8 @@ let imm_feedback correct_aid correct options =
   else
     let option = List.find (fun (ltr, (id, text)) -> id = correct_aid) options
     in print_string [red]
-        ("Incorrect. The correct answer is " ^
-        (fst option) ^ ". " ^ (snd (snd option)));
+      ("Incorrect. The correct answer is " ^
+       (fst option) ^ ". " ^ (snd (snd option)));
     print_newline ()
 
 (** [requeue qid mstry correct] determines whether the question [qid] should be 
@@ -96,7 +97,7 @@ let rec prompt_answer ltrs =
   if List.mem input ltrs then input
   else 
     (print_string [yellow] "Invalid answer option, try again.\n";
-    prompt_answer ltrs)
+     prompt_answer ltrs)
 
 (** [ask qn is_odd mode quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. It lists answers with 
@@ -130,19 +131,16 @@ let rec ask q is_odd mode quiz prog =
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
 let rec prompt_mode () = 
   print_string [] "Select (1) test or (2) practice mode > ";
-  let choice = read_line () in 
-  if choice = "1" then Test 
-  else if choice = "2" then Practice 
-  else (print_string [yellow] "Sorry, try again\n"; prompt_mode ())
+  match read_line () with
+    | "1" -> Test
+    | "2" -> Practice
+    | _ -> print_string [yellow] "Sorry, try again\n"; prompt_mode ()
 
 (** [handle_sigint ()] sets up a handler for SIGINT *)
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
-(** [main ()] prompts for the game to play, then starts it. *)
-let main () =
-  handle_sigint ();
-  print_string [] "Enter .quiz to load? > ";
+let take_quiz () =
   let quiz = load_quiz () in
   print_string [magenta] (desc quiz);
   print_newline ();
@@ -154,19 +152,38 @@ let main () =
   if next_question end_prog = None then
     match mode with
     | Subjective ->
-        print_string [Bold; cyan] 
-          ("\nYou have completed the quiz. You got: " ^ 
-          (best_category end_prog)); print_newline ()
+      print_string [Bold; cyan] 
+        ("\nYou have completed the quiz. You got: " ^ 
+         (best_category end_prog)); print_newline ()
     | Test ->
-        print_string [Bold; cyan] 
-          "\nYou have completed the quiz. Your score is ";
-        ANSITerminal.printf [Bold; cyan] "%.2f" 
+      print_string [Bold; cyan] 
+        "\nYou have completed the quiz. Your score is ";
+      ANSITerminal.printf [Bold; cyan] "%.2f" 
         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-        print_string [Bold; cyan] "%.\n";
+      print_string [Bold; cyan] "%.\n";
     | Practice ->
-        print_string [Bold; cyan]
-          "\nCongratulations, you have mastered all questions in this quiz!\n"
+      print_string [Bold; cyan]
+        "\nCongratulations, you have mastered all questions in this quiz!\n"
   else (print_newline (); print_string [cyan] "Your progress is saved!\n")
+
+let rec menu () = 
+  print_string [Bold] "\nMenu: \n1. Create a new quiz \n2. Edit \
+                       an existing quiz \n3. Take a quiz";
+  print_newline ();
+  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > \n";
+  let mode = read_line () in
+  if mode = "1" then ()
+  else if mode = "2" then ()
+  else if mode = "3" then take_quiz ()
+  else (print_string [yellow] "Invalid mode; try again > "; menu ())
+
+let welcome_message () = ()
+
+(** [main ()] prompts for the game to play, then starts it. *)
+let main () =
+  handle_sigint ();
+  welcome_message ();
+  menu ()
 
 (* Execute the game engine. *)
 let () = main ()
