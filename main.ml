@@ -15,7 +15,7 @@ exception Interrupt
 (** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let rec load_quiz () = 
-  let f = read_line () in
+  let f = read_line () ^ ".quiz" in
   let quiz = 
     try Some (parse_json f)
     with 
