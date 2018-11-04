@@ -45,7 +45,7 @@ let build_quiz fname title desc sub cats num_qs =
                    ("subjective", `Bool sub); 
                    ("categories", (strings_to_json cats)); 
                    ("questions", (qa_list cats num_qs))]) in
-  let file = open_out (fname^".quiz") in
+  let file = open_out ("./quizzes/"^fname^".quiz") in
   Yojson.Basic.pretty_to_channel file j;
   close_out file
 
@@ -54,7 +54,7 @@ let build_quiz fname title desc sub cats num_qs =
 let rec prompt_name () = 
   print_string [] "Enter new .quiz file name > ";
   let f_check = read_line () in
-  if Sys.file_exists (f_check^".quiz") = false then f_check 
+  if Sys.file_exists ("./quizzes/"^f_check^".quiz") = false then f_check 
   else let () = print_string [yellow] 
            ("Sorry, a quiz with that filename already exists!\n") in
     prompt_name () 
@@ -84,4 +84,4 @@ let builder () =
   let num_qs = read_line () in
   print_newline (); 
   build_quiz fname title desc sub cats_list num_qs;
-  ignore(Unix.system ("vim "^ fname^".quiz"))
+  ignore(Unix.system ("vim ./quizzes/"^ fname^".quiz"))
