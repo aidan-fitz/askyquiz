@@ -43,5 +43,5 @@ val best_category: t -> Quiz.category
 val best_score: t -> int
 
 (** [save_progress p] writes the contents of [p] to its associated progress 
-    file. *)
-val save_progress: t -> unit
+    file and then returns [p]. *)
+val save_progress: t -> t
