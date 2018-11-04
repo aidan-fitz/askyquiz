@@ -8,9 +8,6 @@ open ANSITerminal
 open Str
 open Builder
 
-(** The current testing mode. *)
-type mode = Subjective | Test | Practice
-
 (** Custom exception to help catch interrupt signals. *)
 exception Interrupt
 
@@ -78,11 +75,11 @@ let requeue qid mstry correct =
   if correct then let () = m := !m + 1 in (not (m = ref 3))
   else ((if (not (m = ref 0)) then (m := !m - 1)); true)
 
-(** [check_answer qid aid mode ans_choices prog quiz] updates [prog] and gives 
-    feedback according to [mode]. *)
-let check_answer qid aid mode ans_choices prog quiz = 
+(** [check_answer qid aid ans_choices prog quiz] updates [prog] and gives 
+    feedback according to [quiz_mode prog]. *)
+let check_answer qid aid ans_choices prog quiz = 
   let rq =
-    if mode = Practice then 
+    if quiz_mode prog = Practice then 
       let correct_aid = qid |> answers quiz |> correct_ans in
       let is_correct = aid = correct_aid in
       imm_feedback correct_aid is_correct ans_choices;
@@ -103,10 +100,10 @@ let rec prompt_answer ltrs =
     (print_string [yellow] "Invalid answer option, try again.\n";
      prompt_answer ltrs)
 
-(** [ask qn is_odd mode quiz prog] displays [qn] to the screen and 
+(** [ask qn is_odd quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. It lists answers with 
     A, B, C, D, E if [is_odd] is [true], and with F, G, H, J, K otherwise. *)
-let rec ask q is_odd mode quiz prog = 
+let rec ask q is_odd quiz prog = 
   match q with 
   | None -> prog
   | Some q -> 
@@ -125,9 +122,9 @@ let rec ask q is_odd mode quiz prog =
     try 
       let input = prompt_answer ltrs in
       let aid = get_aid input options in
-      let prog' = check_answer qid aid mode options prog quiz in
+      let prog' = check_answer qid aid options prog quiz in
       let q' = next_question prog' in
-      ask q' (not is_odd) mode quiz prog'
+      ask q' (not is_odd) quiz prog'
     with
     | Interrupt | End_of_file -> Progress.save_progress prog
 
@@ -175,26 +172,27 @@ let take_quiz () =
   print_string [magenta] (desc quiz);
   print_newline ();
   let quiz_length = List.length (get_questions quiz) in
-  let mode = if (subjective quiz) then Subjective else prompt_mode () in
-  let prog = get_progress quiz in
+  let prog = get_progress quiz begin
+    fun () -> if (subjective quiz) then Subjective else prompt_mode ()
+  end in
   let q = next_question prog in
-  let end_prog = ask q true mode quiz prog in
+  let end_prog = ask q true quiz prog in
   if next_question end_prog = None then
     (Sys.remove (Progress.filename prog);
-     match mode with
-     | Subjective ->
-       print_string [Bold; cyan] 
-         ("\nYou have completed the quiz. You got: " ^ 
-          (best_category end_prog)); print_newline ()
-     | Test ->
-       print_string [Bold; cyan] 
-         "\nYou have completed the quiz. Your score is ";
-       ANSITerminal.printf [Bold; cyan] "%.2f" 
-         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-       print_string [Bold; cyan] "%.\n";
-     | Practice ->
-       print_string [Bold; cyan]
-         "\nCongratulations, you have mastered all questions in this quiz!\n")
+    match quiz_mode prog with
+    | Subjective ->
+      print_string [Bold; cyan] 
+        ("\nYou have completed the quiz. You got: " ^ 
+         (best_category end_prog)); print_newline ()
+    | Test ->
+      print_string [Bold; cyan] 
+        "\nYou have completed the quiz. Your score is ";
+      ANSITerminal.printf [Bold; cyan] "%.2f" 
+        ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
+      print_string [Bold; cyan] "%.\n";
+    | Practice ->
+      print_string [Bold; cyan]
+        "\nCongratulations, you have mastered all questions in this quiz!\n")
   else (print_newline (); print_string [cyan] "Your progress is saved!\n")
 
 let rec menu () = 

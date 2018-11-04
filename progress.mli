@@ -1,12 +1,16 @@
 (** The type that represents progress while taking a quiz *)
 type t
 
-(** [init_progress quiz] is the initial [progress] type for [quiz]*)
-val init_progress : Quiz.t -> t
+(** The current quiz mode. *)
+type mode = Subjective | Test | Practice
 
-(** [get_progress quiz] loads the progress file corresponding to [quiz] if it
-    exists, and calls [init_progress quiz] otherwise. *)
-val get_progress : Quiz.t -> t
+(** [init_progress quiz thunk] creates the initial state for [quiz], using
+    [thunk] to compute the quiz mode. *)
+val init_progress : Quiz.t -> (unit -> mode) -> t
+
+(** [get_progress quiz thunk] loads the progress file corresponding to [quiz] if it
+    exists, and calls [init_progress quiz thunk] otherwise. *)
+val get_progress : Quiz.t -> (unit -> mode) -> t
 
 (** [update_progress qid aid quiz prog] updates [prog] to reflect the user
     answering with ID [aid] for question with ID [qid]. Running scores in 
@@ -28,6 +32,9 @@ val mastery: t -> (string * int ref) list
 
 (** [filename p] is the path to the progress file associated with [p]. *)
 val filename : t -> string
+
+(** [quiz_mode p] is the mode the user are playing in. *)
+val quiz_mode : t -> mode
 
 (** [next_question prog] is the next question to be asked. *)
 val next_question: t -> Quiz.id option
