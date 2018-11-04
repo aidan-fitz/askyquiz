@@ -181,7 +181,8 @@ let take_quiz () =
   let q = next_question prog in
   let end_prog = ask q true quiz prog in
   if next_question end_prog = None then
-    (Sys.remove (Progress.filename prog);
+    ((try (Sys.remove (Progress.filename prog))
+      with Sys_error _ -> ());
      match quiz_mode prog with
      | Subjective ->
        print_string [Bold; cyan] 
@@ -216,9 +217,9 @@ let rec menu () =
 let welcome_message () = 
   resize 100 30;
   print_string [red; on_black] "
-┬ ┬┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ╔═╗╔═╗╦╔═╦ ╦  ╔═╗ ╦ ╦╦╔═╗┬
-│││├┤ │  │  │ ││││├┤    │ │ │  ╠═╣╚═╗╠╩╗╚╦╝  ║═╬╗║ ║║╔═╝│
-└┴┘└─┘┴─┘└─┘└─┘┴ ┴└─┘   ┴ └─┘  ╩ ╩╚═╝╩ ╩ ╩   ╚═╝╚╚═╝╩╚═╝o
+                       _   __           __      __  
+    _ /_   _  _  _/   /_| (  /__/(__/  /  )/  //_/| 
+((/(-(( ()//)(-  /() (  |__)/  )  /   (__\(__/(/__. 
   "
 
 (** [main ()] prompts for the game to play, then starts it. *)
