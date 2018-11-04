@@ -108,12 +108,16 @@ let get_answers qid t =
   List.map (fun (x : answer) -> (x.id, x.text)) a
 
 let rec correct_ans = function
-  | h :: t -> if begin 
-    (match h.values with
-     | (c, v) :: [] -> v = 1
-     | _ -> failwith "answer has no values"
-    ) end then h.id else correct_ans t
-  | _ -> failwith "no correct answer"
+  | ans :: tail ->
+      (* find ans s.t. it has one value with score 1 *)
+      if match ans.values with
+        | [] -> failwith "answer has no values"
+        | [(c, v)] -> v = 1
+        | _ -> failwith "subjective quiz"
+      then ans.id
+      else correct_ans tail
+  (* end of list *)
+  | [] -> failwith "no correct answer"
 
 let get_values qid aid t =
   let question = get_q_from_id qid t in
