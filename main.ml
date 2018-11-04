@@ -154,6 +154,7 @@ let edit () =
     end
   in open_file ()
 
+(** [print_quizzes ()] displays all quizzes available in the current folder. *)
 let print_quizzes () =
   print_string [Bold] "Available quizzes:\n";
   let dir = Unix.opendir ("." ^ slash ^ "quizzes") in
@@ -189,7 +190,7 @@ let take_quiz () =
         "\nCongratulations, you have mastered all questions in this quiz!\n")
   else (print_string [cyan] "\nYour progress is saved!\n")
 
-let rec menu () = 
+let rec welcome_menu () = 
   print_string [Bold]
     "\nMenu: \n\
      1. Create a new quiz \n\
@@ -200,7 +201,7 @@ let rec menu () =
   | "1" -> builder ()
   | "2" -> edit ()
   | "3" -> take_quiz ()
-  | _ -> print_string [yellow] "Invalid mode; try again > "; menu ()
+  | _ -> print_string [yellow] "Invalid mode; try again > "; welcome_menu ()
 
 let welcome_message () = 
   resize 100 30;
@@ -214,7 +215,7 @@ let welcome_message () =
 let main () =
   handle_sigint ();
   welcome_message ();
-  menu ()
+  welcome_menu ()
 
 (* Execute the game engine. *)
 let () = main ()
