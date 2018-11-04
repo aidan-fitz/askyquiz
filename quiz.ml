@@ -108,8 +108,8 @@ let get_answers qid t =
   List.map (fun (x : answer) -> (x.id, x.text)) a
 
 let rec correct_ans = function
+  (* find ans s.t. it has one value with score 1 *)
   | ans :: tail -> begin
-      (* find ans s.t. it has one value with score 1 *)
       match ans.values with
         | [] -> failwith "answer has no values"
         | [("correct", v)] -> if v = 1 then ans.id else correct_ans tail
