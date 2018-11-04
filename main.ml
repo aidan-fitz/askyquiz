@@ -21,16 +21,15 @@ let load_quiz () =
   let rec load () =
     let f = read_line () ^ ".quiz" in
     let quiz = 
-      try Some (parse_json f)
+      try Ok (parse_json f)
       with 
-      | Sys_error _  -> print_string [yellow] "File not found. "; None
-      | Json_error _ -> print_string [yellow] "File has invalid JSON. "; None
-      | Type_error _ -> print_string [yellow] "JSON doesn't represent quiz. "; 
-        None
+      | Sys_error _  -> Error "File not found."
+      | Json_error _ -> Error "File has invalid JSON."
+      | Type_error _ -> Error "JSON doesn't represent quiz."
     in match quiz with 
-    | Some q -> q
-    | None -> 
-      print_string [yellow] "Try again:\n";
+    | Ok q -> q
+    | Error msg -> 
+      print_string [yellow] (msg ^ " Try again:\n");
       print_string [] "> ";
       load ()
   in load ()
