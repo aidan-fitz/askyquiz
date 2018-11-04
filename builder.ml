@@ -20,7 +20,7 @@ let rec build_list f acc cats pref n =
     scoring categories*)
 let ans_list id cats = 
   `Assoc ([("id", `String id); 
-           ("text", `String ("Replace this text with your answer option.\n"^
+           ("text", `String ("Replace this text with your answer option. "^
                              "Replace values of categories below with 1 if "^
                              "this answer corresponds with said category"));
            ("value", `Assoc (List.map (fun c -> (c, `Int 0)) cats))])
@@ -75,3 +75,4 @@ let builder () =
   let num_qs = read_line () in
   print_newline (); 
   build_quiz fname title desc sub cats_list num_qs;
+  ignore(Unix.system ("vim "^ fname^".quiz"))
