@@ -15,6 +15,7 @@ exception Interrupt
 (** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let rec load_quiz () = 
+  print_string [] "Enter .quiz to load: ";
   let f = read_line () ^ ".quiz" in
   let quiz = 
     try Some (parse_json f)
@@ -140,7 +141,6 @@ let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
 let take_quiz () =
-  print_string [] "Enter .quiz to load > ";
   let quiz = load_quiz () in
   print_string [magenta] (desc quiz);
   print_newline ();
