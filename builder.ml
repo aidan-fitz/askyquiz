@@ -19,21 +19,24 @@ let rec build_list f acc cats pref n =
 (** [ans_list id cats] is a JSON representation of answers with [cats] 
     scoring categories*)
 let ans_list id cats = 
-  `List (["id": `String id; 
-          "text": "Replace this text with your answer option.",
-          "value": `Assoc (List.map (fun c -> (c, `Int 0)) cats)])
+  `Assoc ([("id", `String id); 
+           ("text", `String ("Replace this text with your answer option.\n"^
+                             "Replace values of categories below with 1 if "^
+                             "this answer corresponds with said category"));
+           ("value", `Assoc (List.map (fun c -> (c, `Int 0)) cats))])
 
 (** [q id cats] is a JSON representation of a question with answers
     of [cats] scoring categories*)
 let q id cats = 
-  `Assoc (["id": `String id, 
-           "text": "Replace this text with your answer option.",
-           "answers" = build_list ans_list [] cats "ans" 5])
+  `Assoc ([("id", `String id); 
+           ("text", `String "Replace this text with your question.");
+           ("answers", build_list ans_list [] cats "ans" 5)])
 
 (** [qa_list cats num_qs] is a JSON representation of [num_qs] question and
     answer lists with [cats] scoring categories *)
 let qa_list cats num_qs =
-  build_list q [] cats "q" num_qs
+  let n = int_of_string num_qs in 
+  build_list q [] cats "q" n
 
 (** [build_quiz fname title desc sub cats num_qs] creates a JSON-formatted
     .quiz file *)
@@ -46,7 +49,7 @@ let build_quiz fname title desc sub cats num_qs =
   Yojson.Basic.to_channel file j;
   close_out file
 
-(** [builder ()] prompts the user for details and executes the quiz builder *)
+(* [builder ()] prompts the user for details and executes the quiz builder *)
 let builder () =
   print_string [Bold] "Create an ASKYQuiz!\n";
   print_string [] "Enter new .quiz file name > ";
@@ -72,11 +75,3 @@ let builder () =
   let num_qs = read_line () in
   print_newline (); 
   build_quiz fname title desc sub cats_list num_qs;
-
-
-
-  (* create: prompt new file name, title, desc, sub/not, num questions,
-     answer categories then open vim
-     edit: open existing in vim (in main) *)
-
-  (* open vim at some point *)
