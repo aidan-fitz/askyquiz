@@ -1,0 +1,253 @@
+{
+  "title": "What kind of bread are you?",
+  "desc": "Discover what kind of bread you are based on your personality!",
+  "subjective": true,
+  "categories": [
+    "White Bread",
+    "Whole Wheat",
+    "Baguette",
+    "Sourdough"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "What is your favorite drink?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Water",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 1,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Sparkling Cider",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 1,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Beer",
+          "value": {
+            "White Bread": 1,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Coffee",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "How long do you sleep every night?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "8-9 hours",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 1,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "4-5 hours",
+          "value": {
+            "White Bread": 1,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "10-12 hours",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 1,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Never sleep",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 1
+          }
+        },
+        {
+          "id": "ansid5",
+          "text": "Replace this text with your answer option. Replace values of categories below with 1 if this answer corresponds with said category",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "What is your favorite season? ",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Fall",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Winter",
+          "value": {
+            "White Bread": 1,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Summer",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 1,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Spring",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 1,
+            "Sourdough": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "Who of the following inspires you the most?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Cristiano Ronaldo",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "David Gries",
+          "value": {
+            "White Bread": 1,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Michelle Obama",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 1,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Beyonce",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 1,
+            "Sourdough": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "Where would you want to go for vacation?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Singapore",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 1,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Barcelona",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 1,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Australia",
+          "value": {
+            "White Bread": 0,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Florida",
+          "value": {
+            "White Bread": 1,
+            "Whole Wheat": 0,
+            "Baguette": 0,
+            "Sourdough": 0
+          }
+        }
+      ]
+    }
+  ]
+}
