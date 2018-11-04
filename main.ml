@@ -44,7 +44,7 @@ let next l =
 let make_letters n is_odd =
   let rec go n l acc =
     if n = 0 then acc else
-    go (n-1) (l |> next) ((String.make 1 l)::acc)
+      go (n-1) (l |> next) ((String.make 1 l)::acc)
   in List.rev (if is_odd then go n 'A' [] else go n 'F' [])
 
 (** [shuffle letters answers] is an association list resulting from pairing
@@ -148,7 +148,8 @@ let handle_sigint () =
 let edit () =
   print_string [] "Enter .quiz to edit > ";
   let rec open_file () = 
-    let file = read_line () in
+    let file = 
+      ("." ^ Filename.dir_sep ^ "quizzes" ^ Filename.dir_sep ^ read_line ()) in
     if (Sys.file_exists file) && (Str.string_match (regexp ".*.quiz") file 0) 
     then ignore (Unix.system ("vim " ^ file))
     else
@@ -159,14 +160,13 @@ let edit () =
 
 let print_quizzes () =
   print_endline "Available quizzes:";
-  let dir = Unix.opendir (Unix.getcwd ()) in
+  let dir = Unix.opendir ("." ^ Filename.dir_sep ^ "quizzes") in
   let rec quizzes () = 
     try let f = Unix.readdir dir in 
       if (Str.string_match (regexp ".*.quiz") f 0) then print_endline f else ();
       quizzes ()
     with End_of_file -> Unix.closedir dir
   in quizzes ()
-
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
 let take_quiz () =
@@ -181,28 +181,28 @@ let take_quiz () =
   let end_prog = ask q true mode quiz prog in
   if next_question end_prog = None then
     (Sys.remove (Progress.filename prog);
-    match mode with
-    | Subjective ->
-      print_string [Bold; cyan] 
-        ("\nYou have completed the quiz. You got: " ^ 
-         (best_category end_prog)); print_newline ()
-    | Test ->
-      print_string [Bold; cyan] 
-        "\nYou have completed the quiz. Your score is ";
-      ANSITerminal.printf [Bold; cyan] "%.2f" 
-        ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-      print_string [Bold; cyan] "%.\n";
-    | Practice ->
-      print_string [Bold; cyan]
-        "\nCongratulations, you have mastered all questions in this quiz!\n")
+     match mode with
+     | Subjective ->
+       print_string [Bold; cyan] 
+         ("\nYou have completed the quiz. You got: " ^ 
+          (best_category end_prog)); print_newline ()
+     | Test ->
+       print_string [Bold; cyan] 
+         "\nYou have completed the quiz. Your score is ";
+       ANSITerminal.printf [Bold; cyan] "%.2f" 
+         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
+       print_string [Bold; cyan] "%.\n";
+     | Practice ->
+       print_string [Bold; cyan]
+         "\nCongratulations, you have mastered all questions in this quiz!\n")
   else (print_newline (); print_string [cyan] "Your progress is saved!\n")
 
 let rec menu () = 
   print_string [Bold]
     "\nMenu: \n\
-    1. Create a new quiz \n\
-    2. Edit an existing quiz \n\
-    3. Take a quiz";
+     1. Create a new quiz \n\
+     2. Edit an existing quiz \n\
+     3. Take a quiz";
   print_newline ();
   print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > ";
   match read_line () with
