@@ -1,0 +1,180 @@
+{
+  "title": "SAT Quiz",
+  "desc": "This is a quiz for the SATs!",
+  "subjective": false,
+  "categories": [
+    "correct"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "On Saturday afternoon, Armand sent m text messages each hour for 5 hours, and Tyrone sent p text messages each hour for 4 hours. Which of the following represents the total number of messages sent by Armand and Tyrone on Saturday afternoon?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "9mp",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "20mp",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "5m + 4p",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "4m + 5p",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "Kathy is a repair technician for a phone company.\nEach week, she receives a batch of phones that need\nrepairs. The number of phones that she has left to fix\nat the end of each day can be estimated with the\nequation P = 108 − 23d, where P is the number of\nphones left and d is the number of days she has\nworked that week. What is the meaning of the\nvalue 108 in this equation?\n",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Kathy will complete the repairs within 108 days",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Kathy starts each week with 108 phones to fix.",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Kathy repairs phones at a rate of 108 per hour.",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Kathy repairs phones at a rate of 108 per day.",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "A line in the xy-plane passes through the origin and\nhas a slope of 1/7. Which of the following points lies\non the line?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "(0,7)",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "(1,7)",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "(7,7)",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "(14,2)",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "If (ax + 2)(bx + 7) = 15x^2 + cx + 14 for all values of\nx, and a + b = 8, what are the two possible\nvalues for c ?\n",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "3 and 5",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "6 and 35",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "10 and 21",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "31 and 41",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "Which of the following numbers is NOT a solution of the inequality 3x −5 ≥ 4x −3?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": -1,
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": -2,
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": -3,
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": -5,
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    }
+  ]
+}
