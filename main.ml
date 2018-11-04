@@ -129,7 +129,7 @@ let rec ask q is_odd mode quiz prog =
       let q' = next_question prog' in
       ask q' (not is_odd) mode quiz prog'
     with
-    | Interrupt | End_of_file -> Progress.save_progress (filename quiz) prog;
+    | Interrupt | End_of_file -> Progress.save_progress prog;
       prog
 
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
@@ -169,10 +169,11 @@ let take_quiz () =
   print_newline ();
   let quiz_length = List.length (get_questions quiz) in
   let mode = if (subjective quiz) then Subjective else prompt_mode () in
-  let prog = init_progress quiz in
+  let prog = get_progress quiz in
   let q = next_question prog in
   let end_prog = ask q true mode quiz prog in
   if next_question end_prog = None then
+    (Sys.remove (Progress.filename prog);
     match mode with
     | Subjective ->
       print_string [Bold; cyan] 
@@ -186,14 +187,17 @@ let take_quiz () =
       print_string [Bold; cyan] "%.\n";
     | Practice ->
       print_string [Bold; cyan]
-        "\nCongratulations, you have mastered all questions in this quiz!\n"
+        "\nCongratulations, you have mastered all questions in this quiz!\n")
   else (print_newline (); print_string [cyan] "Your progress is saved!\n")
 
 let rec menu () = 
-  print_string [Bold] "\nMenu: \n1. Create a new quiz \n2. Edit \
-                       an existing quiz \n3. Take a quiz";
+  print_string [Bold]
+    "\nMenu: \n\
+    1. Create a new quiz \n\
+    2. Edit an existing quiz \n\
+    3. Take a quiz";
   print_newline ();
-  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > \n";
+  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > ";
   match read_line () with
   | "1" -> builder ()
   | "2" -> edit ()
