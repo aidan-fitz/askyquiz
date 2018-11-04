@@ -144,7 +144,7 @@ let rec prompt_mode () =
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
 
-(** [edit ()] opens the . quiz file the user inputs in vim. If the user does not
+(** [edit ()] opens the .quiz file the user inputs in vim. If the user does not
     input a valid quiz, it reprompts for another file. *)
 let edit () =
   print_string [] "Enter .quiz to edit > ";
