@@ -16,7 +16,8 @@ exception Interrupt
 let load_quiz () = 
   print_string [] "Enter .quiz to load: ";
   let rec load () =
-    let f = read_line () ^ ".quiz" in
+    let f = "." ^ Filename.dir_sep ^ "quizzes" ^ Filename.dir_sep ^ 
+            read_line () ^ ".quiz" in
     let quiz = 
       try Ok (parse_json f)
       with 
