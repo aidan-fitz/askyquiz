@@ -35,16 +35,16 @@ let load_quiz () =
   in load ()
 
 (** [next l] is the letter after [l] in the alphabet. *)
-let next l = Char.(chr ((code l - code 'A' + 1) mod 26 + code 'A'))
+let next l = 
+  let incr = if l = 'I' then 2 else 1 in
+  Char.(chr ((code l - code 'A' + incr) mod 26 + code 'A'))
 
 (** [make_letters n is_odd] is a list of [n] letters starting from 'A' if 
     [is_odd] and starting from 'F' otherwise. The sequence always skips 'I'. *)
 let make_letters n is_odd =
   let rec go n l acc =
     if n = 0 then acc else
-    if (next l) = 'I' 
-    then go (n-1) (l |> next |> next) ((String.make 1 l)::acc)
-    else go (n-1) (l |> next) ((String.make 1 l)::acc)
+    go (n-1) (l |> next) ((String.make 1 l)::acc)
   in List.rev (if is_odd then go n 'A' [] else go n 'F' [])
 
 (** [shuffle letters answers] is an association list resulting from pairing
