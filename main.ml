@@ -217,7 +217,8 @@ let take_quiz () =
        print_string [Bold; cyan] 
          "\nYou have completed the quiz. Your score is ";
        ANSITerminal.printf [Bold; cyan] "%.2f" 
-         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
+         ((float_of_int 
+             ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
        print_string [Bold; cyan] "%.\n";
      | Practice ->
        print_string [Bold; cyan]
