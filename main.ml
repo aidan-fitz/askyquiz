@@ -72,8 +72,8 @@ let imm_feedback correct_aid correct options =
     requeued. It also updates the question's mastery level based on [correct].*)
 let requeue qid mstry correct =
   let m = List.assoc qid mstry in
-  if correct then let () = m := !m + 1 in (not (m = ref 3))
-  else ((if (not (m = ref 0)) then (m := !m - 1)); true)
+  if correct then (m := !m + 1; !m <> 3)
+  else ((if !m <> 0 then (m := !m - 1)); true)
 
 (** [check_answer qid aid ans_choices prog quiz] updates [prog] and gives 
     feedback according to [quiz_mode prog]. *)
