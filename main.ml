@@ -146,13 +146,35 @@ let edit () =
     let file = 
       ("." ^ Filename.dir_sep ^ "quizzes" ^ Filename.dir_sep ^ read_line ()) in
     if (Sys.file_exists file) && (Str.string_match (regexp ".*.quiz") file 0) 
-    then ignore (Unix.system ("vim " ^ file))
+    then (ignore (Unix.system ("vim " ^ file)))
     else
       (print_string [yellow] "File is not an existing quiz file. Try again:\n";
        print_string [] "> ";
        open_file ())
   in open_file ()
 
+(** [print_by_type ()] is the prints subjective and non-subjective quizzes by 
+    type*)
+let print_by_type () = 
+  ignore(Unix.system ("cd ./quizzes && grep -l \'\"subjective\":"^
+                      " true\' *.quiz > sub.log && cd .."));
+  ignore(Unix.system ("cd ./quizzes && grep -l \'\"subjective\":"^
+                      " false\' *.quiz > not.log && cd .."));
+  let rec print_q f = 
+    try 
+      let line = input_line f in  
+      print_string [yellow] (line^"\n");
+      print_q f
+    with End_of_file -> close_in f
+  in
+  let s = open_in ("." ^ Filename.dir_sep ^ "quizzes/sub.log") in
+  let n = open_in ("." ^ Filename.dir_sep ^ "quizzes/not.log") in
+  print_string [Bold] "Subjective quizzes: \n";
+  print_q s;
+  print_string [Bold] "Non-subjective quizzes: \n";
+  print_q n
+
+(* 
 let print_quizzes () =
   print_string [Bold] "Available quizzes:\n";
   let dir = Unix.opendir ("." ^ Filename.dir_sep ^ "quizzes") in
@@ -162,11 +184,12 @@ let print_quizzes () =
       then print_string [yellow] (f ^ "\n");
       quizzes ()
     with End_of_file -> Unix.closedir dir
-  in quizzes ()
+  in quizzes () *)
+
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
 let take_quiz () =
-  print_quizzes ();
+  print_by_type ();
   let quiz = load_quiz () in
   printf [magenta] "%s\n" (title quiz);
   printf [magenta] "%s\n" (desc quiz);
@@ -181,9 +204,9 @@ let take_quiz () =
       with Sys_error _ -> ());
      match quiz_mode prog with
      | Subjective ->
-        printf [Bold; cyan] 
-          "\nYou have completed the quiz. You got: %s\n"
-          (best_category end_prog)
+       printf [Bold; cyan] 
+         "\nYou have completed the quiz. You got: %s\n"
+         (best_category end_prog)
      | Test ->
        print_string [Bold; cyan] 
          "\nYou have completed the quiz. Your score is ";
