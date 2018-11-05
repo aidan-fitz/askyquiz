@@ -80,28 +80,28 @@
       "answers": [
         {
           "id": "ansid1",
-          "text": "\"3\"",
+          "text": "3",
           "value": {
             "correct": 1
           }
         },
         {
           "id": "ansid2",
-          "text": "\"4\"",
+          "text": "4",
           "value": {
             "correct": 0
           }
         },
         {
           "id": "ansid3",
-          "text": "\"1\"",
+          "text": "1",
           "value": {
             "correct": 0
           }
         },
         {
           "id": "ansid4",
-          "text": "\"2\"",
+          "text": "2",
           "value": {
             "correct": 0
           }
