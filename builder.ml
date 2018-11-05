@@ -51,19 +51,18 @@ let build_quiz fname title desc sub cats num_qs =
   Yojson.Basic.pretty_to_channel file j;
   close_out file
 
+(** [prompt_string msg] returns user input after printing [msg]. *)
+let prompt_string msg = print_string [] msg; read_line ()
+
 (** [prompt_file ()] is the file name of a new .quiz file that does not already 
     exist in the directory  *)
 let rec prompt_file () = 
-  print_string [] "Enter new .quiz file name > ";
-  let f_check = read_line () in
-  if Sys.file_exists ("." ^ slash ^ "quizzes" ^
-                      slash^ f_check^".quiz") = false then f_check 
-  else let () = print_string [yellow] 
-           ("Sorry, a quiz with that filename already exists!\n") in
+  let fname = prompt_string "Enter new .quiz file name > " in
+  if not (Sys.file_exists ("." ^ slash ^ "quizzes" ^ slash ^ fname ^ ".quiz"))
+  then fname
+  else
+    print_string [yellow] "Sorry, a quiz with that filename already exists!\n";
     prompt_file () 
-
-(** [prompt_string msg] returns user input after printing [msg]. *)
-let prompt_string msg = print_string [] msg; read_line ()
 
 (* [builder ()] prompts the user for details and executes the quiz builder *)
 let builder () =
