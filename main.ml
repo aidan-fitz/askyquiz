@@ -180,18 +180,6 @@ let print_by_type () =
   print_q n;
   print_newline ()
 
-(* 
-let print_quizzes () =
-  print_string [Bold] "Available quizzes:\n";
-  let dir = Unix.opendir ("." ^ Filename.dir_sep ^ "quizzes") in
-  let rec quizzes () = 
-    try let f = Unix.readdir dir in 
-      if (Str.string_match (regexp ".*.quiz") f 0) 
-      then print_string [yellow] (f ^ "\n");
-      quizzes ()
-    with End_of_file -> Unix.closedir dir
-  in quizzes () *)
-
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
 let take_quiz () =
