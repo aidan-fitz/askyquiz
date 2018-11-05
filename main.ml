@@ -65,7 +65,8 @@ let imm_feedback correct_aid correct options =
   else
     let option = List.find (fun (ltr, (id, text)) -> id = correct_aid) options
     in printf [red]
-      "Incorrect. The correct answer is %s. %s\n" (fst option) (snd (snd option))
+      "Incorrect. The correct answer is %s. %s\n" 
+      (fst option) (snd (snd option))
 
 (** [requeue qid mstry correct] determines whether the question [qid] should be 
     requeued. It also updates the question's mastery level based on [correct].*)
@@ -144,7 +145,8 @@ let edit () =
   print_string [] "Enter quiz name to edit > ";
   let rec open_file () = 
     let file = 
-      ("." ^ Filename.dir_sep ^ "quizzes" ^ Filename.dir_sep ^ read_line () ^".quiz") in
+      ("." ^ Filename.dir_sep ^ "quizzes" ^ Filename.dir_sep ^ read_line () ^
+       ".quiz") in
     if (Sys.file_exists file) && (Str.string_match (regexp ".*.quiz") file 0) 
     then (ignore (Unix.system ("vim " ^ file)))
     else
