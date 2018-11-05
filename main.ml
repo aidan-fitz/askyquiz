@@ -17,7 +17,7 @@ let slash = Filename.dir_sep
 (** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let load_quiz () = 
-  print_string [] "Enter .quiz to load: ";
+  print_string [] "Enter quiz name to load: ";
   let rec load () =
     let f = "." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz" in
     let quiz = parse_json f
@@ -136,7 +136,7 @@ let handle_sigint () =
 (** [edit ()] opens the .quiz file the user inputs in vim. If the user does not
     input a valid quiz, it reprompts for another file. *)
 let edit () =
-  print_string [] "Enter .quiz to edit > ";
+  print_string [] "Enter quiz name to edit > ";
   let rec open_file () = 
     let file = 
       ("." ^ slash ^ "quizzes" ^ slash ^ read_line ()) in
@@ -158,7 +158,9 @@ let print_by_type () =
   let rec print_q f = 
     try 
       let line = input_line f in  
-      print_string [yellow] (line^"\n");
+      let n = Str.search_forward (regexp ".quiz") line 0 in
+      let line' = Str.string_before line n in
+      print_string [yellow] (line'^"\t");
       print_q f
     with End_of_file -> close_in f
   in
@@ -166,8 +168,10 @@ let print_by_type () =
   let n = open_in ("." ^ Filename.dir_sep ^ "quizzes/not.log") in
   print_string [Bold] "Subjective quizzes: \n";
   print_q s;
+  print_newline ();
   print_string [Bold] "Non-subjective quizzes: \n";
-  print_q n
+  print_q n;
+  print_newline ()
 
 (* 
 let print_quizzes () =
