@@ -1,0 +1,165 @@
+{
+  "title": "Left vs. Right Brain",
+  "desc": "Are you left- or right-brain dominant? Find out in this quiz! Inspired by: http://ca-fcs.org/images/workshop/2015-16/Child_Development/Jana_Din/Right_Left_brain_dominance_test.pdf",
+  "subjective": true,
+  "categories": [
+    "Left Brain",
+    "Right Brain"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "When I am asked to write a report on a subject, I:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "research information, then outline and organize my writing. ",
+          "value": {
+            "Left Brain": 1,
+            "Right Brain": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "work in my own self-inspired direction. ",
+          "value": {
+            "Left Brain": 0,
+            "Right Brain": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "When I had to do a project in class, I:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "used my parents' ideas, a book's illustrated project or modeled another student's project who\nreceived an \"A+\" from my teacher.",
+          "value": {
+            "Left Brain": 1,
+            "Right Brain": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "loved the challenge, and like a \"mad scientist,\" I produced a unique project.",
+          "value": {
+            "Left Brain": 0,
+            "Right Brain": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "When I am in charge of a big job with many people working, I usually:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "organize, give everyone their responsibilities, make lists, and make sure everyone finishes their part on time",
+          "value": {
+            "Left Brain": 1,
+            "Right Brain": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "work at my own pace, let others work on the job as they want. I want to take care of needs/problems as they arise",
+          "value": {
+            "Left Brain": 0,
+            "Right Brain": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "Which of these activities would you like to do the most? ",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "planning the details for a trip/project",
+          "value": {
+            "Left Brain": 1,
+            "Right Brain": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "creating an original art form",
+          "value": {
+            "Left Brain": 0,
+            "Right Brain": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "I hate it when other people:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "are indecisive about what activities to do when I am with them",
+          "value": {
+            "Left Brain": 1,
+            "Right Brain": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "plan activities in step-by-step detail when I am with them",
+          "value": {
+            "Left Brain": 0,
+            "Right Brain": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid6",
+      "text": "In my house:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "my room has organized drawer and closets. I even try to organize other things around the house",
+          "value": {
+            "Left Brain": 1,
+            "Right Brain": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "I like the \"lived-in\" look. I clean as I see a need and when I have the time",
+          "value": {
+            "Left Brain": 0,
+            "Right Brain": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid7",
+      "text": "When faced with a problem:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "I like using the \"tried and true\" method. ",
+          "value": {
+            "Left Brain": 1,
+            "Right Brain": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "I like creating new methods to solve it.",
+          "value": {
+            "Left Brain": 0,
+            "Right Brain": 1
+          }
+        }
+      ]
+    }
+  ]
+}
