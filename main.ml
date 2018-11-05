@@ -67,9 +67,9 @@ let imm_feedback correct_aid correct options =
     requeued. It also updates the question's mastery level based on [correct].*)
 let requeue qid mstry correct =
   let m = List.assoc qid mstry in
-  if correct then (m := !m + 1; not (m = ref 3))
-  else (if not (m = ref 0) then m := !m - 1; true)
-
+  if correct then (m := !m + 1; !m <> 3)
+  else ((if !m <> 0 then (m := !m - 1)); true)
+  
 (** [check_answer qid aid ans_choices prog quiz] updates [prog] and gives 
     feedback according to [quiz_mode prog]. *)
 let check_answer qid aid ans_choices prog quiz = 
@@ -173,18 +173,6 @@ let print_by_type () =
   print_q n;
   print_newline ()
 
-(* 
-let print_quizzes () =
-  print_string [Bold] "Available quizzes:\n";
-  let dir = Unix.opendir ("." ^ slash ^ "quizzes") in
-  let rec quizzes () = 
-    try let f = Unix.readdir dir in 
-      if (Str.string_match (regexp ".*.quiz") f 0) 
-      then print_string [yellow] (f ^ "\n");
-      quizzes ()
-    with End_of_file -> Unix.closedir dir
-  in quizzes () *)
-
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
 let take_quiz () =
@@ -208,7 +196,8 @@ let take_quiz () =
        print_string [Bold; cyan] 
          "\nYou have completed the quiz. Your score is ";
        ANSITerminal.printf [Bold; cyan] "%.2f" 
-         ((float_of_int ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
+         ((float_of_int 
+             ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
        print_string [Bold; cyan] "%.\n";
      | Practice ->
        print_string [Bold; cyan]
