@@ -14,7 +14,7 @@ type answer
 type t
 
 (** [parse_json fn] is the [Quiz.t] represented by the JSON in file [fn]. *)
-val parse_json : string -> t
+val parse_json : string -> (t, string) result
 
 (** [title t] is the title of [Quiz.t] *)
 val title: t -> string

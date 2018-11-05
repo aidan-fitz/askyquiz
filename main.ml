@@ -20,12 +20,7 @@ let load_quiz () =
   print_string [] "Enter .quiz to load: ";
   let rec load () =
     let f = "." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz" in
-    let quiz = 
-      try Ok (parse_json f)
-      with 
-      | Sys_error _  -> Error "File not found."
-      | Json_error _ -> Error "File has invalid JSON."
-      | Type_error _ -> Error "JSON doesn't represent quiz."
+    let quiz = parse_json f
     in match quiz with 
     | Ok q -> q
     | Error msg -> 

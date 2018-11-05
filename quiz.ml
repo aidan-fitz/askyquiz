@@ -1,3 +1,5 @@
+open Yojson
+open Yojson.Basic
 open Yojson.Basic.Util
 
 type category = string
@@ -39,10 +41,14 @@ let str_mem key json = json |> member key |> to_string
     Requires: [key] is associated with a string value. *)
 let lst_mem key json = json |> member key |> to_list
 
+(** Raised when quiz JSON contains invalid contents. *)
+exception Invalid_quiz
+
 (** [build_answers j] is a list of answers parsed from the JSON [j] for
-    a specific question. *)
+    a specific question.
+    Raises [Invalid_quiz] if list of answers is empty. *)
 let build_answers j =
-  List.map (fun a -> 
+  let ans = List.map (fun a -> 
       {
         id = str_mem "id" a;
         text = str_mem "text" a;
@@ -52,6 +58,7 @@ let build_answers j =
             (a |> member "value" |> to_assoc)
       }) 
     (j |> to_list)
+  in if ans = [] then raise Invalid_quiz else ans
 
 (** [build_questions j] is a list of all questions parsed from the JSON [j]. *)
 let build_questions j =
@@ -65,8 +72,8 @@ let build_questions j =
     qs
 
 let parse_json fn =
-  let j = Yojson.Basic.from_file fn in
-  {
+  try let j = Yojson.Basic.from_file fn in
+  Ok {
     title = str_mem "title" j;
     desc = str_mem "desc" j;
     subjective = j |> member "subjective" |> to_bool;
@@ -74,6 +81,11 @@ let parse_json fn =
     questions = build_questions j;
     filename = fn
   }
+  with
+    | Sys_error _  -> Error "File not found."
+    | Json_error _ -> Error "File has invalid JSON."
+    | Type_error _
+    | Invalid_quiz -> Error "JSON doesn't represent quiz."
 
 let get_q_from_id qid t = List.find (fun {id; qs; _} -> id = qid) t.questions
 
