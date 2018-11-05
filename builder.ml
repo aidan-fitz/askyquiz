@@ -53,7 +53,7 @@ let build_quiz fname title desc sub cats num_qs =
 (** [prompt_name ()] is the file name of a new .quiz file that does not already 
     exist in the directory  *)
 let rec prompt_name () = 
-  print_string [] "Enter new .quiz file name > ";
+  print_string [] "Enter a new file name > ";
   let f_check = read_line () in
   if Sys.file_exists ("."^Filename.dir_sep^"quizzes"^
                       Filename.dir_sep^ f_check^".quiz") = false then f_check 
