@@ -11,23 +11,9 @@ open Builder
 (** Custom exception to help catch interrupt signals. *)
 exception Interrupt
 
+(************ MISC. HELPERS *************)
 (* Alias for directory separator. *)
 let slash = Filename.dir_sep
-
-(** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
-    If the JSON does not represent a valid quiz, it reprompts for a file. *)
-let load_quiz () = 
-  print_string [] "Enter quiz name to load: ";
-  let rec load () =
-    let f = "." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz" in
-    let quiz = parse_json f
-    in match quiz with 
-    | Ok q -> q
-    | Error msg -> 
-        print_string [yellow] (msg ^ " Try again:\n");
-        print_string [] "> ";
-        load ()
-  in load ()
 
 (** [next l] is the letter after [l] in the alphabet, but skips 'I'. *)
 let next l = 
@@ -47,13 +33,42 @@ let make_letters n is_odd =
 let shuffle ltrs answers = 
   List.combine ltrs (QCheck.Gen.(generate1 (shuffle_l answers)))
 
-(** [get_aid ltr mapping] is the answer id associated with the 
-    letter option [ltr] in [mapping].
-    Raises: Failure if letter is invalid. *)
-let rec get_aid ltr = function
-  | [] -> failwith "Invalid answer option"  
-  | (l, (id, _))::t -> if l = ltr then id else get_aid ltr t
+(**************** READING INPUT  ****************)
+(** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
+    If the JSON does not represent a valid quiz, it reprompts for a file. *)
+let load_quiz () = 
+  print_string [] "Enter quiz name to load: ";
+  let rec load () =
+    let f = "." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz" in
+    let quiz = parse_json f
+    in match quiz with 
+    | Ok q -> q
+    | Error msg -> 
+        print_string [yellow] (msg ^ " Try again:\n");
+        print_string [] "> ";
+        load ()
+  in load ()
 
+(** [prompt_answer ltrs] retrieves the user's answer as input and checks that 
+    it exists in [ltrs], prompting again if not.
+    Requires: [ltrs] only contains uppercase letters. *)
+let rec prompt_answer ltrs = 
+  print_string [] "Answer: ";
+  let input = String.uppercase_ascii (read_line ()) in
+  if List.mem input ltrs then input
+  else 
+    (print_string [yellow] "Invalid answer option, try again.\n";
+     prompt_answer ltrs)
+
+(** [prompt_mode ()] is the quiz mode the user selects to play in. *)
+let rec prompt_mode () = 
+  print_string [] "Select (1) test or (2) practice mode > ";
+  match read_line () with
+  | "1" -> Test
+  | "2" -> Practice
+  | _ -> print_string [yellow] "Sorry, try again\n"; prompt_mode ()
+
+(**************** PRINTING INFO ****************)
 (** [imm_feedback correct_aid correct options] outputs immediate feedback for 
     an answer to a question under practice mode. *)
 let imm_feedback correct_aid correct options =
@@ -63,6 +78,36 @@ let imm_feedback correct_aid correct options =
     in printf [red]
      "Incorrect. The correct answer is %s. %s\n" (fst option) (snd (snd option))
 
+(** [print_by_type ()] displays subjective and non-subjective quizzes by 
+    type. *)
+let print_by_type () = 
+  ignore(Unix.system "cd ./quizzes && grep -l \'\"subjective\": true\' \
+                      *.quiz > sub.log && cd ..");
+  ignore(Unix.system ("cd ./quizzes && grep -l \'\"subjective\":\
+                       false\' *.quiz > not.log && cd .."));
+  let rec print_q f = 
+    try 
+      let line = input_line f in  
+      let n = Str.search_forward (regexp ".quiz") line 0 in
+      let line' = Str.string_before line n in
+      print_string [yellow] (line' ^ "\t");
+      print_q f
+    with End_of_file -> close_in f
+  in
+  let s = open_in ("." ^ slash ^ "quizzes/sub.log") in
+  let n = open_in ("." ^ slash ^ "quizzes/not.log") in
+  print_string [Bold] "Subjective quizzes: \n";
+  print_q s; print_newline ();
+  print_string [Bold] "Non-subjective quizzes: \n";
+  print_q n; print_newline ()
+
+(**************** STATE LOGIC ****************)
+(** [final_score q p] returns a percentage as the user's final score for quiz
+    [q] after progress [p]. *)
+let final_score q p =
+  let n = List.length (get_questions q) in
+  (float_of_int (best_score p * 10000 / n) /. 100.0)
+
 (** [requeue qid mstry correct] determines whether the question [qid] should be 
     requeued. It also updates the question's mastery level based on [correct].*)
 let requeue qid mstry correct =
@@ -70,6 +115,13 @@ let requeue qid mstry correct =
   if correct then (m := !m + 1; !m <> 3)
   else ((if !m <> 0 then (m := !m - 1)); true)
   
+(** [get_aid ltr mapping] is the answer id associated with the option [ltr] 
+    in [mapping].
+    Raises: Failure if [ltr] is invalid. *)
+let rec get_aid ltr = function
+  | [] -> failwith "Invalid answer option"  
+  | (l, (id, _))::t -> if l = ltr then id else get_aid ltr t
+
 (** [check_answer qid aid ans_choices prog quiz] updates [prog] and gives 
     feedback according to [quiz_mode prog]. *)
 let check_answer qid aid ans_choices prog quiz = 
@@ -84,17 +136,7 @@ let check_answer qid aid ans_choices prog quiz =
   update_scores qid aid quiz prog;
   pop_and_requeue rq prog
 
-(** [prompt_answer ltrs] retrieves the user's answer as input and checks that 
-    it exists in [ltrs], prompting again if not.
-    Requires: [ltrs] only contains uppercase letters. *)
-let rec prompt_answer ltrs = 
-  print_string [] "Answer: ";
-  let input = String.uppercase_ascii (read_line ()) in
-  if List.mem input ltrs then input
-  else 
-    (print_string [yellow] "Invalid answer option, try again.\n";
-     prompt_answer ltrs)
-
+(**************** MAIN MENU METHODS ****************)
 (** [ask qn is_odd quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. It lists answers with 
     A, B, C, D, E if [is_odd] is [true], and with F, G, H, J, K otherwise. *)
@@ -121,14 +163,6 @@ let rec ask q is_odd quiz prog =
     with
     | Interrupt | End_of_file -> Progress.save_progress prog
 
-(** [prompt_mode ()] is the quiz mode the user selects to play in. *)
-let rec prompt_mode () = 
-  print_string [] "Select (1) test or (2) practice mode > ";
-  match read_line () with
-  | "1" -> Test
-  | "2" -> Practice
-  | _ -> print_string [yellow] "Sorry, try again\n"; prompt_mode ()
-
 (** [handle_sigint ()] sets up a handler for SIGINT *)
 let handle_sigint () =
   Sys.(set_signal sigint (Signal_handle (fun _ -> raise Interrupt)))
@@ -148,61 +182,31 @@ let edit () =
        open_file ())
   in open_file ()
 
-(** [print_by_type ()] is the prints subjective and non-subjective quizzes by 
-    type. *)
-let print_by_type () = 
-  ignore(Unix.system ("cd ./quizzes && grep -l \'\"subjective\":"^
-                      " true\' *.quiz > sub.log && cd .."));
-  ignore(Unix.system ("cd ./quizzes && grep -l \'\"subjective\":"^
-                      " false\' *.quiz > not.log && cd .."));
-  let rec print_q f = 
-    try 
-      let line = input_line f in  
-      let n = Str.search_forward (regexp ".quiz") line 0 in
-      let line' = Str.string_before line n in
-      print_string [yellow] (line'^"\t");
-      print_q f
-    with End_of_file -> close_in f
-  in
-  let s = open_in ("." ^ Filename.dir_sep ^ "quizzes/sub.log") in
-  let n = open_in ("." ^ Filename.dir_sep ^ "quizzes/not.log") in
-  print_string [Bold] "Subjective quizzes: \n";
-  print_q s;
-  print_newline ();
-  print_string [Bold] "Non-subjective quizzes: \n";
-  print_q n;
-  print_newline ()
-
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
 let take_quiz () =
   print_by_type ();
   let quiz = load_quiz () in
   printf [magenta] "%s\n%s\n" (title quiz) (desc quiz);
-  let quiz_length = List.length (get_questions quiz) in
   let prog = get_progress quiz begin
       fun () -> if (subjective quiz) then Subjective else prompt_mode ()
     end in
   let q = next_question prog in
-  let end_prog = ask q true quiz prog in
-  if next_question end_prog = None then
+  let prog' = ask q true quiz prog in
+  if next_question prog' = None then
     (try Sys.remove (Progress.filename prog) with Sys_error _ -> ();
      match quiz_mode prog with
      | Subjective ->
-       printf [Bold; cyan] 
-         "\nYou have completed the quiz. You got: %s\n"
-         (best_category end_prog)
+        printf [Bold; cyan] 
+          "\nYou have completed the quiz. You got: %s\n" (best_category prog')
      | Test ->
-       print_string [Bold; cyan] 
-         "\nYou have completed the quiz. Your score is ";
-       ANSITerminal.printf [Bold; cyan] "%.2f" 
-         ((float_of_int 
-             ((best_score end_prog) * 10000 / quiz_length)) /. 100.0);
-       print_string [Bold; cyan] "%.\n";
+        printf [Bold; cyan]
+          "\nYou have completed the quiz. Your score is %.2f%%\n"
+          (final_score quiz prog');
      | Practice ->
-       print_string [Bold; cyan]
-         "\nCongratulations, you have mastered all questions in this quiz!\n")
-  else (print_string [cyan] "\nYour progress is saved!\n")
+        print_string [Bold; cyan]
+          "\nCongratulations, you have mastered all questions in this quiz!\n")
+  else print_string [cyan] "\nYour progress is saved!\n"
 
 let rec welcome_menu () = 
   print_string [Bold]
