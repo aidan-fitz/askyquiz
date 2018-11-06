@@ -1,0 +1,422 @@
+{
+  "title": "What is your spirit animal?",
+  "desc": "Discover what your spirit animal is, based on your personality!",
+  "subjective": true,
+  "categories": [
+    "Cat",
+    "Dog",
+    "Shark",
+    "Falcon",
+    "Dolphin",
+    "Sloth",
+    "Butterfly"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "What is your idea of a good time?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Hanging out with friends",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Reading a book/watching a move",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 1,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Eating food",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 1,
+            "Dolphin": 1,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Taking a nap",
+          "value": {
+            "Cat": 1,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "What is your favorite genre of music?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Pop",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Rap",
+          "value": {
+            "Cat": 0,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 1,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Indie",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Country",
+          "value": {
+            "Cat": 0,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "What is your favorite season?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Spring",
+          "value": {
+            "Cat": 0,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Summer",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 1,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Fall",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Winter",
+          "value": {
+            "Cat": 0,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "Which of the following deserts would you order?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Ice cream",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Cake",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 1,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Cookies",
+          "value": {
+            "Cat": 1,
+            "Dog": 1,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Fruit",
+          "value": {
+            "Cat": 0,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 1,
+            "Dolphin": 1,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "What is something you couldn't live without?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Family and friends",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "WiFi",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Food (and water)",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "A purpose in life",
+          "value": {
+            "Cat": 0,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 1,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid6",
+      "text": "What is your preferred form of transportation?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Flying",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 1,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Boat",
+          "value": {
+            "Cat": 0,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Car",
+          "value": {
+            "Cat": 1,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Walking/On foot",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 1,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid7",
+      "text": "Which of the following professions would you pursue if money wasn't an issue?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Teacher",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 0,
+            "Falcon": 1,
+            "Dolphin": 0,
+            "Sloth": 0,
+            "Butterfly": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Writer/Artist",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 0,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 1,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Homemaker",
+          "value": {
+            "Cat": 0,
+            "Dog": 1,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 0,
+            "Sloth": 1,
+            "Butterfly": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Actor/Musician",
+          "value": {
+            "Cat": 1,
+            "Dog": 0,
+            "Shark": 1,
+            "Falcon": 0,
+            "Dolphin": 1,
+            "Sloth": 0,
+            "Butterfly": 0
+          }
+        }
+      ]
+    }
+  ]
+}
