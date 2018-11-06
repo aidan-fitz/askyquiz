@@ -1,0 +1,583 @@
+{
+  "title": "Hogwarts House Sorting Quiz",
+  "desc": "Discover what Hogwarts house you are in. Source: Pottermore.",
+  "subjective": true,
+  "categories": [
+    "Gryffindor",
+    "Hufflepuff",
+    "Ravenclaw",
+    "Slytherin"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "Dawn or dusk?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Dawn",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Dusk",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "Forest or river?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Forest",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "River",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "Moon or stars?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Moon",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Stars",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "Black or white?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Black",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "White",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "Heads or tails?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Heads",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Tails",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid6",
+      "text": "Left or right?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Left",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Right",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid7",
+      "text": "Four boxes are placed before you. Which would you try and open?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "The small tortoiseshell box, embellished with gold, inside which some small creature seems to be squeaking.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "The gleaming jet black box with a silver lock and key, marked with a mysterious rune that you know to be the mark of Merlin.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "The ornate golden casket, standing on clawed feet, whose inscription warns that both secret knowledge and unbearable temptation lie within.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "The small pewter box, unassuming and plain, with a scratched message upon it that reads ‘I open only for the worthy.’",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid8",
+      "text": "What kind of instrument most pleases your ear?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "The violin",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "The trumpet",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "The piano",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "The drum",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid9",
+      "text": "Which of the following would you most hate people to call you?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Ordinary",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Ignorant",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Selfish",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Cowardly",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid10",
+      "text": "A Muggle confronts you and says that they are sure you are a witch or wizard. Do you:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Ask what makes them think so?",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Agree, and ask whether they’d like a free sample of a jinx?",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Agree, and walk away, leaving them to wonder whether you are bluffing?",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Tell them that you are worried about their mental health, and offer to call a doctor.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid11",
+      "text": "Which nightmare would frighten you most?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Standing on top of something very high and realizing suddenly that there are no hand- or footholds, nor any barrier to stop you falling.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "An eye at the keyhole of the dark, windowless room in which you are locked.",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Waking up to find that neither your friends nor your family have any idea who you are.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Being forced to speak in such a silly voice that hardly anyone can understand you, and everyone laughs at you.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid12",
+      "text": "Late at night, walking alone down the street, you hear a peculiar cry that you believe to have a magical source. Do you:",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Proceed with caution, keeping one hand on your concealed wand and an eye out for any disturbance?",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Draw your wand and try to discover the source of the noise?",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Draw your wand and stand your ground?",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Withdraw into the shadows to await developments, while mentally reviewing the most appropriate defensive and offensive spells, should trouble occur?",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid13",
+      "text": "Which road tempts you most?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "The wide, sunny, grassy lane",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "The narrow, dark, lantern-lit alley",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "The twisting, leaf-strewn path through woods",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "The cobbled street lined with ancient buildings",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid14",
+      "text": "Four goblets are placed before you. Which would you choose to drink?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "The foaming, frothing, silvery liquid that sparkles as though containing ground diamonds.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "The smooth, thick, richly purple drink that gives off a delicious smell of chocolate and plums.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "The golden liquid so bright that it hurts the eye, and which makes sunspots dance all around the room.",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "The mysterious black liquid that gleams like ink, and gives off fumes that make you see strange visions.",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid15",
+      "text": "You enter an enchanted garden. What would you be most curious to examine first?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "The silver leafed tree bearing golden apples",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 1,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "The fat red toadstools that appear to be talking to each other",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 1,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "The bubbling pool, in the depths of which something luminous is swirling",
+          "value": {
+            "Gryffindor": 0,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "The statue of an old wizard with a strangely twinkling eye",
+          "value": {
+            "Gryffindor": 1,
+            "Hufflepuff": 0,
+            "Ravenclaw": 0,
+            "Slytherin": 0
+          }
+        }
+      ]
+    }
+  ]
+}

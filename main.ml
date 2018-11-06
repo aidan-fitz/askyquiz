@@ -109,7 +109,7 @@ let rec ask q is_odd quiz prog =
   | Some q -> 
     let qid = q in
     let qtxt = (get_txt_from_id q quiz) in
-    print_endline ("\n" ^ qtxt);
+    print_string [Bold] ("\n" ^ qtxt ^ "\n");
 
     let ans_pairs = (get_answers qid quiz) in
     let ltrs = make_letters (List.length ans_pairs) is_odd in 
