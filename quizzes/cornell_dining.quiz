@@ -1,0 +1,286 @@
+{
+  "title": "Where should you eat at Cornell?",
+  "desc": "Figure out where to eat on campus.",
+  "subjective": true,
+  "categories": [
+    "Okenshields",
+    "North",
+    "West",
+    "Libe Cafe",
+    "Mattins",
+    "Trillium",
+    "Statler"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "I always have to eat with friends.",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Agree",
+          "value": {
+            "Okenshields": 1,
+            "North": 1,
+            "West": 1,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Neutral",
+          "value": {
+            "Okenshields": 0,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 1,
+            "Statler": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Disagree",
+          "value": {
+            "Okenshields": 0,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 1,
+            "Mattins": 1,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "Quality of food matters to me more than quantity.",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Agree",
+          "value": {
+            "Okenshields": 1,
+            "North": 0,
+            "West": 1,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 0,
+            "Statler": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Neutral",
+          "value": {
+            "Okenshields": 0,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 1,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Disagree",
+          "value": {
+            "Okenshields": 0,
+            "North": 1,
+            "West": 0,
+            "Libe Cafe": 1,
+            "Mattins": 1,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "I'm on a budget (no swipes).",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Agree",
+          "value": {
+            "Okenshields": 0,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 1,
+            "Mattins": 1,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Neutral",
+          "value": {
+            "Okenshields": 0,
+            "North": 1,
+            "West": 0,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 1,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Disagree",
+          "value": {
+            "Okenshields": 1,
+            "North": 0,
+            "West": 1,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 0,
+            "Statler": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "The ambience/music of the eatery matters to me.",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Agree",
+          "value": {
+            "Okenshields": 1,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Neutral",
+          "value": {
+            "Okenshields": 0,
+            "North": 1,
+            "West": 1,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Disagree",
+          "value": {
+            "Okenshields": 0,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 1,
+            "Mattins": 1,
+            "Trillium": 1,
+            "Statler": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid6",
+      "text": "I demand variety in food options.",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Agree",
+          "value": {
+            "Okenshields": 0,
+            "North": 1,
+            "West": 1,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Neutral",
+          "value": {
+            "Okenshields": 1,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 1,
+            "Statler": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Disagree",
+          "value": {
+            "Okenshields": 0,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 1,
+            "Mattins": 1,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid7",
+      "text": "I don't have much time between classes to eat.",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Agree",
+          "value": {
+            "Okenshields": 1,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 1,
+            "Mattins": 1,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Neutral",
+          "value": {
+            "Okenshields": 0,
+            "North": 0,
+            "West": 0,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 1,
+            "Statler": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Disagree",
+          "value": {
+            "Okenshields": 0,
+            "North": 1,
+            "West": 1,
+            "Libe Cafe": 0,
+            "Mattins": 0,
+            "Trillium": 0,
+            "Statler": 0
+          }
+        }
+      ]
+    }
+  ]
+}
