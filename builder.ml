@@ -8,14 +8,14 @@ open ANSITerminal
 let slash = Filename.dir_sep
 
 (** [strings_to_json ls] is a JSON representation of [ls]. *)
-let strings_to_json (ls: string list) = 
-  `List (List.map (fun s -> `String s) ls)
+let strings_to_json (ls: string list) = `List (List.map (fun s -> `String s) ls)
 
-(** [build_list f acc cats n] builds a [n]-length list [acc] that uses function
-    [f] and prefix [pref] to help create the ids for the elements of [acc]  *)
+(** [build_list f acc cats pref n] builds a length-[n] list [acc] that uses 
+    function [f] and prefix [pref] to help create the ids for the elements
+    of [acc]. *)
 let rec build_list f acc cats pref n =
   if n = 0 then `List acc else
-    let acc' = (f (pref^"id"^ (string_of_int n)) cats)::acc in
+    let acc' = (f (pref ^ "id" ^ (string_of_int n)) cats)::acc in
     build_list f acc' cats pref (n-1)
 
 (** [ans_list id cats] is a JSON representation of answers with [cats] 
@@ -43,7 +43,8 @@ let qa_list cats num_qs =
 (** [build_quiz fname title desc sub cats num_qs] creates a JSON-formatted
     .quiz file *)
 let build_quiz fname title desc sub cats num_qs =
-  let j = `Assoc ([("title", `String title); ("desc", `String desc); 
+  let j = `Assoc ([("title", `String title);
+                   ("desc", `String desc); 
                    ("subjective", `Bool sub); 
                    ("categories", (strings_to_json cats)); 
                    ("questions", (qa_list cats num_qs))]) in
@@ -70,17 +71,13 @@ let builder () =
   let fname = prompt_file () in
   let title = prompt_string "\nEnter quiz title > " in
   let desc  = prompt_string "\nEnter quiz description > " in
-  print_string [] ("\nWill this quiz be (1) subjective e.g. personality quizzes "^
-                   "or (2) non-subjective e.g. academic quizzes > ");
-  let sub = if read_line () = "1" then true else false in
-  print_newline ();
-  let cats_list =
-    if sub = true
-    then let cats = prompt_string "What are the answer categories \
-                                  (comma-separated, no space after)? > "
-    in String.split_on_char ',' cats
-    else ["correct"]; in
-  let num_qs = prompt_string "\nHow many questions will this quiz have? > " in
-  build_quiz fname title desc sub cats_list num_qs;
-  ignore(Unix.system ("vim ."^slash^"quizzes"^
-                      slash^ fname^".quiz"))
+  print_string [] "\nWill this quiz be (1) subjective e.g. personality quizzes \
+                    or (2) non-subjective e.g. academic quizzes > ";
+  let is_sub = (read_line () = "1") in
+  let cats_list = if not is_sub then ["correct"] else
+    let cats = prompt_string "\nWhat are the answer categories \
+                              (comma-separated, no space after)? > " in
+    String.split_on_char ',' cats
+  in let num_qs = prompt_string "\nHow many questions will this quiz have? > "
+  in build_quiz fname title desc is_sub cats_list num_qs;
+  ignore(Unix.system ("vim ." ^ slash ^ "quizzes" ^ slash ^ fname ^ ".quiz"))
