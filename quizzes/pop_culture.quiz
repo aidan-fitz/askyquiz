@@ -1,0 +1,248 @@
+{
+  "title": "Pop Culture Quiz",
+  "desc": "How well do you know pop culture (or at least the pop culture that Karen knows)?",
+  "subjective": false,
+  "categories": [
+    "correct"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "Complete the saying: \n\"Let's get this _____\"",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Pokemon",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "bread",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "potato",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "4.0 GPA",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "How many members does the k-pop group Seventeen have?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "7",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "17",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "13",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "10",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "What country won the 2018 World Cup?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "France",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Germany",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Croatia",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Argentina",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "Who is the reigning Olympic Gold Medalist for Men's Figure Skating?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Nathan Chen",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Shoma Uno",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Javier Fernandez",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Yuzuru Hanyu",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "\"How Far I'll Go\" is a song from what movie?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Coco",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Moana",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Mulan",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Frozen",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid6",
+      "text": "What was Kylo Ren's birth name?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "John Skywalker",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Liam Kenobi",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Ben Solo",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Harry Organa",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid7",
+      "text": "Which of the following Avengers agreed to sign the Sokovia Accords?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Tony Stark/Iron Man",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Steve Rogers/Captain America",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Wanda Maximoff/Scarlet Witch",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Clint Barton/Hawkeye",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    }
+  ]
+}

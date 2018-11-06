@@ -1,0 +1,180 @@
+{
+  "title": "Discrete Structures Quiz",
+  "desc": "Test your knowledge of discrete structures aka CS 2800!",
+  "subjective": false,
+  "categories": [
+    "correct"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "What is the definition of A ∩ B?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "{x | x ∈ A and x ∈ B}",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "{x | x ∈ A or x ∈ B}",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "{x | x ∈ A but x ∉ B}",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "∀ x ∈ B, x ∈ A",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "Which of the following is not true?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "|A| ≤ |B| if there exists an injection f: A→B",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "|A| ≥ |B| if there exists a surjection f: A→B",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "if |A| ≤ |B| and |A| ≥ |B|, then |A| = |B|",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "set X is countable if |N| ≤ |X|",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "Which of the following is equivalent to [7] mod 3?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "[1] mod 3",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "[27] mod 3",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "[44] mod 3",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "[3] mod 7",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "Which of the following is not equivalent to the others according to Kleene's Theorem?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "L is DFA-recognizable",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "L is NFA-recognizable",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "L is regular",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "L is acceptable",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "Which of the following is not one of Kolmogorov's Axioms?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "∀ E, Pr(E) ≥ 0",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Pr(S) = 1",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "if E1 ∩ E2 = ∅, then Pr(E1 ∪ E2) = Pr(E1) + Pr(E2)",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Pr(A|B) = Pr(B|A)*Pr(A)/Pr(B)",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,350 @@
+{
+  "title": "3110 Quiz",
+  "desc": "Test how well you know your 3110 concepts. Inspired by lecture clicker questions.",
+  "subjective": false,
+  "categories": [
+    "correct"
+  ],
+  "questions": [
+    {
+      "id": "qid1",
+      "text": "Which of the following is false about OCaml?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "It is a functional language.",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "It is dynamically typed.",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "It is type safe.",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "It supports algebraic data types.",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid2",
+      "text": "Which of the following is a one-of type?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Option",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Record",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Variant",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Tuple",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid3",
+      "text": "Which of the following is a product type?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Record",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Option",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "Exception",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "Anonymous function",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid4",
+      "text": "What is the type of 31::[10]?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "int",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "int int list",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "int list list",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "int list",
+          "value": {
+            "correct": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid5",
+      "text": "Which of the following would be better represented with variants rather than records?",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Coins, which can be pennies, nickels, dimes, or quarters",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Students, who have names and id numbers",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "A dessert, which has a sauce, a creamy component, and a crunchy component",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "A chess game, which has players, pieces, and a board",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid6",
+      "text": "What is value of lst after this code?\nlet is_even x = (x mod 2 = 0) \nlet lst = List.map is_even [1;2;3;4]",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "[1;2;3;4]",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "[2;4]",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "[false; true; false; true]",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "false",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid7",
+      "text": "Fill in the blank to complete the analogy:\nA(n) __________ is to a structure as a type is to a value",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "abstract type",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "module",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "signature",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "compilation unit",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid8",
+      "text": "What is the type of f?\nlet rec f x = f x",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Doesn't compile",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "'a -> 'a",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "'a -> 'b",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "unit -> unit",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid9",
+      "text": "What does w evaluate to?\nlet x = ref 42\nlet y = ref 42\nlet z = x\nlet () = x := 43\nlet w = (!y) + (!z)",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "42",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "84",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "85",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "86",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "qid10",
+      "text": "let rec step = function \n| Int n -> failwith \"Does not step\"\n| Add(Int n1, Int n2) -> Int (n1 + n2)\n| Add(e1, e2) -> ???",
+      "answers": [
+        {
+          "id": "ansid1",
+          "text": "Add(step e1, e2)",
+          "value": {
+            "correct": 1
+          }
+        },
+        {
+          "id": "ansid2",
+          "text": "Add(step e1, step e2)",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid3",
+          "text": "step e1 + step e2",
+          "value": {
+            "correct": 0
+          }
+        },
+        {
+          "id": "ansid4",
+          "text": "step Add(0, e1 + step e2)",
+          "value": {
+            "correct": 0
+          }
+        }
+      ]
+    }
+  ]
+}
