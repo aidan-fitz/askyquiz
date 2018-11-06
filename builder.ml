@@ -62,8 +62,8 @@ let rec prompt_file () =
   if not (Sys.file_exists ("." ^ slash ^ "quizzes" ^ slash ^ fname ^ ".quiz"))
   then fname
   else
-    print_string [yellow] "Sorry, a quiz with that filename already exists!\n";
-    prompt_file () 
+    (print_string [yellow] "Sorry, a quiz with that filename already exists!\n";
+    prompt_file ())
 
 (* [builder ()] prompts the user for details and executes the quiz builder *)
 let builder () =
