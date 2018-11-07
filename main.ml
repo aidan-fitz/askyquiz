@@ -71,10 +71,10 @@ let imm_feedback correct_aid correct options =
 (** [print_by_type ()] displays subjective and non-subjective quizzes by 
     type. *)
 let print_by_type () = 
-  ignore(Unix.system "cd ./quizzes && grep -l \'\"subjective\": true\' \
-                      *.quiz > sub.log && cd ..");
-  ignore(Unix.system ("cd ./quizzes && grep -l \'\"subjective\":\
-                       false\' *.quiz > not.log && cd .."));
+  ignore(Unix.system "cd ./quizzes && grep -l \'\"subjective\": true\' *.quiz \
+                      > sub.log && cd ..");
+  ignore(Unix.system "cd ./quizzes && grep -l \'\"subjective\": false\' *.quiz \
+                      > not.log && cd ..");
   let rec print_q f = 
     try 
       let line = input_line f in  
