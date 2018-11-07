@@ -18,7 +18,7 @@ let slash = Filename.dir_sep
 
 (** [next l] is the letter after [l] in the alphabet, but skips 'I'. *)
 let next l = 
-  let incr = if l = 'I' then 2 else 1 in
+  let incr = if l = 'H' then 2 else 1 in
   Char.(chr ((code l - code 'A' + incr) mod 26 + code 'A'))
 
 (** [make_letters n is_odd] is a list of [n] letters starting from 'A' if 
