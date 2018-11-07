@@ -104,13 +104,6 @@ let requeue qid mstry correct =
   let m = List.assoc qid mstry in
   if correct then (m := !m + 1; !m <> 3)
   else ((if !m <> 0 then (m := !m - 1)); true)
-  
-(** [get_aid ltr mapping] is the answer id associated with the option [ltr] 
-    in [mapping].
-    Raises: Failure if [ltr] is invalid. *)
-let rec get_aid ltr = function
-  | [] -> failwith "Invalid answer option"  
-  | (l, (id, _))::t -> if l = ltr then id else get_aid ltr t
 
 (** [check_answer qid aid ans_choices prog quiz] updates [prog] and gives 
     feedback according to [quiz_mode prog]. *)
