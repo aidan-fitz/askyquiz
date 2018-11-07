@@ -1,7 +1,14 @@
 (* Common variables for testing *)
 
-let Ok quiz1 = Quiz.parse_json "quiz1.quiz"
-let Ok hp = Quiz.parse_json "hp.quiz"
+let quiz1 =
+  match Quiz.parse_json "quiz1.quiz" with
+  | Ok q -> q
+  | Error msg -> failwith msg
+
+let hp =
+  match Quiz.parse_json "hp.quiz" with
+  | Ok q -> q
+  | Error msg -> failwith msg
 
 (********************************************************************
    Here are some helper functions for your testing of set-like lists. 
