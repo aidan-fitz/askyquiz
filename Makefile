@@ -1,4 +1,4 @@
-PROGRAM_MODULES=quiz progress main
+PROGRAM_MODULES=quiz progress main builder
 TEST_MODULES=testUtils testQuiz testProgress test
 MODULES=$(PROGRAM_MODULES) $(TEST_MODULES)
 OBJECTS=$(MODULES:=.cmo)
