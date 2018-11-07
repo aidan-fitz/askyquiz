@@ -170,7 +170,7 @@ let edit () =
   print_string [] "Enter quiz name to edit > ";
   let rec open_file () = 
     let file = 
-      ("." ^ slash ^ "quizzes" ^ slash ^ read_line ()) in
+      ("." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz") in
     if (Sys.file_exists file) && (Str.string_match (regexp ".*.quiz") file 0) 
     then (ignore (Unix.system ("vim " ^ file)))
     else
@@ -192,8 +192,8 @@ let take_quiz () =
   let prog' = ask q true quiz prog in
   if next_question prog' = None then
     (try Sys.remove (Progress.filename prog) with Sys_error _ -> ();
-     match quiz_mode prog with
-     | Subjective ->
+       match quiz_mode prog with
+       | Subjective ->
          printf [Bold; cyan] 
            "\nYou have completed the quiz. You got: %s\n" (best_category prog')
        | Test ->
