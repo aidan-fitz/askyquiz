@@ -4,6 +4,8 @@ open Progress
 open OUnit2
 open TestUtils
 
+let (>::) name f = ("Progress: " ^ name) >:: f
+
 let i = init_progress quiz1 (fun () -> Test)
 let i_stock = stock i
 (* The questions in i *)
