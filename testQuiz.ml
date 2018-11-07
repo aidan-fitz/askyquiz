@@ -18,35 +18,31 @@ let quiz_tests = [
     (Error "JSON doesn't represent quiz.") (parse_json "quizzes/bad.quiz"));
 
   (* Testing parse_json *)
-  "title" >:: (fun _ -> 
-    assert_equal (title hp) "Which Hogwarts house are you in?");
+  "title" >:: (fun _ ->
+    assert_equal "Which Hogwarts house are you in?" (title hp));
   "description" >:: (fun _ ->
-    assert_equal (desc hp) 
-    "This is an example personality quiz! Source: \
-    https://www.proprofs.com/quiz-school/story.php?\
-    title=harry-potter-house-test_2");
+    assert_equal "This is an example personality quiz! Source: \
+                  https://www.proprofs.com/quiz-school/story.php?\
+                  title=harry-potter-house-test_2" (desc hp));
   "categories" >:: (fun _ ->
-    assert_equal (categories hp) 
-    ["Gryffindor"; "Hufflepuff"; "Ravenclaw"; "Slytherin"]);
+    assert_equal
+      ["Gryffindor"; "Hufflepuff"; "Ravenclaw"; "Slytherin"] (categories hp));
   "question ids" >:: (fun _ ->
-    assert_equal (question_ids hp) 
-    ["q1"; "q2"; "q3"; "q4"; "q5"]);
+    assert_equal ["q1"; "q2"; "q3"; "q4"; "q5"] (question_ids hp));
   "2nd question text" >:: (fun _ -> 
-    assert_equal (List.nth (question_qs hp) 1) 
-    "How would you react if someone picks on you and your friend?");
+    assert_equal "How would you react if someone picks on you and your friend?"
+    (List.nth (question_qs hp) 1));
   "3rd question text" >:: (fun _ ->
-    assert_equal 
-    (List.nth (question_qs hp) 2) 
-    "What's your favorite color?");
+    assert_equal "What's your favorite color?" (List.nth (question_qs hp) 2));
   "1st q answer id/text" >:: (fun _ ->
-    assert_equal (get_answers (List.hd (question_ids hp)) hp) 
+    assert_equal
       [
         ("q1a1", "Save myself, of course!"); 
         ("q1a2", "Run and grab my friend who's still in the building"); 
         ("q1a3", "It depends -- if I have a way to save my friend, then yes, \
                   but if there's no way then I am above everybody else."); 
         ("q1a4", "I'll try, but I am not sure!")
-      ]);
+      ] (get_answers (List.hd (question_ids hp)) hp));
 
   make_get_qs_test "bread questions" bread
     [
