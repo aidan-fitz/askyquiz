@@ -16,7 +16,7 @@ let quiz_tests = [
   (* Fail if no questions *)
   "quiz with no questions" >:: (fun _ -> assert_equal
     (Error "JSON doesn't represent quiz.") (parse_json "quizzes/bad.quiz"));
-
+  
   (* Testing parse_json *)
   "title" >:: (fun _ ->
     assert_equal "Which Hogwarts house are you in?" (title hp));
@@ -44,6 +44,7 @@ let quiz_tests = [
         ("q1a4", "I'll try, but I am not sure!")
       ] (get_answers (List.hd (question_ids hp)) hp));
 
+  (* Test retrieving question text *)
   make_get_qs_test "bread questions" bread
     [
       ("qid1", "What is your favorite drink?");
