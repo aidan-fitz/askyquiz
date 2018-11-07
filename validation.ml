@@ -5,7 +5,7 @@ let normalize str =
       |> String.trim
 
 let get_aid ltr options =
-  match List.assoc_opt ltr options with
+  match List.assoc_opt (String.uppercase_ascii ltr) options with
   | None -> None
   | Some (id, _) -> Some id
 

@@ -1,5 +1,5 @@
 PROGRAM_MODULES=quiz progress main builder validation
-TEST_MODULES=testUtils testQuiz testProgress test
+TEST_MODULES=testUtils testQuiz testProgress testValidation test
 MODULES=$(PROGRAM_MODULES) $(TEST_MODULES)
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(PROGRAM_MODULES:=.ml)
