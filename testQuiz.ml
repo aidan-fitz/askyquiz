@@ -3,8 +3,19 @@ open Quiz
 open OUnit2
 open TestUtils
 
+(** [make_get_qs_test name quiz expected] constructs an OUnit test called [name]
+    which asserts the equality of [get_questions quiz] with [expected]. *)
+let make_get_qs_test
+    (name:string)
+    (quiz:Quiz.t)
+    (expected:(id * string) list) =
+  name >:: (fun _ -> assert_equal ~cmp:cmp_set_like_lists
+                     expected (get_questions quiz))
+
 let quiz_tests = [
-  (*TODO: writes tests for quiz*)
+  (* Fail if no questions *)
+  "quiz with no questions" >:: (fun _ -> assert_equal
+    (Error "JSON doesn't represent quiz.") (parse_json "quizzes/bad.quiz"));
 
   (* Testing parse_json *)
   "title" >:: (fun _ -> 
@@ -36,4 +47,18 @@ let quiz_tests = [
                   but if there's no way then I am above everybody else."); 
         ("q1a4", "I'll try, but I am not sure!")
       ]);
+
+  make_get_qs_test "bread questions" bread
+    [
+      ("qid1", "What is your favorite drink?");
+      ("qid2", "How long do you sleep every night?");
+      ("qid3", "What is your favorite season? ");
+      ("qid4", "Who of the following inspires you the most?");
+      ("qid5", "Where would you want to go for vacation?");
+    ];
+  make_get_qs_test "demo questions" demo
+    [
+      ("qid1", "What is OCaml?");
+      ("qid2", "Who was the first president of America?");
+    ];
 ]

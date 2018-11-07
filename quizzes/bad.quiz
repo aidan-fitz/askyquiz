@@ -1,0 +1,9 @@
+{
+    "title": "Bad quiz",
+    "desc":
+      "This should never get parsed into a quiz.",
+    "subjective": false,
+    "categories": [ "correct" ],
+    "questions": []
+  }
+  

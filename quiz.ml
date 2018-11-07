@@ -41,7 +41,6 @@ let str_mem key json = json |> member key |> to_string
     Requires: [key] is associated with a string value. *)
 let lst_mem key json = json |> member key |> to_list
 
-(** Raised when quiz JSON contains invalid contents. *)
 exception Invalid_quiz
 
 (** [build_answers j] is a list of answers parsed from the JSON [j] for
@@ -62,14 +61,15 @@ let build_answers j =
 
 (** [build_questions j] is a list of all questions parsed from the JSON [j]. *)
 let build_questions j =
-  let qs = j |> member "questions" |> to_list in
-  List.map (fun q -> 
+  let qs = 
+    List.map (fun q -> 
       {
         id = str_mem "id" q;
         qs = str_mem "text" q;
         answers = build_answers (q |> member "answers")
       })
-    qs
+    (lst_mem "questions" j)
+  in if qs = [] then raise Invalid_quiz else qs
 
 let parse_json fn =
   try let j = Yojson.Basic.from_file fn in

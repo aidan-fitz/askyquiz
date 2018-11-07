@@ -13,6 +13,9 @@ type answer
 (** Abstract type representing a quiz *)
 type t
 
+(** Raised when quiz JSON contains invalid contents. *)
+exception Invalid_quiz
+
 (** [parse_json fn] is the [Quiz.t] represented by the JSON in file [fn]. *)
 val parse_json : string -> (t, string) result
 

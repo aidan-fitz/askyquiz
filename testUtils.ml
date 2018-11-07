@@ -1,12 +1,18 @@
 (* Common variables for testing *)
 
-let unpack = function
-  | Ok v -> v
-  | Error e -> failwith e
+(** [quiz_from_file fn] parses the contents of [fn] into a [Quiz.t].
+    Raises [Failure] if [fn] does not represent a [Quiz.t]. *)
+let quiz_from_file fn =
+  match Quiz.parse_json fn with
+  | Ok q -> q
+  | Error msg -> failwith msg
 
-let quiz1 = unpack (Quiz.parse_json "quiz1.quiz")
-
-let hp = unpack (Quiz.parse_json "hp.quiz")
+(* Create quizzes to test with. *)
+let quiz1 = quiz_from_file "quiz1.quiz"
+let hp = quiz_from_file "hp.quiz"
+let bread = quiz_from_file "quizzes/bread.quiz"
+let demo = quiz_from_file "quizzes/demo.quiz"
+let pottermore = quiz_from_file "quizzes/pottermore.quiz"
 
 (********************************************************************
    Here are some helper functions for your testing of set-like lists. 
@@ -28,6 +34,9 @@ let cmp_set_like_lists lst1 lst2 =
 
 (** [pp_string s] pretty-prints string [s]. *)
 let pp_string s = "\"" ^ s ^ "\""
+
+let pp_score (c, s) =
+  Printf.sprintf "(%s, %d)" c !s
 
 (** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt]
     to pretty-print each element of [lst]. *)
