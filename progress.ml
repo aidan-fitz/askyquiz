@@ -117,8 +117,8 @@ let update_scores qid aid quiz prog =
   (* update scores before copying to new record *)
   List.iter 
     (fun (category, score) ->
-      let delta = List.assoc category scores in
-      score := !score + delta)
+       let delta = List.assoc category scores in
+       score := !score + delta)
     prog.score
 
 let next_question prog =
@@ -145,7 +145,7 @@ let quiz_mode p = p.mode
 let best_category_data p =
   List.fold_left 
     (fun (max_cat, max_s) (cat, s) ->
-      if !s > max_s then (cat, !s) else (max_cat, max_s))
+       if !s >= max_s then (cat, !s) else (max_cat, max_s))
     ("", 0)
     p.score
 
@@ -155,10 +155,10 @@ let best_score p = p |> best_category_data |> snd
 
 let save_progress p =
   let j = `Assoc ([
-    ("mode", mode_to_json p.mode);
-    ("stock", strings_to_json p.stock);
-    ("discard", strings_to_json p.discard);
-    ("score", scores_to_json p.score);
-    ("mastery", scores_to_json p.mastery)
-  ]) in
+      ("mode", mode_to_json p.mode);
+      ("stock", strings_to_json p.stock);
+      ("discard", strings_to_json p.discard);
+      ("score", scores_to_json p.score);
+      ("mastery", scores_to_json p.mastery)
+    ]) in
   Yojson.Basic.to_file p.filename j; p
