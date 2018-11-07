@@ -7,6 +7,7 @@ open QCheck
 open ANSITerminal
 open Str
 open Builder
+open Validation
 
 (** Custom exception to help catch interrupt signals. *)
 exception Interrupt
@@ -48,17 +49,6 @@ let load_quiz () =
         print_string [] "> ";
         load ()
   in load ()
-
-(** [prompt_answer ltrs] retrieves the user's answer as input and checks that 
-    it exists in [ltrs], prompting again if not.
-    Requires: [ltrs] only contains uppercase letters. *)
-let rec prompt_answer ltrs = 
-  print_string [] "Answer: ";
-  let input = String.uppercase_ascii (read_line ()) in
-  if List.mem input ltrs then input
-  else 
-    (print_string [yellow] "Invalid answer option, try again.\n";
-     prompt_answer ltrs)
 
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
 let rec prompt_mode () = 
@@ -137,6 +127,20 @@ let check_answer qid aid ans_choices prog quiz =
   pop_and_requeue rq prog
 
 (**************** MAIN MENU METHODS ****************)
+(** [prompt_answer options] prompts the user for input and then checks it 
+    against the [options] data structure using [Validation.user_answer]. The
+    function re-prompts if the user's input is invalid. *)
+let rec prompt_answer options =
+  print_string [] "Answer: ";
+  let input = read_line () in
+  match user_answer input options with
+  | Ok id -> id
+  | Error msg ->
+    begin
+      print_string [yellow] "Invalid response; try again.\n";
+      prompt_answer options
+    end
+
 (** [ask qn is_odd quiz prog] displays [qn] to the screen and 
     prompts for an answer among its choices in [quiz]. It lists answers with 
     A, B, C, D, E if [is_odd] is [true], and with F, G, H, J, K otherwise. *)
@@ -155,8 +159,7 @@ let rec ask q is_odd quiz prog =
     List.iter (fun (l, (id, ans)) -> print_endline (l ^ ". " ^ ans)) options;
 
     try 
-      let input = prompt_answer ltrs in
-      let aid = get_aid input options in
+      let aid = prompt_answer options in
       let prog' = check_answer qid aid options prog quiz in
       let q' = next_question prog' in
       ask q' (not is_odd) quiz prog'

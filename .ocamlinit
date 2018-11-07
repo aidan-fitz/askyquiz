@@ -5,6 +5,6 @@
 #require "yojson";;
 #require "ansiterminal";;
 #load "builder.cmo";;
+#load "validation.cmo";;
 #load "quiz.cmo";;
 #load "progress.cmo";;
-#load "main.cmo";;
