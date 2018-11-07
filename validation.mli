@@ -7,9 +7,10 @@ val normalize : string -> string
     or [false] otherwise. *)
 val substr : string -> string -> bool
 
-(** [get_aid ltr mapping] returns [Ok id] if [id] is associated with the 
-    letter [ltr] in mapping or [Error "could not match"] if no such id exists. *)
-val get_aid : string -> (string * (Quiz.id * string)) list -> (Quiz.id, string) result
+(** [match_answer_letter ltr mapping] returns [Ok id] if [id] is associated with
+    the letter [ltr] in mapping or [Error "could not match"] if no such id
+    exists. *)
+val match_answer_letter : string -> (string * (Quiz.id * string)) list -> (Quiz.id, string) result
 
 (** [match_answer_text input mapping] returns a list of answer ids that match
     the user input; that is, all answer ids for which [normalize input] is a

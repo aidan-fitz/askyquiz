@@ -4,7 +4,7 @@ let normalize str =
       |> String.concat " "
       |> String.trim
 
-let get_aid ltr options =
+let match_answer_letter ltr options =
   match List.assoc_opt (String.uppercase_ascii ltr) options with
   | None -> Error "could not match"
   | Some (id, _) -> Ok id
@@ -41,7 +41,7 @@ let match_answer_text input options =
 let user_answer input options =
   match String.length input with
   | 0 -> Error "empty response"
-  | 1 -> get_aid input options
+  | 1 -> match_answer_letter input options
   | _ ->
     match match_answer_text input options with
     | [] -> Error "could not match"
