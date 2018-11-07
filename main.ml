@@ -45,9 +45,9 @@ let load_quiz () =
     in match quiz with 
     | Ok q -> q
     | Error msg -> 
-        print_string [yellow] (msg ^ " Try again:\n");
-        print_string [] "> ";
-        load ()
+      print_string [yellow] (msg ^ " Try again:\n");
+      print_string [] "> ";
+      load ()
   in load ()
 
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
@@ -66,7 +66,7 @@ let imm_feedback correct_aid correct options =
   else
     let option = List.find (fun (_, (id, _)) -> id = correct_aid) options
     in printf [red]
-     "Incorrect. The correct answer is %s. %s\n" (fst option) (snd (snd option))
+      "Incorrect. The correct answer is %s. %s\n" (fst option) (snd (snd option))
 
 (** [print_by_type ()] displays subjective and non-subjective quizzes by 
     type. *)
@@ -166,6 +166,7 @@ let handle_sigint () =
 (** [edit ()] opens the .quiz file the user inputs in vim. If the user does not
     input a valid quiz, it reprompts for another file. *)
 let edit () =
+  print_by_type ();
   print_string [] "Enter quiz name to edit > ";
   let rec open_file () = 
     let file = 
@@ -193,15 +194,15 @@ let take_quiz () =
     (try Sys.remove (Progress.filename prog) with Sys_error _ -> ();
      match quiz_mode prog with
      | Subjective ->
-        printf [Bold; cyan] 
-          "\nYou have completed the quiz. You got: %s\n" (best_category prog')
-     | Test ->
-        printf [Bold; cyan]
-          "\nYou have completed the quiz. Your score is %.2f%%\n"
-          (final_score quiz prog');
-     | Practice ->
-        print_string [Bold; cyan]
-          "\nCongratulations, you have mastered all questions in this quiz!\n")
+         printf [Bold; cyan] 
+           "\nYou have completed the quiz. You got: %s\n" (best_category prog')
+       | Test ->
+         printf [Bold; cyan]
+           "\nYou have completed the quiz. Your score is %.2f%%\n"
+           (final_score quiz prog');
+       | Practice ->
+         print_string [Bold; cyan]
+           "\nCongratulations, you have mastered all questions in this quiz!\n")
   else print_string [cyan] "\nYour progress is saved!\n"
 
 let rec welcome_menu () = 
