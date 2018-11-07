@@ -3,6 +3,8 @@ open Quiz
 open OUnit2
 open TestUtils
 
+let (>::) name f = ("Quiz: " ^ name) >:: f
+
 (** [make_get_qs_test name quiz expected] constructs an OUnit test called [name]
     which asserts the equality of [get_questions quiz] with [expected]. *)
 let make_get_qs_test
