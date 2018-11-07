@@ -6,8 +6,8 @@ let normalize str =
 
 let get_aid ltr options =
   match List.assoc_opt (String.uppercase_ascii ltr) options with
-  | None -> None
-  | Some (id, _) -> Some id
+  | None -> Error "could not match"
+  | Some (id, _) -> Ok id
 
 let substr needle haystack =
   Str.string_match (Str.regexp_string needle) haystack 0
@@ -21,14 +21,9 @@ let match_answer_text input options =
 let user_answer input options =
   match String.length input with
   | 0 -> Error "empty response"
-  | 1 -> begin
-    match get_aid input options with
-    | Some id -> Ok id
-    | None -> Error "could not match"
-    end
-  | _ -> begin
+  | 1 -> get_aid input options
+  | _ ->
     match match_answer_text input options with
     | [] -> Error "could not match"
     | [id] -> Ok id
     | _ -> Error "matched multiple"
-    end
