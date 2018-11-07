@@ -108,16 +108,10 @@ let answers t qid = (get_q_from_id qid t).answers
 let filename q = q.filename
 
 let get_questions t = 
-  let rec pair lst1 lst2 acc = 
-    match (lst1, lst2) with 
-    | (h1 :: t1, h2 :: t2) -> pair t1 t2 ((h1, h2) :: acc)
-    | _ -> acc
-  in pair (question_ids t) (question_qs t) []
+  List.map (fun x -> x.id, x.qs) t.questions
 
 let get_answers qid t =
-  let q = List.find (fun {id; qs; _} -> id = qid) t.questions in
-  let a = q.answers in
-  List.map (fun (x : answer) -> (x.id, x.text)) a
+  List.map (fun (x : answer) -> (x.id, x.text)) (answers t qid)
 
 let rec correct_ans = function
   (* find ans s.t. it has one value with score 1 *)
@@ -132,6 +126,4 @@ let rec correct_ans = function
   | [] -> failwith "no correct answer"
 
 let get_values qid aid t =
-  let question = get_q_from_id qid t in
-  let answer   = List.find (fun {id; text; _} -> id = aid) question.answers in
-  answer.values
+  (List.find (fun {id; text; _} -> id = aid) (answers t qid)).values

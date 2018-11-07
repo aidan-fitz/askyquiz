@@ -1,6 +1,6 @@
 {
-  "title": "What is your spirit animal?",
-  "desc": "Discover what your spirit animal is, based on your personality!",
+  "title": "What animal are you most like?",
+  "desc": "Discover what animal you would be, based on your personality!",
   "subjective": true,
   "categories": [
     "Cat",
