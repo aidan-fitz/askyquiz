@@ -1,14 +1,12 @@
 (* Common variables for testing *)
 
-let quiz1 =
-  match Quiz.parse_json "quiz1.quiz" with
-  | Ok q -> q
-  | Error msg -> failwith msg
+let unpack = function
+  | Ok v -> v
+  | Error e -> failwith e
 
-let hp =
-  match Quiz.parse_json "hp.quiz" with
-  | Ok q -> q
-  | Error msg -> failwith msg
+let quiz1 = unpack (Quiz.parse_json "quiz1.quiz")
+
+let hp = unpack (Quiz.parse_json "hp.quiz")
 
 (********************************************************************
    Here are some helper functions for your testing of set-like lists. 
