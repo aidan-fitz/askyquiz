@@ -2,8 +2,7 @@ open Validation
 
 open OUnit2
 open TestUtils
-
-let (>::) name f = ("Validation: " ^ name) >:: f
+open TestUtils.ValidationUtils
 
 let answer_options = [
   ("A", ("ans0", "discrete Fourier transform"));

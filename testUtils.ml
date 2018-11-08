@@ -1,3 +1,4 @@
+open OUnit2
 (* Common variables for testing *)
 
 (** [quiz_from_file fn] parses the contents of [fn] into a [Quiz.t].
@@ -50,3 +51,30 @@ let pp_list pp_elt lst =
         else loop (n+1) (acc ^ (pp_elt h1) ^ "; ") t'
     in loop 0 "" lst
   in "[" ^ pp_elts lst ^ "]"
+
+(************ CUSTOM TEST MAKERS ************)
+module Make (T:sig val prefix: string end ) = struct
+  (** Prepends the prefix. *)
+  let prefixify name = T.prefix ^ ": " ^ name
+
+  let (>::) name f = (prefixify name) >:: f
+
+  let make_set_test
+      (name:string)
+      (lst:'a list)
+      (expected:'a list) =
+    name >:: (fun _ -> assert_equal ~cmp:cmp_set_like_lists expected lst)
+end
+
+module BuilderUtils = Make(struct
+  let prefix = "Builder"
+end)
+module ProgressUtils = Make(struct
+  let prefix = "Progress"
+end)
+module QuizUtils = Make(struct
+  let prefix = "Quiz"
+end)
+module ValidationUtils = Make(struct
+  let prefix = "Validation"
+end)
