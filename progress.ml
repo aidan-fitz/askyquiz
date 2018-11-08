@@ -108,7 +108,14 @@ let init_progress quiz compute_mode = {
 let get_progress quiz compute_mode =
   let prog_file = save_filename (filename quiz) in 
   if Sys.file_exists prog_file then
-    load_progress prog_file
+    (print_string "We saved your progress from last time. Do you wish to (1) \
+                   continue or (2) discard progress and restart? > ";
+     let rec prompt_continue () = 
+       match read_line () with
+       | "1" -> load_progress prog_file
+       | "2" -> init_progress quiz compute_mode
+       | _ -> print_string "Sorry, try again > "; prompt_continue ()
+     in prompt_continue ())
   else
     init_progress quiz compute_mode
 

@@ -8,8 +8,9 @@ type mode = Subjective | Test | Practice
     [thunk] to compute the quiz mode. *)
 val init_progress : Quiz.t -> (unit -> mode) -> t
 
-(** [get_progress quiz thunk] loads the progress file corresponding to [quiz] if it
-    exists, and calls [init_progress quiz thunk] otherwise. *)
+(** [get_progress quiz thunk] loads the progress file corresponding to [quiz] 
+    if it exists and if the user chooses to continue, and calls [init_progress 
+    quiz thunk] otherwise. *)
 val get_progress : Quiz.t -> (unit -> mode) -> t
 
 (** [update_progress qid aid quiz prog] updates [prog] to reflect the user
