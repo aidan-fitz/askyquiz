@@ -211,11 +211,12 @@ let rec welcome_menu () =
      1. Create a new quiz \n\
      2. Edit an existing quiz \n\
      3. Take a quiz\n";
-  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > ";
+  print_string [] "Enter a number 1-3 to select an action or q to quit > ";
   match read_line () with
-  | "1" -> builder ()
-  | "2" -> edit ()
-  | "3" -> take_quiz ()
+  | "1" -> builder (); welcome_menu ()
+  | "2" -> edit (); welcome_menu ()
+  | "3" -> take_quiz (); welcome_menu ()
+  | "q" -> ()
   | _ -> print_string [yellow] "Invalid mode; try again > "; welcome_menu ()
 
 let welcome_message () = 
