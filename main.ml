@@ -232,7 +232,7 @@ let rec welcome_menu () =
 
 let welcome_message () = 
   resize 100 30;
-  print_string [red; on_black] "
+  print_string [Bold; red] "
 
  _ _ _     _                      _____     
 | | | |___| |___ ___ _____ ___   |_   ____  
