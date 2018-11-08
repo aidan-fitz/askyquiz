@@ -38,7 +38,7 @@ let shuffle ltrs answers =
 (** [load_quiz ()] is the [Quiz.t] created from the quiz JSON in file [f]. 
     If the JSON does not represent a valid quiz, it reprompts for a file. *)
 let load_quiz () = 
-  print_string [] "Enter quiz name to load: ";
+  print_string [] "Enter quiz name to load:\n> ";
   let rec load () =
     let f = "." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz" in
     let quiz = parse_json f
@@ -52,11 +52,15 @@ let load_quiz () =
 
 (** [prompt_mode ()] is the quiz mode the user selects to play in. *)
 let rec prompt_mode () = 
-  print_string [] "Select (1) test or (2) practice mode > ";
-  match read_line () with
-  | "1" -> Test
-  | "2" -> Practice
-  | _ -> print_string [yellow] "Sorry, try again\n"; prompt_mode ()
+  print_string [] "Select (1) test or (2) practice mode\n> ";
+  let rec read_input () =
+    match read_line () with
+    | "1" -> Test
+    | "2" -> Practice
+    | _ -> (print_string [yellow] "Invalid mode. Try again\n";
+            print_string [] "> ";
+            read_input ())
+  in read_input ()
 
 (**************** PRINTING INFO ****************)
 (** [imm_feedback correct_aid correct options] outputs immediate feedback for 
@@ -80,7 +84,7 @@ let print_by_type () =
       let line = input_line f in  
       let n = Str.search_forward (regexp ".quiz") line 0 in
       let line' = Str.string_before line n in
-      print_string [yellow] (line' ^ "\t");
+      print_string [magenta] (line' ^ "\t");
       print_q f
     with End_of_file -> close_in f
   in
@@ -166,8 +170,9 @@ let handle_sigint () =
 (** [edit ()] opens the .quiz file the user inputs in vim. If the user does not
     input a valid quiz, it reprompts for another file. *)
 let edit () =
+  print_newline ();
   print_by_type ();
-  print_string [] "Enter quiz name to edit > ";
+  print_string [] "Enter quiz name to edit:\n> ";
   let rec open_file () = 
     let file = 
       ("." ^ slash ^ "quizzes" ^ slash ^ read_line () ^ ".quiz") in
@@ -182,9 +187,12 @@ let edit () =
 (** [take_quiz ()] runs the quiz the user enters. If the user does not input a 
     valid quiz, it reprompts for another file. *)
 let take_quiz () =
+  print_newline ();
   print_by_type ();
   let quiz = load_quiz () in
-  printf [magenta] "%s\n%s\n" (title quiz) (desc quiz);
+  print_newline ();
+  printf [Bold; magenta] "%s\n" (title quiz);
+  printf [magenta] "%s\n" (desc quiz);
   let prog = get_progress quiz begin
       fun () -> if (subjective quiz) then Subjective else prompt_mode ()
     end in
@@ -211,23 +219,27 @@ let rec welcome_menu () =
      1. Create a new quiz \n\
      2. Edit an existing quiz \n\
      3. Take a quiz\n";
-  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode > ";
-  match read_line () with
-  | "1" -> builder ()
-  | "2" -> edit ()
-  | "3" -> take_quiz ()
-  | _ -> print_string [yellow] "Invalid mode; try again > "; welcome_menu ()
+  print_string [] "Select (1) create, (2) edit, or (3) take quiz mode\n> ";
+  let rec read_input () = 
+    match read_line () with
+    | "1" -> builder ()
+    | "2" -> edit ()
+    | "3" -> take_quiz ()
+    | _ -> (print_string [yellow] "Invalid mode. Try again:\n";
+            print_string [] "> ";
+            read_input ())
+  in read_input ()
 
 let welcome_message () = 
   resize 100 30;
   print_string [red; on_black] "
-                                            
+
  _ _ _     _                      _____     
 | | | |___| |___ ___ _____ ___   |_   ____  
 | | | | -_| |  _| . |     | -_|    | || . | 
 |_____|___|_|___|___|_|_|_|___|    |_||___| 
-                                            
-                                            
+
+
  _____ _____ _____ __ __    _____     _     
 |  _  |   __|  |  |  |  |  |     |_ _|_|___ 
 |     |__   |    -|_   _|  |  |  | | | |- _|
