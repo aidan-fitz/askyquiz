@@ -63,21 +63,22 @@ let rec prompt_file () =
   then fname
   else
     (print_string [yellow] "Sorry, a quiz with that filename already exists!\n";
-    prompt_file ())
+     prompt_file ())
 
 (* [builder ()] prompts the user for details and executes the quiz builder *)
 let builder () =
+  print_newline ();
   print_string [Bold] "Create an ASKYQuiz!\n";
   let fname = prompt_file () in
   let title = prompt_string "\nEnter quiz title > " in
   let desc  = prompt_string "\nEnter quiz description > " in
   print_string [] "\nWill this quiz be (1) subjective e.g. personality quizzes \
-                    or (2) non-subjective e.g. academic quizzes > ";
+                   or (2) non-subjective e.g. academic quizzes > ";
   let is_sub = (read_line () = "1") in
   let cats_list = if not is_sub then ["correct"] else
-    let cats = prompt_string "\nWhat are the answer categories \
-                              (comma-separated, no space after)? > " in
-    String.split_on_char ',' cats
+      let cats = prompt_string "\nWhat are the answer categories \
+                                (comma-separated, no space after)? > " in
+      String.split_on_char ',' cats
   in let num_qs = prompt_string "\nHow many questions will this quiz have? > "
   in build_quiz fname title desc is_sub cats_list num_qs;
   ignore(Unix.system ("vim ." ^ slash ^ "quizzes" ^ slash ^ fname ^ ".quiz"))
