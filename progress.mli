@@ -12,18 +12,23 @@ val init_progress : Quiz.t -> (unit -> mode) -> t
     exists, and calls [init_progress quiz thunk] otherwise. *)
 val get_progress : Quiz.t -> (unit -> mode) -> t
 
-(** [update_progress qid aid quiz prog] updates [prog] to reflect the user
+(** [update_scores qid aid quiz prog] updates [prog] to reflect the user
     answering with ID [aid] for question with ID [qid]. Running scores in 
-    [prog] are updated according to the answer's scores in [quiz]. *)
+    [prog] are updated according to the answer's scores in [quiz].
+    Raises [Not_found] if [aid] is not an id for an answer in question [qid]
+    or [quiz] and [prog] do not contain the same scoring categories. *)
 val update_scores: Quiz.id -> Quiz.id -> Quiz.t -> t -> unit
 
-(** [queue q] is the list of ids of unanswered questions in quiz [q]. *)
+(** [stock prog] is the list of ids of unanswered questions in progress state
+    [prog]. *)
 val stock: t -> string list
 
-(** [requeue q] is the list of ids of requeued questions in quiz [q]. *)
+(** [discard prog] is the list of ids of requeued questions in progress state
+    [prog]. *)
 val discard: t -> string list
 
-(** [score q] is the list of categories and corresponding scores in quiz [q]. *)
+(** [score prog] is the list of categories and corresponding scores in progress
+    state [prog]. *)
 val score: t -> (string * int ref) list
 
 (** [mastery p] are the mastery scores for the questions in the progress 

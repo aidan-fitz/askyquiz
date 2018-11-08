@@ -37,7 +37,9 @@ val question_ids: t -> id list
 (** [question_texts t] is the list of question texts from [Quiz.t] *)
 val question_qs: t -> string list
 
-(** [answers qid t] is the list of answers of the corresponding question *)
+(** [answers qid t] is the list of answer choices for the question identified 
+    by [qid] in [t].
+    Raises [Not_found] if [qid] is not an id for a question in [t]. *)
 val answers: t -> id -> answer list
 
 (** [filename q] is the filename of the file containing data for [q]. *)
@@ -50,7 +52,8 @@ val get_questions: t -> (id * string) list
     associated with [qid] in [t] *)
 val get_answers: id -> t -> (id * string) list
 
-(** [get_txt_from_id qid t] is the [qs] of the question in t with id [qid] *)
+(** [get_txt_from_id qid t] is the [qs] of the question in t with id [qid].
+    Raises [Not_found] if [qid] is not an id for a question in [t]. *)
 val get_txt_from_id: id -> t -> string
 
 (** [correct_ans answers] is the id of the correct answer in the list of answers
@@ -60,5 +63,6 @@ val get_txt_from_id: id -> t -> string
 val correct_ans: answer list -> id
 
 (** [get_values qid aid t] is the list of scores associated with 
-    answer of id [aid] to question of id [qid] in [quiz]. *)
+    answer of id [aid] to question of id [qid] in [quiz].
+    Raises [Not_found] if [aid] is not an id for an answer in question [qid]. *)
 val get_values: id -> id -> t -> (category * int) list

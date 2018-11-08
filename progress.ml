@@ -35,7 +35,8 @@ let restock prog =
   else prog
 
 (** [pop_current_question prog] is [current_question, prog'] where [prog'] is
-  * [prog] with [current_question] removed. *)
+    [prog] with [current_question] removed.
+    Raises [Invalid_argument "empty stock"] if [stock prog] is empty. *)
 let pop_current_question prog =
   match prog.stock with
   | [] -> invalid_arg "empty stock"
