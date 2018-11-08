@@ -48,7 +48,7 @@ val get_questions: t -> (id * string) list
 
 (** [get_answers qid t] is a (id, text) list for all answers of the question 
     associated with [qid] in [t] *)
-val get_answers: string -> t -> (id * string) list
+val get_answers: id -> t -> (id * string) list
 
 (** [get_txt_from_id qid t] is the [qs] of the question in t with id [qid] *)
 val get_txt_from_id: id -> t -> string
